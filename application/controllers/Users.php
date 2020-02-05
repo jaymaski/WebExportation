@@ -29,7 +29,7 @@ class Users extends CI_Controller {
 			$username = $this->input->post('username');
 			$password = md5($this->input->post('password'));
 			//$user_id = $this->user_model->login($username, $password); //Retrieves from db
-			$user_id == true; //ganto muna
+			$user_id = true; //ganto muna
 			if($user_id) {
 				$user_data = array(
 					'user_id' => $user_id,
@@ -44,5 +44,14 @@ class Users extends CI_Controller {
 				redirect('users/login');
 			}			
 		}			
+	}	
+
+	public function logout(){
+		$this->session->unset_userdata('logged_in');
+		$this->session->unset_userdata('user_id');
+		$this->session->unset_userdata('username');
+
+		$this->session->set_flashdata('user_loggedout', 'You are now logged output_add_rewrite_var(name, value)');
+		redirect('users/login');
 	}	
 }

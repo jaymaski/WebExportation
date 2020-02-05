@@ -12,6 +12,10 @@
   background-color: rgba(132, 209, 108, 0.5);
 }
 
+.logout.btn-danger {
+  color: #FFFFFF;
+}
+
 .login-title {
   text-align: center;
   font-size: 30px;
@@ -104,44 +108,66 @@ span {
   transition: all 0.3s;
 }
 
+#sidebar span {
+  display: none;
+}
+
 #sidebar h3 {
   display: none;
 }
 
 #sidebar.active {
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 300px;
+  max-width: 300px;
   color: #fff;
   text-align: left;
 }
 
+#sidebar.active span {
+  display: inline-block;
+  font-size: 18px;
+  padding: 0px 10px;
+}
+
 #sidebar.active h3 {
   display: block;
+  font-size: 22px;
   padding: 10px !important;
+}
+
+#sidebar.active .sidebar-header {
+  background: #2b2f3a;
+}
+
+#sidebar.active .sidebar-header .btn {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+}
+
+#sidebar.active .sidebar-header .btn .fa-bars {
+  color: #FFFFFF;
+  font-size: 30px;
+  float: right;
 }
 
 #sidebar.active .sidebar-header strong {
   display: block;
 }
 
-#sidebar.active ul li a i {
-  margin-right: 0;
-  display: block;
-  font-size: 1.8em;
-  margin-bottom: 5px;
-}
-
-#sidebar.active .dropdown-toggle::after {
-  top: auto;
-  bottom: 10px;
-  right: 50%;
-  -webkit-transform: translateX(50%);
-  transform: translateX(50%);
-}
-
-#sidebar.sidebar-header {
-  padding: 20px;
+#sidebar .sidebar-header {
   background: #2b2f3a;
+}
+
+#sidebar .sidebar-header .btn {
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+}
+
+#sidebar .sidebar-header .btn .fa-bars {
+  color: #FFFFFF;
+  font-size: 30px;
 }
 
 #sidebar ul.components {
@@ -149,8 +175,12 @@ span {
   border-bottom: 1px solid #919ba0;
 }
 
+#sidebar ul li ul li {
+  background-color: #2b2f3a;
+}
+
 #sidebar ul li a {
-  padding: 10px;
+  padding: 17px 13px;
   font-size: 1.1em;
   display: block;
   text-decoration: none;
@@ -160,6 +190,10 @@ span {
 #sidebar ul li a:hover {
   color: #2b2f3a;
   background: #FFFFFF;
+}
+
+#sidebar ul li a .fa {
+  font-size: 25px !important;
 }
 
 a[data-toggle="collapse"] {
@@ -173,12 +207,6 @@ a[data-toggle="collapse"] {
   right: 20px;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-}
-
-ul ul a {
-  font-size: 0.9em !important;
-  padding-left: 30px !important;
-  background: #6d7fcc;
 }
 
 ul.CTAs {
