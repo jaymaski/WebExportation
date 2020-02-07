@@ -18,22 +18,21 @@
         }
         .search{
             color: #343a40;
-            border: 1px solid;
-            border-color: #343a40;
+            border: 1px solid #343a40;
+            border-radius: .25rem;
             
             &.icon{
-                border-right: 0;
+                //border-right: 0;
                 align-items: center;
                 padding: .375rem .75rem;
-                border-radius: .25rem;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
             }
             &.field{
-                border-radius: .25rem;
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
                 border-left: 0;
+                margin-right: 5px;
+                border: 0px;
+            }
+            &.fa-search{
+                padding: 0 0 0 10px;
             }
         }
     }
@@ -45,11 +44,13 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 0.875rem;
             display: inline;
-            padding-top: 10px;
-            padding-left: 10px;
+            padding: 10px 13px 0 0;
             a{
                 color: #343a40;
             }
+        }
+        .identifier {
+            margin: 0 0 0 20px;
         }
     }
 }

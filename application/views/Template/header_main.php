@@ -39,8 +39,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<h3>GTASS DEPLOYMENT REQUEST MANAGER</h3>
 					</div>
 					<div class="row header filters">
-						<span class="search icon"><i class="fa fa-search" aria-hidden="true"></i></span>
-						<input class="search field"type="text" placeholder="Search..." >
 						<button type="button" class="btn btn-outline-dark">
 							<i class="fa fa-file-text" aria-hidden="true"></i> Create New Request
 						</button>
@@ -48,25 +46,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<button type="button" class="btn btn-outline-dark">
 							<i class="fa fa-share-square-o" aria-hidden="true"></i> Share with me
 						</button>
-
-						<button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      						Exportation Type
-    					</button>
-						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="#">Table Update</a>
-							<a class="dropdown-item" href="#">Process Model</a>
-							<a class="dropdown-item" href="#">Project (Translation, Table, File)</a>
-						</div>
-						
+						<span class="search icon"><i class="fa fa-search" aria-hidden="true"></i><input class="search field"type="text" placeholder="Search..." ></span>
 					</div>
 						
 				</div>
 				<div class="col-md-auto header accounts">
-					<ul class="tabs">
-						<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i><li>
-						<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i><li>
-						<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"> </a></strong></i><li>
-					</ul>
+					<div class="row"> 
+						<ul class="tabs">
+							<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i></li>
+							<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i></li>
+							<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
+						</ul>
+					</div>
+					<div class="row identifier float-right">
+						<button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      						Exportation Type
+    					</button>
+						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+							<a class="dropdown-item" href="#">Project</a>
+							<a class="dropdown-item" href="#">Process Model</a>
+							<a class="dropdown-item" href="#">Table Update</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
