@@ -7,7 +7,7 @@
 .header {
     &.name{
         font-family: 'Raleway', sans-serif;
-        padding-top: 20px;
+        padding-top: 30px;
     }
     &.filters{
         font-family: 'Montserrat', sans-serif;
@@ -36,28 +36,23 @@
                 border-left: 0;
             }
         }
-    &.middle{
-        padding-right:0
-    }
     }
     &.logo{
         padding-left: 0;
     }
     &.accounts{
-        padding: 0;
         .tabs li{
             font-family: 'Montserrat', sans-serif;
             font-size: 0.875rem;
             display: inline;
             padding-top: 10px;
-            padding-left: 5px;
+            padding-left: 10px;
             a{
                 color: #343a40;
             }
         }
     }
 }
-
 
 /* ---------------------------------------------------
     Dashboard
