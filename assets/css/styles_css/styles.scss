@@ -7,7 +7,7 @@
 .header {
     &.name{
         font-family: 'Raleway', sans-serif;
-        padding-top: 30px;
+        padding-top: 20px;
     }
     &.filters{
         font-family: 'Montserrat', sans-serif;
@@ -36,17 +36,21 @@
                 border-left: 0;
             }
         }
+    &.middle{
+        padding-right:0
+    }
     }
     &.logo{
         padding-left: 0;
     }
     &.accounts{
+        padding: 0;
         .tabs li{
             font-family: 'Montserrat', sans-serif;
             font-size: 0.875rem;
             display: inline;
             padding-top: 10px;
-            padding-left: 10px;
+            padding-left: 5px;
             a{
                 color: #343a40;
             }
@@ -54,3 +58,31 @@
     }
 }
 
+
+/* ---------------------------------------------------
+    Dashboard
+----------------------------------------------------- */
+
+.dashboard{
+    &.nav{
+        .nav-item{
+            &.active {
+                font-family: 'Montserrat', sans-serif;
+                text-decoration: underline;
+            }
+        }
+        background-color: #343a40;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.875rem;
+        color: #343a40;
+        border: 1px solid;
+        border-color: #343a40;
+        a{
+            color:white;
+        }
+    }
+    &.table{
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.75rem;
+    }
+}

@@ -1,32 +1,22 @@
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">NAME</th>
-      <th scope="col">TYPE</th>
-      <th scope="col">ENVIRONMENT</th>
-      <th scope="col">EXPORTATION DATE</th>
-      <th scope="col">URGENCY</th>
-      <th scope="col">STATUS</th>
-      <th scope="col">QUEUE</th>
-      <th scope="col">ACTIONS</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="txt-oflo">B2BE20200201-01</td>
-      <td class="txt-oflo">Lorem AU to V2</td>
-      <td class="txt-oflo">Process Model</td>
-      <td class="txt-oflo">UAT</td>
-      <td class="txt-oflo">02/01/2020 4:00PM</td>
-      <td class="txt-oflo">NORMAL</td>
-      <td class="txt-oflo">IN QUEUE</td>
-      <td class="txt-oflo">45</td >
-      <td class="txt-oflo">
-          <button class="btn btn-success btn-sm" onclick="$('#modal-summary').modal('show');return false;"> view </button>
-          <button class="btn btn-info btn-sm" onclick="$('#modal-summary').modal('show');return false;"> edit </button>
-        <button class="btn btn-warning btn-sm" onclick="$('#modal-summary').modal('show');return false;"> share </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<section>
+    <div class="container-main">
+        <div class="row">
+            <div class="col-xl-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill dashboard" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-myrequest-tab" data-toggle="tab" href="#nav-myrequest" role="tab" aria-controls="nav-myrequest" aria-selected="true">My Request</a>
+                        <a class="nav-item nav-link" id="nav-myexported-tab" data-toggle="tab" href="#nav-myexported" role="tab" aria-controls="nav-myexported" aria-selected="false">My Exported</a>
+                        <a class="nav-item nav-link" id="nav-owned-tab" data-toggle="tab" href="#nav-owned" role="tab" aria-controls="nav-owned" aria-selected="false">Owned Request</a>
+                        <a class="nav-item nav-link" id="nav-sharedwithme-tab" data-toggle="tab" href="#nav-sharedwithme" role="tab" aria-controls="nav-sharedwithme" aria-selected="false">Shared with me</a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <?php $this->view('users/dashboards/my_requests'); ?>
+                    <?php $this->view('users/dashboards/my_exported'); ?>
+                    <?php $this->view('users/dashboards/owned_requests'); ?>
+                    <?php $this->view('users/dashboards/shared'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

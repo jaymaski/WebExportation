@@ -3,7 +3,7 @@
 ----------------------------------------------------- */
 .header.name {
   font-family: 'Raleway', sans-serif;
-  padding-top: 30px;
+  padding-top: 20px;
 }
 
 .header.filters {
@@ -40,8 +40,16 @@
   border-left: 0;
 }
 
+.header.filters.middle {
+  padding-right: 0;
+}
+
 .header.logo {
   padding-left: 0;
+}
+
+.header.accounts {
+  padding: 0;
 }
 
 .header.accounts .tabs li {
@@ -49,10 +57,36 @@
   font-size: 0.875rem;
   display: inline;
   padding-top: 10px;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .header.accounts .tabs li a {
   color: #343a40;
+}
+
+/* ---------------------------------------------------
+    Dashboard
+----------------------------------------------------- */
+.dashboard.nav {
+  background-color: #343a40;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  color: #343a40;
+  border: 1px solid;
+  border-color: #343a40;
+}
+
+.dashboard.nav .nav-item.active {
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: underline;
+}
+
+.dashboard.nav a {
+  color: white;
+}
+
+.dashboard.table {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
 }
 /*# sourceMappingURL=styles.css.map */
