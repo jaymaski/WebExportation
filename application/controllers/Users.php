@@ -16,6 +16,7 @@ class Users extends CI_Controller {
 	}
 	public function login() {
 		$data['title'] = 'Dashboard';
+		$this->load->model('users_model');
 
 		$this->form_validation->set_rules('username', 'Username', 'required');
 		$this->form_validation->set_rules('password', 'Password', 'required');
@@ -28,7 +29,7 @@ class Users extends CI_Controller {
 		} else {
 			$username = $this->input->post('username');
 			$password = md5($this->input->post('password'));
-			//$user_id = $this->user_model->login($username, $password); //Retrieves from db
+			//$user_id = $this->users_model->login($username, $password); //Retrieves from db
 			$user_id = true; //ganto muna
 			if($user_id) {
 				$user_data = array(
@@ -54,4 +55,11 @@ class Users extends CI_Controller {
 		$this->session->set_flashdata('user_loggedout', 'You are now logged output_add_rewrite_var(name, value)');
 		redirect('users/login');
 	}	
+
+	public function email(){
+		$this->load->model('users_model');
+		$status = $this->input->post('emailBtn');
+		$note = $this->input->post('note');
+		$sent = $this->users_model->send_mail($status, $note);
+	}
 }
