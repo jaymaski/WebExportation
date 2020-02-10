@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-md-auto header accounts">
 					<div class="row"> 
 						<ul class="tabs">
-							<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i></li>
+							<li>Hi, <strong><?php echo $this->session->userdata('name'); ?> </strong><i class="fa fa-user" aria-hidden="true"></i></li>
 							<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i></li>
 							<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
 						</ul>
