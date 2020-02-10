@@ -17,96 +17,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 	<!-- Font Awesome JS -->
-	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-	<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>	
+	<script src="https://use.fontawesome.com/fa7d61d75c.js"></script>
+	
+	<!-- Google Fonts CDN -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap" rel="stylesheet">
+
 </head>
 <body>
 <div class="wrapper">
 
-<!-- Sidebar  -->
-<nav id="sidebar">
-	<div class="sidebar-header">
-		<button type="button" id="sidebarCollapse" class="btn">
-			<i class="fas fa-bars"></i>
-		</button>		
-		<h3>GTASS Deployment Request Manager</h3>
-	</div>
-
-	<ul class="list-unstyled components">
-		<li>
-			<a class="waves-effect waves-dark"
-			href="<?php echo base_url();?>users/index"
-			aria-expanded="false">
-			<i class="fa fa-home"></i>
-			<span class="hide-menu">My Request</span></a>
-		</li>
-
-		<li>
-			<a class="waves-effect waves-dark" href="<?php echo base_url();?>users/index" aria-expanded="false">
-			<i class="fa fa-share-alt"></i>
-			<span class="hide-menu">Shared To Me</span></a>
-		</li>
-
-		<li>
-			<a class="waves-effect waves-dark"
-			href="<?php echo base_url();?>users/index"
-			aria-expanded="false">
-			<i class="fa fa-home"></i>
-			<span class="hide-menu">Exported</span></a>
-		</li>		
-
-		<li>
-			<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-table"></i> <span>Request Forms</span></a>
-			<ul class="collapse list-unstyled" id="homeSubmenu">
-				<li>
-					<a class="waves-effect waves-dark" href="<?php echo base_url();?>users/index" aria-expanded="false">
-					<i class="fas fa-globe-asia"></i>
-					<span class="hide-menu">Translation Request Form</span></a>
-				</li>
-
-				<li>
-					<a class="waves-effect waves-dark" href="<?php echo base_url();?>users/index" aria-expanded="false">
-					<i class="fa fa-cogs"></i>
-					<span class="hide-menu">Process Model Request Form</span></a>
-				</li>
-
-				<li>
-					<a class="waves-effect waves-dark" href="<?php echo base_url();?>users/index">
-					<i class="fa fa-table"></i>
-					<span class="hide-menu">Table Change Request Form</span></a>
-				</li>				
-			</ul>
-		</li>	  
-	</ul>
-</nav>
-<!-- End Sidebar  -->
-
 <!-- Page Content  -->
 <div id="content">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div>
 		<div class="container-fluid">
-
-			<button type="button" id="createRequest" class="btn btn-success">
-				Create New Request
-			</button>
-			
-			<button type="button" id="shareRequest" data-toggle="modal" data-target="#shareModal" class="btn btn-info">
-				Share Request
-			</button>
-			
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="nav navbar-nav ml-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">User Name</a>
-					</li>
-					<li class="logout nav-item">
-						<?php echo form_open('users/logout'); ?>
-							<button class="btn btn-sm btn-danger nav-link" type="submit">
-								Logout
-							</button>
-						</form>						
-					</li>
-				</ul>
+			<div class="row">
+				<div class="col-md-auto header logo">
+					<img src="https://via.placeholder.com/125/808080/FFFFFFF/C/O" alt="app-icon" height="125" width="125">
+				</div>
+				<div class= "col header middle">
+					<div class="row header name">
+						<h3>GTASS DEPLOYMENT REQUEST MANAGER</h3>
+					</div>
+					<div class="row header filters">
+						<button type="button" class="btn btn-outline-dark">
+							<i class="fa fa-file-text" aria-hidden="true"></i> Create New Request
+						</button>
+						
+						<button type="button" class="btn btn-outline-dark">
+							<i class="fa fa-share-square-o" aria-hidden="true"></i> Share with me
+						</button>
+						<span class="search icon"><i class="fa fa-search" aria-hidden="true"></i><input class="search field"type="text" placeholder="Search..." ></span>
+					</div>
+						
+				</div>
+				<div class="col-md-auto header accounts">
+					<div class="row"> 
+						<ul class="tabs">
+							<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i></li>
+							<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i></li>
+							<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
+						</ul>
+					</div>
+					<div class="row identifier float-right">
+						<button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      						Exportation Type
+    					</button>
+						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+							<a class="dropdown-item" href="#">Project</a>
+							<a class="dropdown-item" href="#">Process Model</a>
+							<a class="dropdown-item" href="#">Table Update</a>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</nav>
+	</div>
