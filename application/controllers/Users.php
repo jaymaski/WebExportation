@@ -2,6 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
+	
+	function __construct(){
+        parent::__construct();
+		$this->load->model('users_model', 'user');
+        $this->load->model('request_model', 'request');
+		$this->load->model('change_model', 'change_type');
+		$this->load->model('translation_model', 'translation');
+    }
+	
 	public function index()
 	{
 		if(!$this->session->userdata('logged_in')){
@@ -9,6 +18,7 @@ class Users extends CI_Controller {
 		}
 
 		$data['title'] = 'Dashboard';
+		$data['requests'] = $this->request->get_all_request();
 
 		$this->load->view('template/header_main');
 		$this->load->view('users/users_dashboard', $data);
@@ -27,17 +37,23 @@ class Users extends CI_Controller {
 			$this->load->view('template/footer_main');
 		} else {
 			$username = $this->input->post('username');
-			$password = md5($this->input->post('password'));
-			//$user_id = $this->user_model->login($username, $password); //Retrieves from db
-			$user_id = true; //ganto muna
-			if($user_id) {
+			$password = $this->input->post('password');
+			$result = $this->user->get_user($username, $password); //Retrieves from db
+			//$user_id = true; //ganto muna
+			
+			if($result->num_rows() > 0){
+				$row = $result->row(1);
 				$user_data = array(
-					'user_id' => $user_id,
-					'username' => $username,
+					'name' 		=> $row->fName." ".$row->lName,
+					'username' 	=> $row->username,
+					'emailAddress' => $row->emailAddress,
+					'department' => $row->depatmentCode,
+					'type' => $row->type,
 					'logged_in' => true
 				);
 				$this->session->set_userdata($user_data);
 				redirect('users/index');
+				
 			}
 			else {
 				$this->session->set_flashdata('failed', 'Login failed wrong username or password');
