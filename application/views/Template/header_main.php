@@ -34,9 +34,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-md-auto header logo">
 					<img src="https://via.placeholder.com/125/808080/FFFFFFF/C/O" alt="app-icon" height="125" width="125">
 				</div>
-				<div class= "col header middle">
+				<div class= "col header">
 					<div class="row header name">
-						<h3>GTASS DEPLOYMENT REQUEST MANAGER</h3>
+						<p>GTASS DEPLOYMENT REQUEST MANAGER</p>
 					</div>
 					<div class="row header filters">
 						<button type="button" class="btn btn-outline-dark">

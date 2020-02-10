@@ -1,9 +1,14 @@
 /* ---------------------------------------------------
     Header
 ----------------------------------------------------- */
+.header {
+  width: 100%;
+}
+
 .header.name {
   font-family: 'Raleway', sans-serif;
-  padding-top: 30px;
+  font-size: 30px;
+  padding-top: 10px;
 }
 
 .header.filters {
@@ -20,6 +25,10 @@
   color: #343a40;
   border: 1px solid #343a40;
   border-radius: .25rem;
+}
+
+.header.filters .search span {
+  width: 100%;
 }
 
 .header.filters .search.icon {
