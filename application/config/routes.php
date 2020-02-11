@@ -7,7 +7,7 @@ $route['users/users_dashboard'] = 'users/index';
 $route['404_override'] 			= '';
 $route['translate_uri_dashes'] 	= FALSE;
 
-$route['requests/view_request'] = 'request/view_request';
-$route['requests/all_request'] 	= 'request/index';
-$route['requests/view_request'] = 'request/view_request';
-$route['requests/create_task'] 	= 'request/create_task';
+$route['users/requests/view_request'] = 'request/view_request';
+$route['users/requests/all_request'] 	= 'request/index';
+$route['users/requests/view_request'] = 'request/view_request';
+$route['users/requests/create_task'] 	= 'request/create_task';
