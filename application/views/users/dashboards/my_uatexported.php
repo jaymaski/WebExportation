@@ -1,4 +1,4 @@
-<div class="tab-pane fade show active" id="nav-myrequest" role="tabpanel" aria-labelledby="nav-myrequest-tab">
+<div class="tab-pane fade" id="nav-my-uat-exported" role="tabpanel" aria-labelledby="nav-my-uat-exported-tab">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -16,14 +16,14 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="txt-oflo">B2BE20200201-01</td>
-                                        <td class="txt-oflo">Lorem AU to V2</td>
-                                        <td class="txt-oflo">Process Model</td>
-                                        <td class="txt-oflo">UAT</td>
+                                        <td class="txt-oflo">B2BE20200201-06</td>
+                                        <td class="txt-oflo">translation1</td>
+                                        <td class="txt-oflo">Translation</td>
+                                        <td class="txt-oflo">UAT EXPORTED</td>
                                         <td class="txt-oflo">02/01/2020 4:00PM</td>
                                         <td class="txt-oflo">NORMAL</td>
                                         <td class="txt-oflo">IN QUEUE</td>
-                                        <td class="txt-oflo">45</td>
+                                        <td class="txt-oflo">56</td>
                                         <td class="txt-oflo">
                                             <button class="btn btn-success btn-sm" onclick="$('#modal-summary').modal('show');return false;"> view </button>
                                             <button class="btn btn-info btn-sm" onclick="$('#modal-summary').modal('show');return false;"> edit </button>

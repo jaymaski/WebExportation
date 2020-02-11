@@ -21,7 +21,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	<!-- Google Fonts CDN -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap" rel="stylesheet">
-
 </head>
 <body>
 <div class="wrapper">
@@ -59,14 +58,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</ul>
 					</div>
 					<div class="row identifier float-right">
-						<button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      						Exportation Type
-    					</button>
-						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="#">Project</a>
-							<a class="dropdown-item" href="#">Process Model</a>
-							<a class="dropdown-item" href="#">Table Update</a>
-						</div>
+						<select class="btn btn-outline-dark header exportation-dropdown">
+							<option value="Project">Project</option>
+							<option class="dropdown-item" href="#">Process Model</option>
+							<option class="dropdown-item" href="#">Table Update</option>
+    					</select>
 					</div>
 				</div>
 			</div>
