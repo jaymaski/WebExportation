@@ -1,0 +1,31 @@
+.login {
+    width: 500px;
+    margin: auto;
+    margin-top: 200px;
+    border: 1px solid rgb(206, 206, 206);
+    border-radius: 10px;
+    padding: 30px;
+    .login-title {
+        font-size: 30px;
+        text-align: center;
+        margin: 0px 0px 25px 0px;
+    }
+    .login-form {
+        .btn {
+            width: 100%;
+            border: 1px solid rgb(206, 206, 206);
+            &::hover {
+                border: 1px solid rgb(39, 39, 39);
+            }
+        }
+        .input-group-text {
+            width: 100px;
+        }
+        .username{
+            margin: 0px 0px 20px 0px!important;
+        }
+        .password {
+            margin: 0px 0px 10px 0px!important;
+        }
+    }
+}

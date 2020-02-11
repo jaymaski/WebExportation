@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<ul class="tabs">
 							<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i></li>
 							<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i></li>
-							<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
+							<li><strong><a href="<?php echo base_url(); ?>users/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
 						</ul>
 					</div>
 					<div class="row identifier float-right">
