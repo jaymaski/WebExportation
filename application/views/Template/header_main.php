@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- Local CSS -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/main_css/main.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles_css/styles.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/Jhom/jhoms.css">
 
 	<!-- Bootstrap CSS/JS-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -33,9 +34,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-md-auto header logo">
 					<img src="https://via.placeholder.com/125/808080/FFFFFFF/C/O" alt="app-icon" height="125" width="125">
 				</div>
-				<div class= "col header middle">
+				<div class= "col header">
 					<div class="row header name">
-						<h3>GTASS DEPLOYMENT REQUEST MANAGER</h3>
+						<p>GTASS DEPLOYMENT REQUEST MANAGER</p>
 					</div>
 					<div class="row header filters">
 						<button type="button" class="btn btn-outline-dark">
@@ -52,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-md-auto header accounts">
 					<div class="row"> 
 						<ul class="tabs">
-							<li>Hi, <strong>Juan Dela Cruz </strong><i class="fa fa-user" aria-hidden="true"></i></li>
+							<li>Hi, <strong><?php echo $this->session->userdata('name'); ?> </strong><i class="fa fa-user" aria-hidden="true"></i></li>
 							<li>6:00 AM (Friday) 07/02/2020 PHT <i class="fa fa-calendar" aria-hidden="true"></i></li>
 							<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
 						</ul>
