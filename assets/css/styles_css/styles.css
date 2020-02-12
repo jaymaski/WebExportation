@@ -1,342 +1,155 @@
-.notification {
-  width: 100%;
-  height: 60px;
-  position: absolute;
+/* ---------------------------------------------------
+    Header
+----------------------------------------------------- */
+.header.name {
+  font-family: 'Raleway', sans-serif;
+  padding-top: 30px;
 }
 
-.notification-failed {
-  background-color: rgba(209, 108, 108, 0.5);
+.header.filters {
+  font-family: 'Montserrat', sans-serif;
+  padding-top: 0px;
 }
 
-.notification-success {
-  background-color: rgba(132, 209, 108, 0.5);
+.header.filters .btn {
+  margin-right: 5px;
+  font-size: 0.875rem;
 }
 
-.logout.btn-danger {
-  color: #FFFFFF;
+.header.filters .search {
+  color: #343a40;
+  border: 1px solid #343a40;
+  border-radius: .25rem;
 }
 
-.login-title {
-  text-align: center;
-  font-size: 30px;
-  padding: 20px;
+.header.filters .search.icon {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: .375rem .75rem;
 }
 
-.login-form {
-  width: 25%;
-  border: 1px solid #c5c5c5;
-  border-radius: 15px;
-  padding: 25px 40px;
+.header.filters .search.field {
+  border-left: 0;
+  margin-right: 5px;
+  border: 0px;
 }
 
-.login-form .btn {
-  width: 100%;
+.header.filters .search.fa-search {
+  padding: 0 0 0 10px;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: #fafafa;
+.header.logo {
+  padding-left: 0;
 }
 
-p {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.1em;
-  font-weight: 300;
-  line-height: 1.7em;
-  color: #999;
+.header.accounts .tabs li {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  display: inline;
+  padding: 10px 13px 0 0;
 }
 
-a,
-a:hover,
-a:focus {
-  color: inherit;
-  text-decoration: none;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+.header.accounts .tabs li a {
+  color: #343a40;
 }
 
-.navbar {
-  padding: 15px 10px;
-  background: #fff;
-  border: none;
-  border-radius: 0;
-  margin-bottom: 40px;
-  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-          box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+.header.accounts .identifier {
+  margin: 0 0 0 20px;
 }
 
-.navbar-btn {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  outline: none !important;
-  border: none;
-}
-
-.line {
-  width: 100%;
-  height: 1px;
-  border-bottom: 1px dashed #ddd;
-  margin: 40px 0;
-}
-
-i,
-span {
-  display: inline-block;
+.header.exportation-dropdown {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* ---------------------------------------------------
-    SIDEBAR STYLE
+    Dashboard
 ----------------------------------------------------- */
-.wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+.dashboard.nav {
+  background-color: #343a40;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  color: #343a40;
+  border: 1px solid;
+  border-color: #343a40;
 }
 
-#sidebar {
-  min-width: 90px;
-  max-width: 90px;
+.dashboard.nav .nav-item.active {
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: underline;
+}
+
+.dashboard.nav a {
+  color: white;
+}
+
+.dashboard.table td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.dashboard.table thead {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
   text-align: center;
-  background: #2b2f3a;
-  text-align: center;
-  padding: 20px 0px;
-  font-size: 0.85em;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
 }
 
-#sidebar span {
-  display: none;
-}
-
-#sidebar h3 {
-  display: none;
-}
-
-#sidebar.active {
-  min-width: 300px;
-  max-width: 300px;
-  color: #fff;
+.dashboard.table thead #request-name {
   text-align: left;
 }
 
-#sidebar.active span {
-  display: inline-block;
-  font-size: 18px;
-  padding: 0px 10px;
-}
-
-#sidebar.active h3 {
-  display: block;
-  font-size: 22px;
-  padding: 10px !important;
-}
-
-#sidebar.active .sidebar-header {
-  background: #2b2f3a;
-}
-
-#sidebar.active .sidebar-header .btn {
-  background-color: transparent;
-  width: 100%;
-  outline: none;
-}
-
-#sidebar.active .sidebar-header .btn .fa-bars {
-  color: #FFFFFF;
-  font-size: 30px;
-  float: right;
-}
-
-#sidebar.active .sidebar-header strong {
-  display: block;
-}
-
-#sidebar .sidebar-header {
-  background: #2b2f3a;
-}
-
-#sidebar .sidebar-header .btn {
-  background-color: transparent;
-  width: 100%;
-  outline: none;
-}
-
-#sidebar .sidebar-header .btn .fa-bars {
-  color: #FFFFFF;
-  font-size: 30px;
-}
-
-#sidebar ul.components {
-  padding: 20px 0;
-  border-bottom: 1px solid #919ba0;
-}
-
-#sidebar ul li ul li {
-  background-color: #2b2f3a;
-}
-
-#sidebar ul li a {
-  padding: 17px 13px;
-  font-size: 1.1em;
-  display: block;
-  text-decoration: none;
-  color: #FFFFFF;
-}
-
-#sidebar ul li a:hover {
-  color: #2b2f3a;
-  background: #FFFFFF;
-}
-
-#sidebar ul li a .fa {
-  font-size: 25px !important;
-}
-
-a[data-toggle="collapse"] {
-  position: relative;
-}
-
-.dropdown-toggle::after {
-  display: block;
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
-ul.CTAs {
-  padding: 20px;
-}
-
-ul.CTAs a {
+.dashboard.table tbody {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
   text-align: center;
-  font-size: 0.9em !important;
-  display: block;
-  border-radius: 5px;
-  margin-bottom: 5px;
 }
 
-a.download {
-  background: #fff;
-  color: #2b2f3a;
+.dashboard.table tbody #request-name {
+  text-align: left;
 }
 
-a.article,
-a.article:hover {
-  background: #6d7fcc !important;
-  color: #fff !important;
+.dashboard.table #request-id {
+  width: 10%;
 }
 
-/* ---------------------------------------------------
-    CONTENT STYLE
------------------------------------------------------ */
-#content {
-  width: 100%;
-  padding: 20px;
-  min-height: 100vh;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+.dashboard.table #request-name {
+  width: 30%;
 }
 
-/* ---------------------------------------------------
-    LABELS
------------------------------------------------------ */
-.label {
-  padding: 3px 10px;
-  line-height: 13px;
-  color: #fff;
-  font-weight: 400;
-  border-radius: 0.25rem;
-  font-size: 75%;
+.dashboard.table #requestor-name {
+  width: 9%;
 }
 
-.label-success {
-  background-color: #36bea6;
+.dashboard.table #urgency {
+  width: 7%;
 }
 
-.label-info {
-  background-color: #009efb;
+.dashboard.table #request-date {
+  width: 13%;
 }
 
-.label-warning {
-  background-color: #ffbc34;
+.dashboard.table #environment {
+  width: 5%;
 }
 
-.label-danger {
-  background-color: #f62d51;
+.dashboard.table #status {
+  width: 6%;
 }
 
-/* ---------------------------------------------------
-    Table
------------------------------------------------------ */
-.txt-oflo {
-  padding: 3px 8px;
-  line-height: 12px;
-  color: #000000;
-  font-weight: 400;
-  border-radius: 0.25rem;
-  font-size: 80%;
+.dashboard.table #queue {
+  width: 5%;
 }
 
-/* ---------------------------------------------------
-    Tabs
------------------------------------------------------ */
-.content-tab {
-  padding: 10%;
-  margin-top: -8%;
+.dashboard.table #actions {
+  width: 15%;
 }
 
-.content-tab#tabs {
-  background: #007b5e;
-  color: #eee;
-}
-
-.content-tab.content-tab #tabs h6.section-title {
-  color: #eee;
-}
-
-.content-tab.content-tab .nav-link {
-  border: 1px solid transparent;
-  border-top-left-radius: .25rem;
-  border-top-right-radius: .25rem;
-  color: #0062cc;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.content-tab.content-tab .nav-link:hover {
-  border: none;
-}
-
-.content-tab.content-tab#tabs .nav-tabs .nav-item.show .nav-link, .content-tab.content-tab .nav-tabs .nav-link.active {
-  color: #0062cc;
-  background-color: transparent;
-  border-color: transparent transparent #f3f3f3;
-  border-bottom: 3px solid !important;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.content-tab.content-tab thead {
-  background: #f3f3f3;
-  color: #333;
-}
-
-.content-tab.content-tab a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-}
-
-.content-tab.container-main {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin: auto;
+#row-1 {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  width: 0%;
+  position: fixed;
+  display: inline-block;
+  overflow-x: hidden;
 }
 /*# sourceMappingURL=styles.css.map */
