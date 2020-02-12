@@ -3,7 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Request extends CI_Controller {
-	
 	function __construct(){
         parent::__construct();
         $this->load->model('request_model', 'request');
@@ -12,6 +11,7 @@ class Request extends CI_Controller {
     }
 	
 	function view_request($projectID, $taskID, $requestID){
+		$data['title'] = '';
 		$CI = &get_instance();
 		//selected translation
 		$data['curr_request'] = $this->request->get_current_request($requestID);
@@ -22,8 +22,7 @@ class Request extends CI_Controller {
 		
 		mysqli_next_result($CI->db->conn_id);
 		//history of selected translation
-		 $data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
-		
+		$data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
 		
 		$this->load->view('template/header_main');
 		$this->load->view('users/requests/view_request', $data);
