@@ -16,11 +16,14 @@ class Users extends CI_Controller {
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}
+		
+		$CI = &get_instance();
 
 		$data['title'] = 'Dashboard';
 		$data['requests'] = $this->request->get_all_request();
-		//$data['my_request'] = $this->request->get_my_request($this->session->userdata('user_id'));
-		//$data['my_exported'] = $this->request->get_my_exported($this->session->userdata('user_id'));
+		mysqli_next_result($CI->db->conn_id);
+		$data['my_requests'] = $this->request->get_user_requests($this->session->userdata('user_id'));
+		
 		$this->load->view('template/header_main');
 		$this->load->view('users/users_dashboard', $data);
 		$this->load->view('template/footer_main');
