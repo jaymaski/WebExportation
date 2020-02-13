@@ -1,0 +1,105 @@
+@import '../_global';
+.view-request {
+    .table>tbody>tr.active>td,
+    .table>tbody>tr.active>th,
+    .table>tbody>tr>td.active,
+    .table>tbody>tr>th.active,
+    .table>tfoot>tr.active>td,
+    .table>tfoot>tr.active>th,
+    .table>tfoot>tr>td.active,
+    .table>tfoot>tr>th.active,
+    .table>thead>tr.active>td,
+    .table>thead>tr.active>th,
+    .table>thead>tr>td.active,
+    .table>thead>tr>th.active {
+        background-color: $gray;
+        border: 1.5px solid black;
+        transition: 0.4s;
+    }
+    .table-bordered > tbody > tr > td,
+    .table-bordered > tbody > tr > th,
+    .table-bordered > tfoot > tr > td,
+    .table-bordered > tfoot > tr > th,
+    .table-bordered > thead > tr > td,
+    .table-bordered > thead > tr > th {
+        border-color: #e4e5e7;
+    }
+    .table tr.header {
+        font-weight: bold;
+        background-color: #fff;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .table tr:not(.header) {
+        display: none;
+    }
+    .table {
+        .header td:after {
+            content: "\002b";
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            float: right;
+            color: #999;
+            text-align: center;
+            padding: 3px;
+            transition: transform .25s linear;
+            -webkit-transition: -webkit-transform .25s linear;
+        }
+    }
+    .table .header.active td:after {
+        content: "\2212";
+    }
+    .project-details {
+        width: 100%;
+        border: 1px solid black;
+        margin: 0 0 30px 0;
+        tr:first-child {
+            height: 55px;
+            font-size: 22px;
+            border: 1px solid black;
+        }
+        td, th {
+          padding: 5px 20px;
+          border: 1px solid $gray;
+        }
+    }
+    .revisions {
+        margin-bottom: -1px!important;
+        th:first-child {
+            width: 20%;
+            text-align: left!important;
+        }
+        th:nth-child(3){
+            width: 20%;
+            text-align: left!important;      
+        }  
+        .spacer {
+            background-color: $gray;
+        }
+        tr:last-child {
+            border-left: 2px solid white; 
+            border-bottom: 2px solid white; 
+            background-color: $white;
+            td {
+                border-right: 2px solid white!important; 
+            }
+        }
+        span:first-child {
+            text-align: center!important;
+            width: 20%;
+            border-left: 1px solid $gray;
+            height: 100%;
+            float: right;
+        }
+    }    
+}

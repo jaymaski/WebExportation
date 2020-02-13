@@ -1,0 +1,36 @@
+.login {
+  width: 500px;
+  margin: auto;
+  margin-top: 200px;
+  border: 1px solid #cecece;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.login .login-title {
+  font-size: 30px;
+  text-align: center;
+  margin: 0px 0px 25px 0px;
+}
+
+.login .login-form .btn {
+  width: 100%;
+  border: 1px solid #cecece;
+}
+
+.login .login-form .btn::hover {
+  border: 1px solid #272727;
+}
+
+.login .login-form .input-group-text {
+  width: 100px;
+}
+
+.login .login-form .username {
+  margin: 0px 0px 20px 0px !important;
+}
+
+.login .login-form .password {
+  margin: 0px 0px 10px 0px !important;
+}
+/*# sourceMappingURL=login.css.map */

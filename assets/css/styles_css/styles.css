@@ -67,6 +67,10 @@
   margin: 0 0 0 20px;
 }
 
+.header.exportation-dropdown {
+  font-family: 'Montserrat', sans-serif;
+}
+
 /* ---------------------------------------------------
     Dashboard
 ----------------------------------------------------- */
@@ -88,8 +92,73 @@
   color: white;
 }
 
-.dashboard.table {
+.dashboard.table td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.dashboard.table thead {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.dashboard.table thead #request-name {
+  text-align: left;
+}
+
+.dashboard.table tbody {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.dashboard.table tbody #request-name {
+  text-align: left;
+}
+
+.dashboard.table #request-id {
+  width: 10%;
+}
+
+.dashboard.table #request-name {
+  width: 30%;
+}
+
+.dashboard.table #requestor-name {
+  width: 9%;
+}
+
+.dashboard.table #urgency {
+  width: 7%;
+}
+
+.dashboard.table #request-date {
+  width: 13%;
+}
+
+.dashboard.table #environment {
+  width: 5%;
+}
+
+.dashboard.table #status {
+  width: 6%;
+}
+
+.dashboard.table #queue {
+  width: 5%;
+}
+
+.dashboard.table #actions {
+  width: 15%;
+}
+
+#row-1 {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  width: 0%;
+  position: fixed;
+  display: inline-block;
+  overflow-x: hidden;
 }
 /*# sourceMappingURL=styles.css.map */
