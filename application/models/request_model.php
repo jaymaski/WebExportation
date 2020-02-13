@@ -35,6 +35,13 @@ class Request_model extends CI_Model{
 		return $query->result();
 	}
 		
+	function get_shared_requests($userID){
+		$get_shared_requests = "CALL get_shared_requests(?)";
+		$param = array('userID' => $userID);
+		$query = $this->db->query($get_shared_requests, $param);
+		return $query->result();
+	}	
+		
 	function get_all_request(){
 		$get_all_project_task_request = "CALL get_project_task_request_list()";
 		$query = $this->db->query($get_all_project_task_request);
