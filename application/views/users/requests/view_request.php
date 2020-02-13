@@ -1,7 +1,7 @@
 <?php echo $title ?>
-<?php if($request_history){
-	foreach ($request_history as $request) { ?>
-	<div class="container">
+<?php if($curr_request){
+	foreach ($curr_request as $request) { ?>
+	<div class="container view-request">
 		<table class="project-details">
 			<tr>
 				<th colspan="4" class="text-center">
@@ -50,46 +50,55 @@
 				<th>Deployed Date</th>
 				<td><?php echo $request->deployDate; ?></td>
 			</tr>
-			<?php } ?>	
-	</table>
+			<?php }?>	
+		</table>
+	</div>
+	<?php } else {
+		echo '<div class="none-found">No History found for this Request</div>';
+	} ?>
 
-	<table class="revisions table table-bordered">
-		<tr class="header text-dark">
-			<th colspan="4" class="text-center">
-				REVISION <?php echo $request->revisionNumber; ?>
-				<span><?php echo $request->status; ?> to <?php echo $request->environment; ?></span>
-			</th>
-		<tr>
-		<?php
-			if($translations){
-				foreach ($translations as $translation) {
-					if($request->requestID == $translation->requestID){ ?>			
-						<tr>
-							<td><strong>Test Internal ID:</strong> </td>
-							<td colspan=""><?php echo $translation->internalID;?></td>
-							<th colspan="">Release as Document Type:</th>
-							<td colspan=""><?php echo $request->docType; ?></td>
-						</tr>
-						<tr>
-							<th rowspan="2">Translation Name:</th>
-							<td><?php echo $translation->name;?></td>	
-							<th>Translation Changes</th>	
-							<?php if($translation_changes){
-								foreach($translation_changes as $change){
-									if($translation->translationID == $change->translationID){ ?>
-											<td colspan="3"><?php echo $change->changes ;?></td>
-										</tr>
-						<?php   }
+	<?php if($request_history){
+		foreach ($request_history as $request) { ?>
+		<div class="container view-request">
+			<table class="revisions table table-bordered">
+				<tr class="header text-dark">
+					<th colspan="4" class="text-center">
+						REVISION <?php echo $request->revisionNumber; ?>
+						<span><?php echo $request->status; ?> to <?php echo $request->environment; ?></span>
+					</th>
+				<tr>
+				<?php
+					if($translations){
+						foreach ($translations as $translation) {
+							if($request->requestID == $translation->requestID){ ?>			
+								<tr>
+									<td><strong>Test Internal ID:</strong> </td>
+									<td colspan=""><?php echo $translation->internalID;?></td>
+									<th colspan="">Release as Document Type:</th>
+									<td colspan=""><?php echo $request->docType; ?></td>
+								</tr>
+								<tr>
+									<th>Translation Name:</th>
+									<td><?php echo $translation->name;?></td>	
+									<th>Translation Changes</th>	
+									<?php if($translation_changes){
+										foreach($translation_changes as $change){
+											if($translation->translationID == $change->translationID){ ?>
+													<td colspan="3"><?php echo $change->changes ;?></td>
+												</tr>
+												<tr class="spacer"><td colspan="4"></td></tr>
+								<?php   }
+									}
+								}
 							}
 						}
-					}
-				}
-			} ?>		
-	</table>
-</div>
-<?php } else {
-	echo '<div class="none-found">No History found for this Request</div>';
-} ?>
+					} 
+				}?>		
+				</table>
+			</div>
+	<?php } else {
+		echo '<div class="none-found">No History found for this Request</div>';
+	} ?>
 
 <!-- <p>Current Request</p>
 	<?php

@@ -1,0 +1,119 @@
+.view-request .table > tbody > tr.active > td,
+.view-request .table > tbody > tr.active > th,
+.view-request .table > tbody > tr > td.active,
+.view-request .table > tbody > tr > th.active,
+.view-request .table > tfoot > tr.active > td,
+.view-request .table > tfoot > tr.active > th,
+.view-request .table > tfoot > tr > td.active,
+.view-request .table > tfoot > tr > th.active,
+.view-request .table > thead > tr.active > td,
+.view-request .table > thead > tr.active > th,
+.view-request .table > thead > tr > td.active,
+.view-request .table > thead > tr > th.active {
+  background-color: #e6e6e6;
+  border: 1.5px solid black;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.view-request .table-bordered > tbody > tr > td,
+.view-request .table-bordered > tbody > tr > th,
+.view-request .table-bordered > tfoot > tr > td,
+.view-request .table-bordered > tfoot > tr > th,
+.view-request .table-bordered > thead > tr > td,
+.view-request .table-bordered > thead > tr > th {
+  border-color: #e4e5e7;
+}
+
+.view-request .table tr.header {
+  font-weight: bold;
+  background-color: #fff;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.view-request .table tr:not(.header) {
+  display: none;
+}
+
+.view-request .table .header td:after {
+  content: "\002b";
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: right;
+  color: #999;
+  text-align: center;
+  padding: 3px;
+  transition: -webkit-transform .25s linear;
+  transition: transform .25s linear;
+  transition: transform .25s linear, -webkit-transform .25s linear;
+  -webkit-transition: -webkit-transform .25s linear;
+}
+
+.view-request .table .header.active td:after {
+  content: "\2212";
+}
+
+.view-request .project-details {
+  width: 100%;
+  border: 1px solid black;
+  margin: 0 0 30px 0;
+}
+
+.view-request .project-details tr:first-child {
+  height: 55px;
+  font-size: 22px;
+  border: 1px solid black;
+}
+
+.view-request .project-details td, .view-request .project-details th {
+  padding: 5px 20px;
+  border: 1px solid #e6e6e6;
+}
+
+.view-request .revisions {
+  margin-bottom: -1px !important;
+}
+
+.view-request .revisions th:first-child {
+  width: 20%;
+  text-align: left !important;
+}
+
+.view-request .revisions th:nth-child(3) {
+  width: 20%;
+  text-align: left !important;
+}
+
+.view-request .revisions .spacer {
+  background-color: #e6e6e6;
+}
+
+.view-request .revisions tr:last-child {
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  background-color: #FFFFFF;
+}
+
+.view-request .revisions tr:last-child td {
+  border-right: 2px solid white !important;
+}
+
+.view-request .revisions span:first-child {
+  text-align: center !important;
+  width: 20%;
+  border-left: 1px solid #e6e6e6;
+  height: 100%;
+  float: right;
+}
+/*# sourceMappingURL=view_request-form.css.map */

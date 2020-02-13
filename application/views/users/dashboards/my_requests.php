@@ -3,7 +3,7 @@
 	<?php if ($requests) {?>
 		<table class="table table-hover">
 			<thead>
-				<tr>
+				<tr class="header">
 					<th>Index</th>
 					<th>Project ID</th>
 					<th>Project Owner</th>

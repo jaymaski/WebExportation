@@ -55,7 +55,6 @@ class Users extends CI_Controller {
 				);
 				$this->session->set_userdata($user_data);
 				redirect('users/index');
-				
 			}
 			else {
 				$this->session->set_flashdata('failed', 'Login failed wrong username or password');
@@ -66,8 +65,6 @@ class Users extends CI_Controller {
 
 	public function logout(){
 		$this->session->unset_userdata('logged_in');
-		$this->session->unset_userdata('user_id');
-		$this->session->unset_userdata('username');
 
 		$this->session->set_flashdata('user_loggedout', 'You are now logged output_add_rewrite_var(name, value)');
 		redirect('users/login');
