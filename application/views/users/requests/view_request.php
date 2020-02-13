@@ -19,8 +19,8 @@
 			<tr>
 				<th>Project Owner</th>
 				<td><?php echo $request->projectOwner; ?></td>
-				<th>Owner</th>
-				<td><?php echo $request->owner; ?></td>
+				<th>Document</th>
+				<td><?php echo $request->docType; ?></td>
 			</tr>
 
 			<tr>
@@ -30,27 +30,7 @@
 				<td><?php echo $request->receiver; ?></td>
 			</tr>
 
-			<tr>
-				<th>Document</th>
-				<td><?php echo $request->docType; ?></td>
-				<th>Status</th>
-				<td><?php echo $request->status; ?></td>
-			</tr>
-
-			<tr>
-				<th>Revision Number</th>
-				<td><?php echo $request->revisionNumber; ?></td>
-				<th>Environment</th>
-				<td><?php echo $request->environment; ?></td>
-			</tr>
-
-			<tr>
-				<th>Request Date</th>
-				<td><?php echo $request->requestDate; ?></td>
-				<th>Deployed Date</th>
-				<td><?php echo $request->deployDate; ?></td>
-			</tr>
-			<?php }?>	
+			<?php } ?>	
 		</table>
 	</div>
 	<?php } else {
@@ -67,6 +47,13 @@
 						<span><?php echo $request->status; ?> to <?php echo $request->environment; ?></span>
 					</th>
 				<tr>
+
+				<tr>
+					<th>Request Date</th>
+					<td><?php echo $request->requestDate; ?></td>
+					<th>Deployment Date</th>
+					<td><?php echo $request->deployDate; ?></td>
+				</tr>					
 				<?php
 					if($translations){
 						foreach ($translations as $translation) {
