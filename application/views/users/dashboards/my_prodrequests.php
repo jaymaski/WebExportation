@@ -45,5 +45,7 @@
 							<p>No PROD request found.</p>
 		<?php	}	?>
 	</div>
+<?php 	} else{?>
+	<p>No PROD request found.</p>
+<?php }?>
 </div>
-<?php 	} ?>

@@ -45,5 +45,7 @@
 							<p>No Exported PROD request found.</p>
 		<?php	}	?>
 	</div>
+	<?php 	} else{?>
+			<p>No Exported PROD request found.</p>
+	<?php }?>
 </div>
-<?php 	} ?>

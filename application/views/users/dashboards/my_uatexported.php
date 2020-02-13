@@ -45,5 +45,7 @@
 							<p>No Exported UAT request found.</p>
 		<?php	}	?>
 	</div>
+<?php 	} else{?>
+	<p>No Exported UAT request found.</p>
+<?php }?>
 </div>
-<?php 	} ?>

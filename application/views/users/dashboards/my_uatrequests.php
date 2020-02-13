@@ -45,12 +45,9 @@
 							<p>No UAT request found.</p>
 		<?php	}	?>
 	</div>
+<?php 	} else{?>
+	<p>No UAT request found.</p>
+<?php }?>
 </div>
-<?php 	}
-		else{?>
-			<p>No UAT request found.</p>
-<?php		}
 
-
- ?>
 				
