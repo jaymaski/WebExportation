@@ -46,5 +46,11 @@
 		<?php	}	?>
 	</div>
 </div>
-<?php 	} ?>
+<?php 	}
+		else{?>
+			<p>No UAT request found.</p>
+<?php		}
+
+
+ ?>
 				
