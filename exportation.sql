@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2020 at 12:49 AM
+-- Generation Time: Feb 13, 2020 at 07:02 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -271,6 +271,72 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_shared_requests` (IN `userID` INT)  NO SQL
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	r.ID AS requestID,
+    	t.indexID,
+    	p.projectID,
+        p.projectOwner,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate
+    FROM
+		(
+			SELECT
+				a.ID AS projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.ownerID
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.projectID
+		LEFT JOIN
+			requests r
+		ON
+			r.taskID = t.taskID
+        LEFT JOIN
+        	shared_requests sr
+        ON
+        	sr.projectID = p.projectID
+        AND
+        	sr.taskID = t.taskID
+        WHERE
+        	sr.userID = userID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_task` (IN `taskID` INT)  NO SQL
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
@@ -302,8 +368,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
         ct.type,
         trans.ID as translationID,
         trans.name,
-        trans.internalID,
-        trans.isImpacted
+        trans.internalID
     FROM
 		(
 			SELECT
@@ -536,6 +601,66 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_user_requests` (IN `userID` INT)  NO SQL
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	r.ID AS requestID,
+    	t.indexID,
+    	p.projectID,
+        p.projectOwner,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate
+    FROM
+		(
+			SELECT
+				a.ID AS projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.ownerID
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.projectID
+		LEFT JOIN
+			requests r
+		ON
+			r.taskID = t.taskID
+        WHERE
+        	t.ownerID = userID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_change_type` (IN `requestID` INT, IN `type` VARCHAR(20))  NO SQL
 BEGIN
 	DECLARE changeTypeID INT;
@@ -687,6 +812,18 @@ INSERT INTO `projects` (`ID`, `projectOwnerID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `recommendations`
+--
+
+CREATE TABLE `recommendations` (
+  `ID` int(11) NOT NULL,
+  `requestID` int(11) NOT NULL,
+  `recommendation` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `requests`
 --
 
@@ -710,6 +847,27 @@ INSERT INTO `requests` (`ID`, `taskID`, `environment`, `status`, `revisionNumber
 (3, 23665, 'UAT', 'Exported', 1, '2020-01-20', '2020-01-21'),
 (4, 23665, 'PROD', 'Exported', 1, '2020-01-26', '2020-01-27'),
 (5, 23665, 'UAT', 'Exported', 2, '2020-02-12', '2020-02-12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shared_requests`
+--
+
+CREATE TABLE `shared_requests` (
+  `ID` int(11) NOT NULL,
+  `projectID` int(11) NOT NULL,
+  `taskID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `shared_requests`
+--
+
+INSERT INTO `shared_requests` (`ID`, `projectID`, `taskID`, `userID`) VALUES
+(1, 12441, 23665, 12),
+(2, 12437, 23661, 6);
 
 -- --------------------------------------------------------
 
@@ -745,24 +903,23 @@ CREATE TABLE `translation` (
   `ID` int(11) NOT NULL,
   `changeTypeID` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
-  `internalID` varchar(150) NOT NULL,
-  `isImpacted` tinyint(1) NOT NULL DEFAULT 0
+  `internalID` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `translation`
 --
 
-INSERT INTO `translation` (`ID`, `changeTypeID`, `name`, `internalID`, `isImpacted`) VALUES
-(1, 1, 'csremailtowiscustomer-aupurchaseordercustom', '457218688036601,457218688036602', 0),
-(2, 2, 'csremailtowiscustomer-aupurchaseordercustom', '457218688036601,457218688036602', 0),
-(3, 3, 'middys-autophilipslipurchaseordercustom', '457218688038745', 0),
-(4, 3, 'cnw-autophilipslipurchaseordercustom', '457218688038805', 0),
-(5, 3, 'hegtophilipsli-aupurchaseordercustom', '457218688038804', 0),
-(6, 3, 'mmemtophilipslipurchaseordercustom', '457218688038808', 0),
-(7, 3, 'rhatophilipsli-aupurchaseordercustom', '457218688038806, 457218688038809, 457218688038815', 1),
-(12, 5, 'middys-autophilipslipurchaseordercustom', '', 0),
-(13, 5, 'mmemtophilipslipurchaseordercustom', '', 0);
+INSERT INTO `translation` (`ID`, `changeTypeID`, `name`, `internalID`) VALUES
+(1, 1, 'csremailtowiscustomer-aupurchaseordercustom', '457218688036601,457218688036602'),
+(2, 2, 'csremailtowiscustomer-aupurchaseordercustom', '457218688036601,457218688036602'),
+(3, 3, 'middys-autophilipslipurchaseordercustom', '457218688038745'),
+(4, 3, 'cnw-autophilipslipurchaseordercustom', '457218688038805'),
+(5, 3, 'hegtophilipsli-aupurchaseordercustom', '457218688038804'),
+(6, 3, 'mmemtophilipslipurchaseordercustom', '457218688038808'),
+(7, 3, 'rhatophilipsli-aupurchaseordercustom', '457218688038806, 457218688038809, 457218688038815'),
+(12, 5, 'middys-autophilipslipurchaseordercustom', ''),
+(13, 5, 'mmemtophilipslipurchaseordercustom', '');
 
 -- --------------------------------------------------------
 
@@ -837,10 +994,25 @@ ALTER TABLE `projects`
   ADD KEY `projectOwnerID` (`projectOwnerID`);
 
 --
+-- Indexes for table `recommendations`
+--
+ALTER TABLE `recommendations`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `requestID` (`requestID`);
+
+--
 -- Indexes for table `requests`
 --
 ALTER TABLE `requests`
   ADD PRIMARY KEY (`ID`),
+  ADD KEY `taskID` (`taskID`);
+
+--
+-- Indexes for table `shared_requests`
+--
+ALTER TABLE `shared_requests`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `projectID` (`projectID`),
   ADD KEY `taskID` (`taskID`);
 
 --
@@ -883,10 +1055,22 @@ ALTER TABLE `impacted`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `recommendations`
+--
+ALTER TABLE `recommendations`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `shared_requests`
+--
+ALTER TABLE `shared_requests`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tasks`
@@ -929,10 +1113,23 @@ ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`projectOwnerID`) REFERENCES `accounts`.`users` (`ID`);
 
 --
+-- Constraints for table `recommendations`
+--
+ALTER TABLE `recommendations`
+  ADD CONSTRAINT `recommendations_ibfk_1` FOREIGN KEY (`requestID`) REFERENCES `requests` (`ID`);
+
+--
 -- Constraints for table `requests`
 --
 ALTER TABLE `requests`
   ADD CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`taskID`);
+
+--
+-- Constraints for table `shared_requests`
+--
+ALTER TABLE `shared_requests`
+  ADD CONSTRAINT `shared_requests_ibfk_1` FOREIGN KEY (`projectID`) REFERENCES `projects` (`ID`),
+  ADD CONSTRAINT `shared_requests_ibfk_2` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`taskID`);
 
 --
 -- Constraints for table `tasks`

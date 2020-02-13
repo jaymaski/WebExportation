@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="nav-owned" role="tabpanel" aria-labelledby="nav-owned-tab">
+<div class="tab-pane fade" id="nav-my-uat-exported" role="tabpanel" aria-labelledby="nav-my-uat-exported-tab">
 <?php if($my_requests){?>
 	<div class="table-responsive">
 		<table class="table-hover table dashboard">
@@ -17,7 +17,8 @@
 			<tbody>
 				<?php 	$counter = 0;
 						foreach($my_requests as $request){
-							
+							if($request->environment == "UAT"){
+								if($request->status == "Exported"){
 				?>
 				<tr>
 					<td class="txt-oflo" id="request-id"><?php echo $request->requestID ;?></td>
@@ -33,15 +34,18 @@
 						<button class="btn btn-warning btn-sm" onclick="$('#modal-summary').modal('show');return false;"> share </button>
 					</td>
 				</tr>
-				<?php 	$counter += 1	;} ?>
+				<?php 	$counter += 1	;	
+								}
+							}
+						} ?>
 				
 			</tbody>
 		</table>
 		<?php	if($counter == 0){ ?>
-							<p>No Request found.</p>
+							<p>No Exported UAT request found.</p>
 		<?php	}	?>
 	</div>
-	<?php 	} else{?>
-			<p>No Request found.</p>
-	<?php }?>
+<?php 	} else{?>
+	<p>No Exported UAT request found.</p>
+<?php }?>
 </div>

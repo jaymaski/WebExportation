@@ -22,7 +22,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	<!-- Google Fonts CDN -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap" rel="stylesheet">
-
 </head>
 <body>
 <div class="wrapper">

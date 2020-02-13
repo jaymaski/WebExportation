@@ -59,6 +59,9 @@
             margin: 0 0 0 20px;
         }
     }
+    &.exportation-dropdown{
+        font-family: 'Montserrat', sans-serif;
+    }
 }
 
 /* ---------------------------------------------------
@@ -84,7 +87,60 @@
         }
     }
     &.table{
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.75rem;
+        td{
+            padding-top:6px;
+            padding-bottom: 6px;
+        }
+        thead{
+            font-family: 'Raleway', sans-serif;
+            font-size:1rem;
+            text-align: center;
+            #request-name{
+                text-align: left;
+            }
+        }
+        tbody{
+            font-family: 'Montserrat', sans-serif;
+            font-size:0.9rem;
+            text-align: center;
+            #request-name{
+                text-align: left;
+            }
+        }
+        #request-id{
+            width: 10%;
+        }
+        #request-name{
+            width: 30%;
+        }
+        #requestor-name{
+            width: 9%;
+        }
+        #urgency{
+            width: 7%;
+        }
+        #request-date{
+            width: 13%;
+        }   
+        #environment{
+            width: 5%;
+        }
+        #status{
+            width: 6%;
+        }
+        #queue{
+            width: 5%;
+        }
+        #actions{
+            width: 15%;
+        }
     }
+}
+
+#row-1{
+    transition: 0.5s;
+    width: 0%;
+    position:fixed;
+    display: inline-block;
+    overflow-x: hidden;
 }
