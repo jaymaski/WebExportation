@@ -21,12 +21,5 @@
                     <?php $this->view('users/dashboards/shared'); ?>
                 </div>
             </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <?php $this->view('users/dashboards/my_requests'); ?>
-            <?php $this->view('users/dashboards/my_exported'); ?>
-            <?php $this->view('users/dashboards/owned_requests'); ?>
-            <?php $this->view('users/dashboards/shared'); ?>
-        </div>
     </div>
 </section>
