@@ -42,10 +42,10 @@
 			</tbody>
 		</table>
 		<?php	if($counter == 0){ ?>
-							<p>No Exported PROD request found.</p>
+			<?php $this->view('errors/no-data-found'); ?>
 		<?php	}	?>
 	</div>
 	<?php 	} else{?>
-			<p>No Exported PROD request found.</p>
+		<?php $this->view('errors/no-data-found'); ?>
 	<?php }?>
 </div>

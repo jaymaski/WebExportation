@@ -41,13 +41,13 @@
 				
 			</tbody>
 		</table>
-		<?php	if($counter == 0){ ?>
-							<p>No UAT request found.</p>
+		<?php if($counter == 0){ ?>
+			<?php $this->view('errors/no-data-found'); ?>
 		<?php	}	?>
 	</div>
-<?php 	} else{?>
-	<p>No UAT request found.</p>
-<?php }?>
+	<?php } else{?>
+		<?php $this->view('errors/no-data-found'); ?>
+	<?php }?>
 </div>
 
 				

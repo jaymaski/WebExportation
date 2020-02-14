@@ -24,4 +24,14 @@ body {
 .main-container {
   margin: 30px 25px;
 }
+
+.error {
+  width: 100%;
+  text-align: center;
+  padding: 30px;
+}
+
+.error.no-data-found {
+  font-size: 35px;
+}
 /*# sourceMappingURL=main.css.map */
