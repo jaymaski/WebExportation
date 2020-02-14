@@ -11,19 +11,17 @@ class Request extends CI_Controller {
     }
 	
 	function view_request($projectID, $taskID, $requestID){
-		$data['title'] = '';
+		
 		$CI = &get_instance();
-		$data['curr_request'] = $this->request->get_current_request($requestID);
+		$data['requests'] = $this->request->get_request($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
-		$data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
+		$data['curr_request'] =  $this->request->get_current_request($requestID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['translations'] = $this->translation->get_translation($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['translation_changes'] = $this->translation->get_translation_change($projectID, $taskID);
-		
 		mysqli_next_result($CI->db->conn_id);
-		//history of selected translation
-		$data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
+		$data['impacted'] = $this->translation->get_impacted($projectID, $taskID);
 		
 		$this->load->view('template/header_main');
 		$this->load->view('users/requests/view_request', $data);

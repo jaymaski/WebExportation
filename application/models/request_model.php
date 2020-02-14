@@ -13,6 +13,12 @@ class Request_model extends CI_Model{
         $this->load->database('default', TRUE);
     }
 	
+	function get_request($projectID, $taskID){
+		$get_request = "CALL get_request(?, ?)";
+		$param = array('projectID' => $projectID, 'taskID' => $taskID);
+		$query = $this->db->query($get_request, $param);
+		return $query->result();
+	}
 	
 	function get_user_requests($userID){
 		$get_user_requests = "CALL get_user_requests(?)";

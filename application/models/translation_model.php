@@ -41,6 +41,13 @@ class Translation_model extends CI_Model{
 		}
 	}
 	
+	function get_impacted($projectID, $taskID){
+		$get_impacted = "CALL get_impacted(?, ?)";
+		$param = array('projectID' => $projectID, 'taskID' => $taskID);
+		$query = $this->db->query($get_impacted, $param);
+		return $query->result();
+	}
+	
 	function insert_translation($changeTypeID, $name, $internalID, $isImpacted){
 		
 		$insert_translation = "CALL insert_translation(?, ?, ?, ?)";
