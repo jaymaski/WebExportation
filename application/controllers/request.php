@@ -28,19 +28,21 @@ class Request extends CI_Controller {
 		$this->load->view('template/footer_main');
 	}
 	
-	// function view_request_details($projectID, $taskID, $requestID){
-		// $CI = &get_instance();
-		// $data['request_details'] = $this->request->get_current_request($requestID);
-		// mysqli_next_result($CI->db->conn_id);
-		// $data['translations'] = $this->translation->get_translation($projectID, $taskID);
-		// mysqli_next_result($CI->db->conn_id);
-		// $data['translation_changes'] = $this->translation->get_translation_change($projectID, $taskID);
-		// mysqli_next_result($CI->db->conn_id);
-		// $data['recommendations'] = $this->translation->get_recommendations($requestID);
+	function view_request_details($projectID, $taskID, $requestID){
+		$CI = &get_instance();
+		$data['curr_request'] = $this->request->get_current_request($requestID);
+		mysqli_next_result($CI->db->conn_id);
+		$data['translations'] = $this->translation->get_translation($projectID, $taskID);
+		mysqli_next_result($CI->db->conn_id);
+		$data['translation_changes'] = $this->translation->get_translation_change($projectID, $taskID);
+		mysqli_next_result($CI->db->conn_id);
+		$data['impacted'] = $this->translation->get_impacted($projectID, $taskID);
+		mysqli_next_result($CI->db->conn_id);
+		$data['recommendations'] = $this->request->get_recommendations($requestID);
 		
-		// $this->load->view('template/header_main');
-		// $this->load->view('users/requests/view_request_details', $data);
-		// $this->load->view('template/footer_main');
-	// }
+		$this->load->view('template/header_main');
+		$this->load->view('users/requests/view_request_details', $data);
+		$this->load->view('template/footer_main');
+	}
 	
 }

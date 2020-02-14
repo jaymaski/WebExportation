@@ -10,4 +10,4 @@ $route['translate_uri_dashes'] 	= FALSE;
 $route['users/requests/view_request'] = 'request/view_request';
 $route['users/requests/all_request'] 	= 'request/index';
 $route['users/requests/view_request'] = 'request/view_request';
-$route['users/requests/create_task'] 	= 'request/create_task';
+$route['users/requests/view_request_details'] = 'request/view_request_details';

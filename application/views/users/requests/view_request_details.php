@@ -38,15 +38,14 @@
 		echo '<div class="none-found">No History found for this Request</div>';
 	} ?>
 
-	<?php if($requests){
-		foreach ($requests as $request) { ?>
+	<?php if($curr_request){
+		foreach ($curr_request as $request) { ?>
 		<div class="container view-request">
 			<table class="revisions table table-bordered">
 				<tr class="header text-dark">
 					<th colspan="4" class="text-center">
 						REVISION <?php echo $request->revisionNumber; ?>
 						<span><?php echo $request->status; ?> to <?php echo $request->environment; ?>
-						<button class="btn btn-success btn-sm" onclick="window.location.replace('<?php echo site_url('request/view_request_details').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>');"> view </button>
 						</span>
 						
 					</th>
@@ -118,3 +117,14 @@
 	<?php } else {
 		echo '<div class="none-found">No History found for this Request</div>';
 	} ?>
+	
+<?php
+	if($recommendations){
+		foreach($recommendations as $recommendation){ ?>
+			<div class="container">
+			<textarea rows="<?php $counter;?>" class="form-control" readonly><?php echo $recommendation->recommendation;?></textarea>
+			</div>
+<?php		
+		}
+	}
+?>

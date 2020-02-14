@@ -13,6 +13,13 @@ class Request_model extends CI_Model{
         $this->load->database('default', TRUE);
     }
 	
+	function get_recommendations($requestID){
+		$get_recommendations = "CALL get_recommendations(?)";
+		$param = array('requestID' => $requestID);
+		$query = $this->db->query($get_recommendations, $param);
+		return $query->result();
+	}
+	
 	function get_request($projectID, $taskID){
 		$get_request = "CALL get_request(?, ?)";
 		$param = array('projectID' => $projectID, 'taskID' => $taskID);
