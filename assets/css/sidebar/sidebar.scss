@@ -156,28 +156,12 @@
         margin-bottom: 5px;
     }
 
-    a.download {
+    a.logout {
         background: #fff;
         color: #7386D5;
-    }
-
-    a.article,
-    a.article:hover {
-        background: #6d7fcc !important;
-        color: #fff !important;
     }
 
     /* ---------------------------------------------------
         CONTENT STYLE
     ----------------------------------------------------- */
-
-    #content {
-        width: 100%;
-        padding: 20px;
-        min-height: 100vh;
-        transition: all 0.3s;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
 }

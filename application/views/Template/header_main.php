@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Exportation101</title>
+	<title>GTASS Web Exportation</title>
 
 	<!-- Local CSS -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/main_css/main.css">
@@ -26,63 +26,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 	<div class="wrapper">
-	<nav id="sidebar">
-		<div id="dismiss">
-			<i class="fas fa-arrow-left"></i>
-		</div>
+		<nav id="sidebar">
+			<div id="dismiss">
+				<i class="fas fa-arrow-left"></i>
+			</div>
 
-		<div class="sidebar-header">
-			<h3>Bootstrap Sidebar</h3>
-		</div>
+			<div class="sidebar-header">
+				<h3>Bootstrap Sidebar</h3>
+			</div>
 
-		<ul class="list-unstyled components">
-			<p>Dummy Heading</p>
-			<li class="active">
-				<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
-				<ul class="collapse list-unstyled" id="homeSubmenu">
-					<li>
-						<a href="#">Home 1</a>
-					</li>
-					<li>
-						<a href="#">Home 2</a>
-					</li>
-					<li>
-						<a href="#">Home 3</a>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<a href="#">About</a>
-				<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-				<ul class="collapse list-unstyled" id="pageSubmenu">
-					<li>
-						<a href="#">Page 1</a>
-					</li>
-					<li>
-						<a href="#">Page 2</a>
-					</li>
-					<li>
-						<a href="#">Page 3</a>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<a href="#">Portfolio</a>
-			</li>
-			<li>
-				<a href="#">Contact</a>
-			</li>
-		</ul>
+			<ul class="list-unstyled components">
+				<p>Dummy Heading</p>
 
-		<ul class="list-unstyled CTAs">
-			<li>
-				<a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
-			</li>
-			<li>
-				<a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
-			</li>
-		</ul>
-	</nav>
+				<li>
+					<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Dashboard</a>
+					<ul class="collapse list-unstyled" id="pageSubmenu">
+						<li>
+							<a href="#">Translation</a>
+						</li>
+						<li>
+							<a href="#">Process Model</a>
+						</li>
+						<li>
+							<a href="#">Table</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Portfolio</a>
+				</li>
+				<li>
+					<a href="#">Contact</a>
+				</li>
+			</ul>
+
+			<ul class="list-unstyled CTAs">
+				<li>
+					<a href="<?php echo base_url(); ?>users/logout" class="logout">Logout</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 
 	<div id="content">
@@ -107,21 +90,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="row"> 
 						<ul class="tabs">
 							<li>Hi, <strong><?php echo $this->session->userdata('name'); ?> </strong><i class="fa fa-user" aria-hidden="true"></i></li>
-							<li><strong><a href="<?php echo base_url(); ?>users/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
 						</ul>
 					</div>
 					<div class="row identifier float-right">
-						<button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Exportation Type
-						</button>
-						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="#">Project</a>
-							<a class="dropdown-item" href="#">Process Model</a>
-							<a class="dropdown-item" href="#">Table Update</a>						
-						</div>
 						<button type="button" id="sidebarCollapse" class="btn btn-info">
 							<i class="fas fa-align-left"></i>
-							<span>Toggle Sidebar</span>
+							<span>MENU</span>
 						</button>							
 					</div>
 				</div>

@@ -167,25 +167,8 @@
   margin-bottom: 5px;
 }
 
-.wrapper a.download {
+.wrapper a.logout {
   background: #fff;
   color: #7386D5;
-}
-
-.wrapper a.article,
-.wrapper a.article:hover {
-  background: #6d7fcc !important;
-  color: #fff !important;
-}
-
-.wrapper #content {
-  width: 100%;
-  padding: 20px;
-  min-height: 100vh;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 /*# sourceMappingURL=sidebar.css.map */
