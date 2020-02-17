@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="row"> 
 					<ul class="tabs">
 						<li>Hi, <strong><?php echo $this->session->userdata('name'); ?> </strong><i class="fa fa-user" aria-hidden="true"></i></li>
-						<li><strong><a href="#">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
+						<li><strong><a href="<?php echo base_url(); ?>users/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></a></strong></i></li>
 					</ul>
 				</div>
 				<div class="row identifier float-right">
