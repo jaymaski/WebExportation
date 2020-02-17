@@ -15,7 +15,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php 	$counter = 0;
+				<?php $counter = 0;
 						foreach($my_requests as $request){
 							if($request->environment == "UAT"){
 								if($request->status == "In Queue" || $request->status == "Reviewing"){ ?>
