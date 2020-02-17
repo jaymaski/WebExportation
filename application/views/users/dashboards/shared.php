@@ -15,7 +15,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php 	foreach($shared_requests as $request){?>
+				<?php foreach($shared_requests as $request){?>
 				<tr>
 					<td class="txt-oflo" id="request-id"><?php echo $request->requestID ;?></td>
 					<td class="txt-oflo" id="request-name">PROD_CR-csremail-au-wiscust-au-PO(B2BE#3893292)</td>
@@ -30,11 +30,10 @@
 						<button class="btn btn-warning btn-sm" onclick="$('#modal-summary').modal('show');return false;"> share </button>
 					</td>
 				</tr>
-				<?php	} ?>
-				
+				<?php } ?>
 			</tbody>
 		</table>
 	</div>
-<?php 	} else{?>
-			<p>No Shared Request found.</p>
-<?php }?>
+	<?php } else{?>
+				<p>No Shared Request found.</p>
+	<?php }?>
