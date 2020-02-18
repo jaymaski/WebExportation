@@ -57,6 +57,15 @@
         }
         .identifier {
             margin: 0 0 0 20px;
+            .btn {
+                border: 1px solid $primary-color-light;
+                border-radius: 6px;
+                color: $primary-color-light;
+                &:hover {
+                    background-color: $primary-color-light;
+                    color: white;
+                }
+            }
         }
     }
     &.exportation-dropdown{
@@ -137,10 +146,10 @@
     }
 }
 
-#row-1{
-    transition: 0.5s;
-    width: 0%;
-    position:fixed;
-    display: inline-block;
-    overflow-x: hidden;
+.txt-oflo {
+    cursor: pointer;
+}
+
+.tab-content {
+    padding: 0px 15px;
 }

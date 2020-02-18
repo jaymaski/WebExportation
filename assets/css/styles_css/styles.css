@@ -67,6 +67,17 @@
   margin: 0 0 0 20px;
 }
 
+.header.accounts .identifier .btn {
+  border: 1px solid #475a8d;
+  border-radius: 6px;
+  color: #475a8d;
+}
+
+.header.accounts .identifier .btn:hover {
+  background-color: #475a8d;
+  color: white;
+}
+
 .header.exportation-dropdown {
   font-family: 'Montserrat', sans-serif;
 }
@@ -153,12 +164,11 @@
   width: 15%;
 }
 
-#row-1 {
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  width: 0%;
-  position: fixed;
-  display: inline-block;
-  overflow-x: hidden;
+.txt-oflo {
+  cursor: pointer;
+}
+
+.tab-content {
+  padding: 0px 15px;
 }
 /*# sourceMappingURL=styles.css.map */
