@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap" rel="stylesheet">
 </head>
 <body>
+	<div class="overlay"></div>
 	<div class="wrapper">
 		<nav id="sidebar">
 			<div id="dismiss">
@@ -32,31 +33,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 
 			<div class="sidebar-header">
-				<h3>Bootstrap Sidebar</h3>
+				<h3>Menu</h3>
 			</div>
 
 			<ul class="list-unstyled components">
-				<p>Dummy Heading</p>
-
 				<li>
-					<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Dashboard</a>
-					<ul class="collapse list-unstyled" id="pageSubmenu">
+					<p class="menu-header" data-toggle="" aria-expanded="false">Dashboard <i class="fas fa-bars"></i></p>
+					<ul class="list-unstyled" id="pageSubmenu">
 						<li>
-							<a href="#">Translation</a>
+							<a href="<?php echo base_url(); ?>users">Translation Requests</a>
 						</li>
 						<li>
-							<a href="#">Process Model</a>
+							<a href="#">Process Model Requests</a>
 						</li>
 						<li>
-							<a href="#">Table</a>
+							<a href="#">Table Change Requests</a>
 						</li>
 					</ul>
-				</li>
-				<li>
-					<a href="#">Portfolio</a>
-				</li>
-				<li>
-					<a href="#">Contact</a>
 				</li>
 			</ul>
 
@@ -66,9 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</li>
 			</ul>
 		</nav>
-	</div>
 
-	<div id="content">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-auto header logo">
@@ -79,12 +70,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<p>GTASS DEPLOYMENT REQUEST MANAGER</p>
 					</div>
 					<div class="row header filters">
-						<button type="button" class="btn btn-outline-dark">
+						<button type="button" class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#newRequestModal">
 							<i class="fa fa-file-text" aria-hidden="true"></i> Create New Request
 						</button>
 						<span class="search icon"><i class="fa fa-search" aria-hidden="true"></i><input class="search field"type="text" placeholder="Search..." ></span>
-					</div>
-						
+					</div>	
 				</div>
 				<div class="col-md-auto header accounts">
 					<div class="row"> 
@@ -93,10 +83,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</ul>
 					</div>
 					<div class="row identifier float-right">
-						<button type="button" id="sidebarCollapse" class="btn btn-info">
-							<i class="fas fa-align-left"></i>
+						<button type="button" id="sidebarCollapse" class="btn">
+							<i class="fas fa-bars"></i>
 							<span>MENU</span>
 						</button>							
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<!-- Modal Body -->
+					<div class="modal-body">
+					...
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>

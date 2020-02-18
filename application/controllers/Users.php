@@ -44,8 +44,7 @@ class Users extends CI_Controller {
 		} else {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
-			$result = $this->user->get_user($username, $password); //Retrieves from db
-			//$user_id = true; //ganto muna
+			$result = $this->user->get_user($username, $password);
 			
 			if($result->num_rows() > 0){
 				$row = $result->row(1);
