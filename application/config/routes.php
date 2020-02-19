@@ -11,3 +11,5 @@ $route['users/requests/view_request'] = 'request/view_request';
 $route['users/requests/all_request'] 	= 'request/index';
 $route['users/requests/view_request'] = 'request/view_request';
 $route['users/requests/view_request_details'] = 'request/view_request_details';
+
+$route['errors'] = 'errors/index';
