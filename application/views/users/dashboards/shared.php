@@ -70,12 +70,15 @@
 		var taskID = taskID;
 		var requestID = requestID;
         $.ajax({
-			type:'GET',
-			url:"<?php echo base_url(); ?>index.php/request/view_request",
+			type:'POST',
+			//url:"<?php echo site_url('request/view_request').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>",
+			url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID + "/" + requestID,
 			dataType: 'json',
+			data: "{'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'}",
 			success:function(data) {
 				//alert('lel');
-				console.log(data.title);                      
+				console.log(data.curr_request);                      
+				console.log(data.translation_changes);     
 			}
         });
     };
