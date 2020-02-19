@@ -56,22 +56,3 @@
     </script>	
 </body>
 </html>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-
-    $("#display").click(function() {                
-
-        $.ajax({    //create an ajax request to display.php
-        type: "GET",
-        url: "display.php",             
-        dataType: "html",   //expect html to be returned                
-        success: function(response){                    
-            $("#responsecontainer").html(response); 
-            //alert(response);
-        }
-
-    });
-    });
-    });
-</script>

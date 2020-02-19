@@ -14,6 +14,11 @@ class Request extends CI_Controller {
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}		
+
+		// $projectID = $this->input->post('projectID');
+		// $taskID = $this->input->post('taskID');
+		// $requestID = $this->input->post('requestID');
+
 		$data['title'] = '';
 		$CI = &get_instance();
 		$data['curr_request'] = $this->request->get_current_request($requestID);
@@ -28,6 +33,7 @@ class Request extends CI_Controller {
 		//history of selected translation
 		$data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
 		
+		//return $data;
 		$this->load->view('template/header_main');
 		$this->load->view('users/requests/view_request', $data);
 		$this->load->view('template/footer_main');
