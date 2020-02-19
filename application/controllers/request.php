@@ -11,6 +11,9 @@ class Request extends CI_Controller {
     }
 	
 	function view_request($projectID, $taskID, $requestID){
+		if(!$this->session->userdata('logged_in')){
+			redirect('users/login');
+		}		
 		$data['title'] = '';
 		$CI = &get_instance();
 		$data['curr_request'] = $this->request->get_current_request($requestID);

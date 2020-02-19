@@ -25,7 +25,8 @@ class Users extends CI_Controller {
 		$data['my_requests'] = $this->request->get_user_requests($this->session->userdata('user_id'));
 		mysqli_next_result($CI->db->conn_id);
 		$data['shared_requests'] = $this->request->get_shared_requests($this->session->userdata('user_id'));
-		
+
+
 		$this->load->view('template/header_main');
 		$this->load->view('users/users_dashboard', $data);
 		$this->load->view('template/footer_main');

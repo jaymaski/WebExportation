@@ -16,4 +16,3 @@
     <?php $this->view('users/dashboards/owned_requests'); ?>
     <?php $this->view('users/dashboards/shared'); ?>
 </div>
-

@@ -68,13 +68,13 @@
 }
 
 .header.accounts .identifier .btn {
-  border: 1px solid #475a8d;
+  border: 1px solid #8d8d8d;
   border-radius: 6px;
-  color: #475a8d;
+  color: #8d8d8d;
 }
 
 .header.accounts .identifier .btn:hover {
-  background-color: #475a8d;
+  background-color: #8d8d8d;
   color: white;
 }
 

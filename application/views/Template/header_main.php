@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<ul class="list-unstyled components">
 				<li>
-					<p class="menu-header" data-toggle="" aria-expanded="false">Dashboards <i class="fas fa-bars"></i></p>
+					<p class="menu-header" data-toggle="" aria-expanded="false">Dashboards <i class="fab fa-buffer"></i></p>
 					<ul class="list-unstyled" id="pageSubmenu">
 						<li>
 							<a href="<?php echo base_url(); ?>users">Translation Requests</a>
@@ -71,7 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 					<div class="row header filters">
 						<button type="button" class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#newRequestModal">
-							<i class="fa fa-file-text" aria-hidden="true"></i> Create New Request
+							<i class="fas fa-plus"></i> Create New Request
 						</button>
 						<span class="search icon"><i class="fa fa-search" aria-hidden="true"></i><input class="search field"type="text" placeholder="Search..." ></span>
 					</div>	
