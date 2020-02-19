@@ -2,6 +2,10 @@
 <?php if($curr_request){
 	foreach ($curr_request as $request) { ?>
 	<div class="container view-request">
+	<div align="right">
+		<a href="#" id="edit">EDIT</a>
+		<a style="display:none"href="#" id="save">SAVE</a>
+	</div>
 		<table class="project-details">
 			<tr>
 				<th colspan="4" class="text-center">
@@ -11,23 +15,23 @@
 
 			<tr>
 				<th>Project ID</th>
-				<td><?php echo $request->projectID; ?></td>
+				<td id = "projectID"><?php echo $request->projectID; ?></td>
 				<th>Task ID</th>
-				<td><?php echo $request->taskID; ?></td>
+				<td id = "taskID"><?php echo $request->taskID; ?></td>
 			</tr>
 
 			<tr>
 				<th>Project Owner</th>
-				<td><?php echo $request->projectOwner; ?></td>
+				<td id = "projectOwner"><?php echo $request->projectOwner; ?></td>
 				<th>Document</th>
-				<td><?php echo $request->docType; ?></td>
+				<td id ="documentType"><?php echo $request->docType; ?></td>
 			</tr>
 
 			<tr>
 				<th>Sender</th>
-				<td><?php echo $request->sender; ?></td>
+				<td id="sender"><?php echo $request->sender; ?></td>
 				<th>Receiver</th>
-				<td><?php echo $request->receiver; ?></td>
+				<td id="receiver"><?php echo $request->receiver; ?></td>
 			</tr>
 
 			<?php } ?>	
