@@ -10,16 +10,16 @@ class Request extends CI_Controller {
 		$this->load->model('translation_model', 'translation');
     }
 	
-	function view_request($projectID, $taskID, $requestID){
+	function view_request(/*$projectID, $taskID, $requestID*/){
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}		
 
-		// $projectID = $this->input->post('projectID');
-		// $taskID = $this->input->post('taskID');
-		// $requestID = $this->input->post('requestID');
+		$projectID = $this->uri->segment(3);
+		$taskID = $this->uri->segment(4);
+		$requestID = $this->uri->segment(5);
 
-		$data['title'] = '';
+		$data['title'] = 'PUMASOK NA HAYOP KA';
 		$CI = &get_instance();
 		$data['curr_request'] = $this->request->get_current_request($requestID);
 		mysqli_next_result($CI->db->conn_id);
@@ -33,10 +33,10 @@ class Request extends CI_Controller {
 		//history of selected translation
 		$data['request_history'] = $this->request->get_request_history($requestID, $projectID, $taskID);
 		
-		//return $data;
-		$this->load->view('template/header_main');
-		$this->load->view('users/requests/view_request', $data);
-		$this->load->view('template/footer_main');
+		echo json_encode($data);
+		// $this->load->view('template/header_main');
+		// $this->load->view('users/requests/view_request', $data);
+		// $this->load->view('template/footer_main');
 	}
 	
 	// function view_request_details($projectID, $taskID, $requestID){
