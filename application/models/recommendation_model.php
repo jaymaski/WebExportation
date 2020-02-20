@@ -21,4 +21,12 @@ class Recommendation_model extends CI_Model{
 		return $result;
 	}
 	
+	function get_recommendations($requestID){
+		$get_recommendations = "CALL get_recommendations(?)";
+		$param = array('requestID' => $requestID);
+		$query = $this->db->query($get_recommendations, $param);
+		$result = $query->result();
+		return $result;
+	}
+	
 }
