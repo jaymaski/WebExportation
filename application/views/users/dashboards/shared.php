@@ -59,27 +59,3 @@
 			</div>
 		</div>
 	</div>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<script type="text/javascript">
-  	function mamamo(projectID, taskID, requestID) {
-      	//alert(projectID + " " + taskID + " " + requestID);
-      	var projectID = projectID;
-		var taskID = taskID;
-		var requestID = requestID;
-        $.ajax({
-			type:'POST',
-			//url:"<?php echo site_url('request/view_request').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>",
-			url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID + "/" + requestID,
-			dataType: 'json',
-			data: "{'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'}",
-			success:function(data) {
-				//alert('lel');
-				console.log(data.curr_request);                      
-				console.log(data.translation_changes);     
-			}
-        });
-    };
-</script>
