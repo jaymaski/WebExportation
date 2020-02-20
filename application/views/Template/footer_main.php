@@ -33,6 +33,7 @@
                 data: json,
                 success:function(data) {
                     //var req = $.parseJSON(data);
+                    console.log(data.requests);
                     console.log(data.curr_request);
                     console.log(data.translation_changes);
                     console.log(data.translations);
@@ -47,26 +48,69 @@
                     document.getElementById("docType").innerHTML = data.curr_request[0]['docType'];
                     document.getElementById("sender").innerHTML = data.curr_request[0]['sender'];
                     document.getElementById("receiver").innerHTML = data.curr_request[0]['receiver'];
-                    document.getElementById("revisionNumber").innerHTML = data.curr_request[0]['revisionNumber'];
-                    document.getElementById("environment").innerHTML = data.curr_request[0]['environment'];
-                    document.getElementById("status").innerHTML = data.curr_request[0]['status'];
-                    document.getElementById("requestDate").innerHTML = data.curr_request[0]['requestDate'];
-                    document.getElementById("deployDate").innerHTML = data.curr_request[0]['deployDate'];
                     
-                    for(var i; i < 4; i++) {
-                        var clone = $(this).parents(".translationInput").clone()
-                        .insertAfter(".translationInput:last")
-                        .attr("id", "translationInput" + i);
+                    var requestsNum = Object.keys(data.requests).length;
+                    var translationNum = Object.keys(data.translations).length;
+                    //document.getElementById("demo").innerHTML = translationNum;
+
+                    //Translation Changes
+                    for(var i; i < requestsNum; i++){
+                        //Cloning (Per Revision)
+                        var clone = $(this).parents(".revisions").clone()
+                        .insertAfter(".revisions:last")
+                        .attr("id", "revisions" + j);
 
                         clone.find('[id]').each(function() {
                             //console.log(this.id);
-                            var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
+                            var strNewId = $(this).attr('id').replace(/[0-9]/g, j);
                             //console.log("strNewId: " + strNewId);
                             $(this).attr('id', strNewId);
                             $(this).attr('name', strNewId);
-                            $(this).val('234234');
-                        });
+                        });   
+                        //Mapping
+                        document.getElementById("revisionNumber"+[i]).innerHTML = data.curr_request[i]['revisionNumber'];
+                        document.getElementById("requestDate"+[i]).innerHTML = data.curr_request[i]['requestDate'];
+                        document.getElementById("deployDate"+[i]).innerHTML = data.curr_request[i]['deployDate']; 
+                        document.getElementById("environment"+[i]).innerHTML = data.curr_request[i]['environment'];
+                        document.getElementById("status"+[i]).innerHTML = data.curr_request[i]['status'];                                          
+
+                        for(var j; j < translationNum; j++){
+                            //Cloning (Per translation)
+                            var clone1 = $(this).parents(".translationInput").clone()
+                            .insertAfter(".translationInput:last")
+                            .attr("id", "translationInput" + j);
+
+                            clone1.find('[id]').each(function() {
+                                //console.log(this.id);
+                                var strNewId = $(this).attr('id').replace(/[0-9]/g, j);
+                                //console.log("strNewId: " + strNewId);
+                                $(this).attr('id', strNewId);
+                                $(this).attr('name', strNewId);
+                            });              
+
+                            //Mapping              
+                            document.getElementById("changes"+[j]).innerHTML = data.translation_changes[j]['changes'];
+                            document.getElementById("name"+[j]).innerHTML = data.translations[j]['name'];
+                            document.getElementById("internalID"+[j]).innerHTML = data.translations[j]['internalID'];
+                        }
                     }
+
+                    
+
+                    // for(var i; i < 4; i++) {
+                    //     var clone = $(this).parents(".translationInput").clone()
+                    //     .insertAfter(".translationInput:last")
+                    //     .attr("id", "translationInput" + i);
+
+                    //     clone.find('[id]').each(function() {
+                    //         //console.log(this.id);
+                    //         var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
+                    //         //console.log("strNewId: " + strNewId);
+                    //         $(this).attr('id', strNewId);
+                    //         $(this).attr('name', strNewId);
+                    //         $(this).val('234234');
+                    //     });
+                    // }
                 }
             });
         };

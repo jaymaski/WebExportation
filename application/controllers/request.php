@@ -17,8 +17,8 @@ class Request extends CI_Controller {
 
 		$data['title'] = 'PUMASOK NA HAYOP KA';
 		$CI = &get_instance();
-		// $data['requests'] = $this->request->get_request($projectID, $taskID);
-		// mysqli_next_result($CI->db->conn_id);
+		$data['requests'] = $this->request->get_request($projectID, $taskID);
+		mysqli_next_result($CI->db->conn_id);
 		$data['curr_request'] =  $this->request->get_current_request($requestID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['translations'] = $this->translation->get_translation($projectID, $taskID);
