@@ -12,6 +12,8 @@ class Request_model extends CI_Model{
 		parent::__construct();
         $this->load->database('default', TRUE);
     }
+	//GET
+	//---------------------------------------------------------------------------
 	//return recommendations for the selected request
 	function get_recommendations($requestID){
 		$get_recommendations = "CALL get_recommendations(?)";
@@ -54,7 +56,8 @@ class Request_model extends CI_Model{
 		return $query->result();
 	}
 	
-	
+	//INSERT
+	//-----------------------------------------------------------------------------
 	function insert_request($taskID, $environment, $urgency, $status, $revisionNumber, $requestDate){
 		$insert_request = "CALL insert_request(?, ?, ?, ?, ?, ?)";
 		$param = array('taskID' => $taskID, 'environment' => $environment,'urgency' => $urgency, 'status' => $status, 'revisionNumber' => $revisionNumber, 'requestDate' => $requestDate);
@@ -82,7 +85,32 @@ class Request_model extends CI_Model{
 		return $result;
 	}
 	
+	//SEARCH
+	//------------------------------------------------------------------------------
+	function search_project_id($projectID){
+		$search_project_id = "CALL search_project_id(?)";
+		$param = array('projectID' => $projectID);
+		$query = $this->db->query($search_project_id, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
 	
+	function search_task_id($taskID){
+		$search_task_id = "CALL search_task_id(?)";
+		$param = array('taskID' => $taskID);
+		$query = $this->db->query($search_task_id, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
 	
-	
+	function search_request($taskID, $environment, $revisionNumber){
+		$search_request = "CALL search_request(?, ?, ?)";
+		$param = array('taskID' => $taskID);
+		$query = $this->db->query($search_request, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
 }

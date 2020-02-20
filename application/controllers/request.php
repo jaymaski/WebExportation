@@ -31,20 +31,53 @@ class Request extends CI_Controller {
 		$this->load->view('users/requests/view_request', $data);
 		$this->load->view('template/footer_main');
 	}
-	
+	//Add Recommendation
 	function add_recommendation($requestID, $recommendation, $userID){
 		
-		$data['errMsg'] = "";
 		$recommendationID = $this->recommendation->insert_recommendation($requestID, $recommendation, $userID);
 		
-		if($recommendationID <= 0){
-			$data['errMsg'] = "Ooops, something went wrong. Recommendation didn't insert.";
-			$this->load->view('errors/index', $data);
-			exit;
+		if($recommendationID > 0){
+			return true;
 		}
-		return true;
+		else{
+			return false;
+		}
 	}
 	
+	//SEARCH Request, use in ajax. Check if exist without submitting form
+	//Check Project ID
+	function search_project_id($projectID){
+		$result = $this->request->search_project_id($projectID);
+		
+		if($result > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	//Check Task ID
+	function search_task_id($taskID){
+		$result = $this->request->search_task_id($taskID);
+		
+		if($result > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	//Check Revision number in specific environment
+	function search_request($taskID, $environment, $revisionNumber){
+		$result = $this->request-> search_request($taskID, $environment, $revisionNumber);
+		
+		if($result > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	
 	
 	
