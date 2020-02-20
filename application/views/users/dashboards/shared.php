@@ -17,7 +17,7 @@
 			<tbody>
 				<?php foreach($shared_requests as $request){ ?>
 					<!-- <tr onclick="window.location.replace('<?php echo site_url('request/view_request').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>');"> -->
-					<tr onclick="mamamo('<?php echo $request->projectID; ?>', '<?php echo $request->taskID; ?>', '<?php echo $request->requestID; ?>')" data-toggle="modal" data-target="#view_request">
+					<tr onclick="view_project('<?php echo $request->projectID; ?>', '<?php echo $request->taskID; ?>', '<?php echo $request->requestID; ?>')" data-toggle="modal" data-target="#view_request">
 						<!-- <td class="txt-oflo" id="request-id"><?php echo $request->requestID ;?></td> -->
 						<td class="txt-oflo" id="request-name">PROD_CR-csremail-au-wiscust-au-PO(B2BE#3893292)</td>
 						<td class="txt-oflo" id="requestor-name"><?php echo $request->owner ;?></td>
@@ -37,7 +37,7 @@
 	<?php } else{ ?>
 		<p>No Shared Request found.</p>
 	<?php }?>
-
+	<p id="demo">mamamo</p>
 	<!-- Modal -->
 	<div class="modal fade" id="view_request" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">

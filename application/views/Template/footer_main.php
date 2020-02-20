@@ -9,21 +9,64 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+    <!-- <script>
+    var txt = "";
+    var numbers = [45, 4, 9, 16, 25];
+    numbers.forEach(myFunction);
+    document.getElementById("demo").innerHTML = txt;
+
+    function myFunction(value) {
+        txt = txt + value + "<br>"; 
+    }
+    </script> -->
+
     <script type="text/javascript">
-        function mamamo(projectID, taskID, requestID) {
-            //alert(projectID + " " + taskID + " " + requestID);
+        function view_project(projectID, taskID, requestID) {
             var projectID = projectID;
             var taskID = taskID;
             var requestID = requestID;
+            var json = {'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'};
             $.ajax({
                 type:'POST',
                 url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID + "/" + requestID,
                 dataType: 'json',
-                data: "{'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'}",
+                data: json,
                 success:function(data) {
-                    //alert('lel');
+                    //var req = $.parseJSON(data);
                     console.log(data.curr_request);
                     console.log(data.translation_changes);
+                    console.log(data.translations);
+                    //curr_request = '"curr_request_json":' + JSON.stringify(data.curr_request);
+                    //translations = '"translations_json":' + JSON.stringify(data.translations);
+                    //translation_changes = '"translation_changes_json":' + JSON.stringify(data.translation_changes);
+
+                    //Project Details
+                    document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
+                    document.getElementById("taskID").innerHTML = data.curr_request[0]['taskID'];
+                    document.getElementById("projectOwner").innerHTML = data.curr_request[0]['projectOwner'];
+                    document.getElementById("docType").innerHTML = data.curr_request[0]['docType'];
+                    document.getElementById("sender").innerHTML = data.curr_request[0]['sender'];
+                    document.getElementById("receiver").innerHTML = data.curr_request[0]['receiver'];
+                    document.getElementById("revisionNumber").innerHTML = data.curr_request[0]['revisionNumber'];
+                    document.getElementById("environment").innerHTML = data.curr_request[0]['environment'];
+                    document.getElementById("status").innerHTML = data.curr_request[0]['status'];
+                    document.getElementById("requestDate").innerHTML = data.curr_request[0]['requestDate'];
+                    document.getElementById("deployDate").innerHTML = data.curr_request[0]['deployDate'];
+                    
+                    for(var i; i < 4; i++) {
+                        var clone = $(this).parents(".translationInput").clone()
+                        .insertAfter(".translationInput:last")
+                        .attr("id", "translationInput" + i);
+
+                        clone.find('[id]').each(function() {
+                            //console.log(this.id);
+                            var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
+                            //console.log("strNewId: " + strNewId);
+                            $(this).attr('id', strNewId);
+                            $(this).attr('name', strNewId);
+                            $(this).val('234234');
+                        });
+                    }
                 }
             });
         };

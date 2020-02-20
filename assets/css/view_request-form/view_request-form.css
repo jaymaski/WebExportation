@@ -109,7 +109,7 @@
   border-right: 2px solid white !important;
 }
 
-.view-request .revisions span:first-child {
+.view-request .revisions span:last-child {
   text-align: center !important;
   width: 20%;
   border-left: 1px solid #e6e6e6;
