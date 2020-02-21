@@ -31,35 +31,39 @@
 
 
 <div class="container view-request">
-	<table class="revisions table table-bordered">
-		<tr class="header text-dark">
-			<th colspan="4" class="text-center">
-				REVISION <span id="revisionNumber"></span>
-				<span><span id="status"></span> to <span id="environment"></span></span>
-			</th>
-		<tr>
+	<table class="revisions table table-bordered" id="revisions">
+		<thead class="header">
+			<tr class="header text-dark">
+				<th colspan="4" class="text-center">
+					REVISION <span id="revisionNumber[0]"></span>
+					<span><span id="status[0]"></span> to <span id="environment[0]"></span></span>
+				</th>
+			<tr>
+		</thead>
 
-		<tr>
-			<th>Request Date</th>
-			<td id="requestDate"></td>
-			<th>Deployment Date</th>
-			<td id="deployDate"></td>
-		</tr>
+		<tbody class="translations" id="translations">
+			<tr>
+				<th>Request Date</th>
+				<td id="requestDate[0]"></td>
+				<th>Deployment Date</th>
+				<td id="deployDate[0]"></td>
+			</tr>
 			<tr>
 				<td><strong>Test Internal ID:</strong> </td>
-				<td id="internalID"></td>
+				<td id="internalID[0]"></td>
 				<th colspan="">Release as Document Type:</th>
-				<td id="doctype"></td>
+				<td id="doctype[0]"></td>
 			</tr>
 			<tr>
 				<th>Translation Name:</th>
-				<td id="name"></td>	
+				<td id="name[0]"></td>	
 				<th>Translation Changes</th>
-				<td id="changes" colspan="3"></td>
+				<td id="changes[0]" colspan="3"></td>
 			</tr>
 			<tr class="spacer"><td colspan="4"></td></tr>	
-		</table>
-	</div>
+		</tbody>
+	</table>
+</div>
 
 <!-- <?php echo $title ?>
 <?php if($curr_request){
