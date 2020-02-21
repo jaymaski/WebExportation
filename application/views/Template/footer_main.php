@@ -10,17 +10,6 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-    <!-- <script>
-    var txt = "";
-    var numbers = [45, 4, 9, 16, 25];
-    numbers.forEach(myFunction);
-    document.getElementById("demo").innerHTML = txt;
-
-    function myFunction(value) {
-        txt = txt + value + "<br>"; 
-    }
-    </script> -->
-
     <script type="text/javascript">
         function view_project(projectID, taskID, requestID) {
             var projectID = projectID;
@@ -48,19 +37,17 @@
                     
                     var requestsNum = Object.keys(data.requests).length;
                     var translationNum = Object.keys(data.translations).length;
-                    //document.getElementById("demo").innerHTML = requestsNum;
-
+                    
                     //Translation Changes
                     for(var i = 0; i < requestsNum; i++){
+                        //Cloning (Per Revision)
                         if(i != 0){
                             var cloneRevision = $('#revisions').clone(true)
                             .insertAfter(".revisions:last")
                             .attr("id", "revisions" + i);
 
                             cloneRevision.find('[id]').each(function() {
-                                //console.log(this.id);
                                 var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
-                                //console.log("strNewId: " + strNewId);
                                 $(this).attr('id', strNewId);
                                 $(this).attr('name', strNewId);
                             });
@@ -73,7 +60,6 @@
                         document.getElementById("environment["+i+"]").innerHTML = data.requests[i]['environment'];
                         document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];                   
                         
-                        var counter = 0;
                         for(var j = 0; j < translationNum; j++){
                             //Cloning (Per translation)
                             if(data.requests[i]['requestID'] + data.translations[j]['requestID']){
@@ -88,19 +74,18 @@
                                         $(this).attr('name', NewID);
                                     });
                                 }           
-                                console.log(data.requests[i]['requestID'] + data.translations[j]['requestID']);
+
                                 //Mapping              
-                                document.getElementById("changes["+counter+"]").innerHTML = data.translation_changes[counter]['changes'];
-                                document.getElementById("name["+counter+"]").innerHTML = data.translations[counter]['name'];
-                                document.getElementById("internalID["+counter+"]").innerHTML = data.translations[counter]['internalID'];
-                                counter++;
+                                document.getElementById("changes["+j+"]").innerHTML = data.translation_changes[j]['changes'];
+                                document.getElementById("name["+j+"]").innerHTML = data.translations[j]['name'];
+                                document.getElementById("internalID["+j+"]").innerHTML = data.translations[j]['internalID'];
                             }
                         }
                     }
                 }
             });
         };
-
+        
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
