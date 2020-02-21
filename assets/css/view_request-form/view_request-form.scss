@@ -33,7 +33,7 @@
         -ms-user-select: none;
         user-select: none;
     }
-    .table tr:not(.header) {
+    .table tbody:not(.header) {
         display: none;
     }
     .table {

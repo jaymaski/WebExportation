@@ -35,7 +35,7 @@
   user-select: none;
 }
 
-.view-request .table tr:not(.header) {
+.view-request .table tbody:not(.header) {
   display: none;
 }
 

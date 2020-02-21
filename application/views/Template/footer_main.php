@@ -1,5 +1,6 @@
 </div>
 </div>
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Popper.JS -->
@@ -32,14 +33,10 @@
                 dataType: 'json',
                 data: json,
                 success:function(data) {
-                    //var req = $.parseJSON(data);
                     console.log(data.requests);
                     console.log(data.curr_request);
                     console.log(data.translation_changes);
                     console.log(data.translations);
-                    //curr_request = '"curr_request_json":' + JSON.stringify(data.curr_request);
-                    //translations = '"translations_json":' + JSON.stringify(data.translations);
-                    //translation_changes = '"translation_changes_json":' + JSON.stringify(data.translation_changes);
 
                     //Project Details
                     document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
@@ -51,66 +48,55 @@
                     
                     var requestsNum = Object.keys(data.requests).length;
                     var translationNum = Object.keys(data.translations).length;
-                    //document.getElementById("demo").innerHTML = translationNum;
+                    //document.getElementById("demo").innerHTML = requestsNum;
 
                     //Translation Changes
-                    for(var i; i < requestsNum; i++){
-                        //Cloning (Per Revision)
-                        var clone = $(this).parents(".revisions").clone()
-                        .insertAfter(".revisions:last")
-                        .attr("id", "revisions" + j);
+                    for(var i = 0; i < requestsNum; i++){
+                        if(i != 0){
+                            var cloneRevision = $('#revisions').clone(true)
+                            .insertAfter(".revisions:last")
+                            .attr("id", "revisions" + i);
 
-                        clone.find('[id]').each(function() {
-                            //console.log(this.id);
-                            var strNewId = $(this).attr('id').replace(/[0-9]/g, j);
-                            //console.log("strNewId: " + strNewId);
-                            $(this).attr('id', strNewId);
-                            $(this).attr('name', strNewId);
-                        });   
-                        //Mapping
-                        document.getElementById("revisionNumber"+[i]).innerHTML = data.curr_request[i]['revisionNumber'];
-                        document.getElementById("requestDate"+[i]).innerHTML = data.curr_request[i]['requestDate'];
-                        document.getElementById("deployDate"+[i]).innerHTML = data.curr_request[i]['deployDate']; 
-                        document.getElementById("environment"+[i]).innerHTML = data.curr_request[i]['environment'];
-                        document.getElementById("status"+[i]).innerHTML = data.curr_request[i]['status'];                                          
-
-                        for(var j; j < translationNum; j++){
-                            //Cloning (Per translation)
-                            var clone1 = $(this).parents(".translationInput").clone()
-                            .insertAfter(".translationInput:last")
-                            .attr("id", "translationInput" + j);
-
-                            clone1.find('[id]').each(function() {
+                            cloneRevision.find('[id]').each(function() {
                                 //console.log(this.id);
-                                var strNewId = $(this).attr('id').replace(/[0-9]/g, j);
+                                var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
                                 //console.log("strNewId: " + strNewId);
                                 $(this).attr('id', strNewId);
                                 $(this).attr('name', strNewId);
-                            });              
+                            });
+                        }
 
-                            //Mapping              
-                            document.getElementById("changes"+[j]).innerHTML = data.translation_changes[j]['changes'];
-                            document.getElementById("name"+[j]).innerHTML = data.translations[j]['name'];
-                            document.getElementById("internalID"+[j]).innerHTML = data.translations[j]['internalID'];
+                        //Mapping
+                        document.getElementById("revisionNumber["+i+"]").innerHTML = data.requests[i]['revisionNumber'];
+                        document.getElementById("requestDate["+i+"]").innerHTML = data.requests[i]['requestDate'];
+                        document.getElementById("deployDate["+i+"]").innerHTML = data.requests[i]['deployDate']; 
+                        document.getElementById("environment["+i+"]").innerHTML = data.requests[i]['environment'];
+                        document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];                   
+                        
+                        var counter = 0;
+                        for(var j = 0; j < translationNum; j++){
+                            //Cloning (Per translation)
+                            if(data.requests[i]['requestID'] + data.translations[j]['requestID']){
+                                if(j != 0){
+                                    var cloneTranslation = $('#translations').clone(true)
+                                    .insertAfter(".translations:last")
+                                    .attr("id", "translations" + j);
+
+                                    cloneTranslation.find('[id]').each(function() {
+                                        var NewID = $(this).attr('id').replace(/[0-9]/g, j);
+                                        $(this).attr('id', NewID);
+                                        $(this).attr('name', NewID);
+                                    });
+                                }           
+                                console.log(data.requests[i]['requestID'] + data.translations[j]['requestID']);
+                                //Mapping              
+                                document.getElementById("changes["+counter+"]").innerHTML = data.translation_changes[counter]['changes'];
+                                document.getElementById("name["+counter+"]").innerHTML = data.translations[counter]['name'];
+                                document.getElementById("internalID["+counter+"]").innerHTML = data.translations[counter]['internalID'];
+                                counter++;
+                            }
                         }
                     }
-
-                    
-
-                    // for(var i; i < 4; i++) {
-                    //     var clone = $(this).parents(".translationInput").clone()
-                    //     .insertAfter(".translationInput:last")
-                    //     .attr("id", "translationInput" + i);
-
-                    //     clone.find('[id]').each(function() {
-                    //         //console.log(this.id);
-                    //         var strNewId = $(this).attr('id').replace(/[0-9]/g, i);
-                    //         //console.log("strNewId: " + strNewId);
-                    //         $(this).attr('id', strNewId);
-                    //         $(this).attr('name', strNewId);
-                    //         $(this).val('234234');
-                    //     });
-                    // }
                 }
             });
         };

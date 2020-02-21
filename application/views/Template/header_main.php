@@ -92,8 +92,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 
-		<!-- Modal -->
-		<div class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!-- newRequestModal -->
+		<div class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="newRequestModal" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -105,6 +105,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<!-- Modal Body -->
 					<div class="modal-body">
 					...
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- view_request -->
+		<div class="modal fade view_request" id="view_request" tabindex="-1" role="dialog" aria-labelledby="view_request" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<!-- Modal Body -->
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<div class="modal-body">
+					<?php $this->load->view('users/requests/view_request'); ?>
 					</div>
 
 					<div class="modal-footer">
