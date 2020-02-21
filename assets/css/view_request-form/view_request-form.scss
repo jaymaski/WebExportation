@@ -1,4 +1,18 @@
 @import '../_global';
+.view_request_modal {
+    .modal-content {
+        padding: 3px!important;
+    }
+    .modal-dialog{
+        max-width: 70%;
+        float: left!important;
+        margin: 35px 0 0 30px;
+    }
+    .modal-body {
+        padding: 3px!important;
+    }
+}
+
 .view-request {
     .table>tbody>tr.active>td,
     .table>tbody>tr.active>th,

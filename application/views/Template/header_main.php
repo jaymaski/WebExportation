@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 
 		<!-- view_request -->
-		<div class="modal fade view_request" id="view_request" tabindex="-1" role="dialog" aria-labelledby="view_request" aria-hidden="true">
+		<div class="modal fade view_request_modal" id="view_request" tabindex="-1" role="dialog" aria-labelledby="view_request" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<!-- Modal Body -->
@@ -123,11 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<div class="modal-body">
-					<?php $this->load->view('users/requests/view_request'); ?>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<?php $this->load->view('users/requests/view_request'); ?>
 					</div>
 				</div>
 			</div>

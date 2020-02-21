@@ -1,3 +1,17 @@
+.view_request_modal .modal-content {
+  padding: 3px !important;
+}
+
+.view_request_modal .modal-dialog {
+  max-width: 70%;
+  float: left !important;
+  margin: 35px 0 0 30px;
+}
+
+.view_request_modal .modal-body {
+  padding: 3px !important;
+}
+
 .view-request .table > tbody > tr.active > td,
 .view-request .table > tbody > tr.active > th,
 .view-request .table > tbody > tr > td.active,
