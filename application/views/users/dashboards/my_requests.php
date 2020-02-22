@@ -14,12 +14,11 @@
 					<th>Revision Number</th>
 					<th>Document</th>
 					<th>Environment</th>
-					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 			<?php foreach ($requests as $request) { ?>
-				<tr>
+				<tr onclick="this.onclick = view_project('<?php echo $request->projectID; ?>', '<?php echo $request->taskID; ?>', '<?php echo $request->requestID; ?>')" data-toggle="modal" data-target="#view_request">
 					<td><?php echo $request->indexID; ?></td>
 					<td><?php echo $request->projectID; ?></td>
 					<td><?php echo $request->projectOwner; ?></td>
@@ -30,13 +29,6 @@
 					<td><?php echo $request->revisionNumber; ?></td>
 					<td><?php echo $request->docType; ?></td>
 					<td><?php echo $request->environment; ?></td>
-					<td class="txt-oflo">
-						<button class="btn btn-success btn-sm text-light" onclick="window.location.replace('<?php echo site_url('request/view_request').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>');"> 
-							View
-						</button>
-						<button class="btn btn-info btn-sm" onclick="$('#modal-summary').modal('show');return false;"> edit </button>
-						<button class="btn btn-warning btn-sm" onclick="$('#modal-summary').modal('show');return false;"> share </button>
-					</td>
 				</tr>
 				<?php } ?>
 			</tbody>

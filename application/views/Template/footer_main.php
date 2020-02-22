@@ -38,6 +38,13 @@
                     var requestsNum = Object.keys(data.requests).length;
                     var translationNum = Object.keys(data.translations).length;
                     
+                    $( ".revisions:not(:first)").each(function(){
+                        $(this).remove();
+                    });
+                    $( ".translations:not(:first)").each(function(){
+                        $(this).remove();
+                    });
+
                     //Translation Changes
                     for(var i = 0; i < requestsNum; i++){
                         //Cloning (Per Revision)
