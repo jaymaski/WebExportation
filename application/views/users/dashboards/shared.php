@@ -4,14 +4,12 @@
 		<table class="table-hover table dashboard">
 			<thead>
 				<tr>
-					<!-- <th id="request-id">ID</th> -->
 					<th id="request-name">NAME</th>
 					<th id="requestor-name">OWNER</th>
 					<th id="urgency">URGENCY</th>
 					<th id="request-date">EXPORTATION DATE</th>
 					<th id="environment">ENVIRONMENT</th>
 					<th id="status">STATUS</th>
-					<!-- <th id="actions">ACTIONS</th> -->
 				</tr>
 			</thead>
 			<tbody id="data">
@@ -28,7 +26,7 @@
 			</tbody>
 		</table>
 	</div>
-	<?php } else{ ?>
-		<p>No Shared Request found.</p>
-	<?php }?>
+	<?php } else {
+		$this->view('errors/no-data-found');
+	} ?>
 
