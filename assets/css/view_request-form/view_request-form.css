@@ -1,15 +1,90 @@
+.view_request_modal .modal-body {
+  padding: 0px;
+  max-height: calc(100vh - 100px);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.view_request_modal .left {
+  width: 70% !important;
+}
+
+.view_request_modal .modal-table {
+  height: 100% !important;
+}
+
 .view_request_modal .modal-content {
-  padding: 3px !important;
+  height: 100% !important;
 }
 
 .view_request_modal .modal-dialog {
-  max-width: 70%;
-  float: left !important;
-  margin: 35px 0 0 30px;
+  max-width: 100%;
+  overflow-y: initial !important;
+  margin: 65px 3% 0 3%;
+  height: 90% !important;
 }
 
-.view_request_modal .modal-body {
-  padding: 3px !important;
+.view_request_modal .project-section {
+  height: 100%;
+}
+
+.view_request_modal .comment-section {
+  width: 30%;
+  padding: 0 15px 15px 15px;
+}
+
+.view_request_modal .comment-section-div {
+  padding: 20px 0px 0px 0px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.view_request_modal .action-section {
+  height: 70px;
+}
+
+.view_request_modal .action-section-div {
+  padding: 15px !important;
+}
+
+.view_request_modal .action-section .share {
+  width: 47%;
+  border: 1px solid #8d8d8d;
+}
+
+.view_request_modal .action-section .share:hover {
+  border: 1px solid #5e5e5e;
+  background-color: #5e5e5e;
+}
+
+.view_request_modal .action-section .edit {
+  float: right;
+  width: 47%;
+  border: 1px solid #8d8d8d;
+}
+
+.view_request_modal .action-section .edit:hover {
+  border: 1px solid #5e5e5e;
+  background-color: #5e5e5e;
+}
+
+.view_request_modal .close {
+  float: left;
+  margin: 20px 0 0 15px;
+}
+
+.view_request_modal .close .fa-times {
+  font-size: 40px;
+  color: #FFFFFF;
+}
+
+.view_request_modal .close .fa-times:hover {
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  color: #a75151 !important;
+}
+
+.view-request {
+  padding-top: 15px;
 }
 
 .view-request .table > tbody > tr.active > td,
@@ -126,7 +201,6 @@
 .view-request .revisions span:last-child {
   text-align: center !important;
   width: 20%;
-  border-left: 1px solid #e6e6e6;
   height: 100%;
   float: right;
 }

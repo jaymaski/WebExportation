@@ -1,19 +1,81 @@
 @import '../_global';
 .view_request_modal {
+    .modal-body {
+        padding: 0px;
+        max-height: calc(100vh - 100px);
+        height: 100%;
+        overflow-y: auto;
+    }    
+    .left {
+        width: 70%!important;
+    }
+    .modal-table {
+        height: 100%!important;
+    }
     .modal-content {
-        padding: 3px!important;
+        height: 100%!important;
     }
     .modal-dialog{
-        max-width: 70%;
-        float: left!important;
-        margin: 35px 0 0 30px;
+        max-width: 100%;
+        overflow-y: initial !important;
+        margin: 65px 3% 0 3%;
+        height: 90%!important;
     }
-    .modal-body {
-        padding: 3px!important;
+    .project-section {
+        height: 100%;
+    }
+    .comment-section {
+        width: 30%;
+        padding: 0 15px 15px 15px;
+        &-div {
+            padding: 20px 0px 0px 0px;
+            border-top: 1px solid $gray;
+        }
+    }
+    .action-section {
+        height: 70px;
+        //float: right!important;
+        //width: 20%!important;
+        //margin-bottom: 30px;
+        &-div {
+            padding: 15px!important;
+        }
+        .share {
+            width: 47%;
+            //height: 100%;
+            border: 1px solid $primary-color-light;
+            &:hover {
+                border: 1px solid $primary-color;
+                background-color: $primary-color;
+            }
+        }
+        .edit {
+            float: right;
+            width: 47%;
+            //height: 100%;
+            border: 1px solid $primary-color-light;
+            &:hover {
+                border: 1px solid $primary-color;
+                background-color: $primary-color;
+            }            
+        }
+    }
+    .close {
+        float: left;
+        margin: 20px 0 0 15px;
+        .fa-times {
+            font-size: 40px;
+            color: $white;
+            &:hover {
+                transition: 0.3s;
+                color: $red!important;
+            }
+        }
     }
 }
 
 .view-request {
+    padding-top: 15px;
     .table>tbody>tr.active>td,
     .table>tbody>tr.active>th,
     .table>tbody>tr>td.active,
@@ -111,7 +173,7 @@
         span:last-child {
             text-align: center!important;
             width: 20%;
-            border-left: 1px solid $gray;
+            //border-left: 1px solid $gray;
             height: 100%;
             float: right;
         }
