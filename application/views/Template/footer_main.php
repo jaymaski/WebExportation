@@ -1,6 +1,5 @@
 </div>
 </div>
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
     <!-- AJAX -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Popper.JS -->
@@ -100,17 +99,17 @@
         });
 
 		$(document).ready(function() {
-		  //Fixing jQuery Click Events for the iPad
-		  var ua = navigator.userAgent,
-			event = (ua.match(/iPad/i)) ? "touchstart" : "click";
-		  if ($('.revisions').length > 0) {
-			$('.revisions .header').on(event, function() {
-			  $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
-				return this.style.display === 'table-row' ? 'none' : 'table-row';
-			  });
-			});
-		  }
-		})
+        //Fixing jQuery Click Events for the iPad
+            var ua = navigator.userAgent,
+            event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+            if ($('.revisions').length > 0) {
+                $('.revisions .header').on(event, function() {
+                    $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+                        return this.style.display === 'table-row' ? 'none' : 'table-row';
+                    });
+                });
+            }
+        })
 	</script>
 
     <script type="text/javascript">

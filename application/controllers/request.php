@@ -17,7 +17,7 @@ class Request extends CI_Controller {
 			redirect('users/login');
 		}		
 
-		$data['title'] = 'PUMASOK NA HAYOP KA';
+		$data['title'] = '';
 		$CI = &get_instance();
 		$data['requests'] = $this->request->get_request($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
