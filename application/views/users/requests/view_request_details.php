@@ -1,10 +1,6 @@
 <?php if($curr_request){
 		foreach ($curr_request as $request) { ?>
 	<div class="container view-request">
-	<div align="right">
-		<a href="#" id="edit">EDIT</a>
-		<a style="display:none"href="#" id="save">SAVE</a>
-	</div>
 		<table class="project-details">
 			<tr>
 				<th colspan="4" class="text-center">
@@ -14,23 +10,23 @@
 
 			<tr>
 				<th>Project ID</th>
-				<td id = "projectID"><?php echo $request->projectID; ?></td>
+				<td><?php echo $request->projectID; ?></td>
 				<th>Task ID</th>
-				<td id = "taskID"><?php echo $request->taskID; ?></td>
+				<td><?php echo $request->taskID; ?></td>
 			</tr>
 
 			<tr>
 				<th>Project Owner</th>
-				<td id = "projectOwner"><?php echo $request->projectOwner; ?></td>
+				<td><?php echo $request->projectOwner; ?></td>
 				<th>Document</th>
-				<td id ="documentType"><?php echo $request->docType; ?></td>
+				<td><?php echo $request->docType; ?></td>
 			</tr>
 
 			<tr>
 				<th>Sender</th>
-				<td id="sender"><?php echo $request->sender; ?></td>
+				<td><?php echo $request->sender; ?></td>
 				<th>Receiver</th>
-				<td id="receiver"><?php echo $request->receiver; ?></td>
+				<td><?php echo $request->receiver; ?></td>
 			</tr>
 
 			
@@ -42,15 +38,14 @@
 		echo '<div class="none-found">No History found for this Request</div>';
 	} ?>
 
-	<?php if($requests){
-		foreach ($requests as $request) { ?>
+	<?php if($curr_request){
+		foreach ($curr_request as $request) { ?>
 		<div class="container view-request">
 			<table class="revisions table table-bordered">
 				<tr class="header text-dark">
 					<th colspan="4" class="text-center">
 						REVISION <?php echo $request->revisionNumber; ?>
 						<span><?php echo $request->status; ?> to <?php echo $request->environment; ?>
-						<button class="btn btn-success btn-sm" onclick="window.location.replace('<?php echo site_url('request/view_request_details').'/'.$request->projectID.'/'.$request->taskID.'/'.$request->requestID; ?>');"> view </button>
 						</span>
 						
 					</th>
@@ -122,3 +117,14 @@
 	<?php } else {
 		echo '<div class="none-found">No History found for this Request</div>';
 	} ?>
+	
+<?php
+	if($recommendations){
+		foreach($recommendations as $recommendation){ ?>
+			<div class="container">
+			<textarea rows="<?php $counter;?>" class="form-control" readonly><?php echo $recommendation->recommendation;?></textarea>
+			</div>
+<?php		
+		}
+	}
+?>

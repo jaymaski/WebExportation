@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2020 at 07:02 AM
+-- Generation Time: Feb 20, 2020 at 12:05 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -129,6 +129,19 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `test` ()  NO SQL
+BEGIN
+	 DECLARE currID  INT; 
+	SELECT
+    	ID,
+        fName,
+        lName
+    FROM
+    	users u
+    WHERE
+		u.ID = 3;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_user` (IN `userID` INT, IN `newFName` VARCHAR(50), IN `newLName` VARCHAR(50), IN `newUsername` VARCHAR(50), IN `newPassword` VARCHAR(50), IN `newEmailAddress` VARCHAR(50), IN `newDeptID` INT, IN `newTypeID` INT)  NO SQL
 BEGIN
 	UPDATE 
@@ -215,7 +228,9 @@ INSERT INTO `users` (`ID`, `fName`, `lName`, `username`, `password`, `emailAddre
 (5, 'Mariel', 'Bojocan', 'mariel', 'bojocan', 'mariel.bojocan@b2be.com', 2, 2),
 (6, 'Miguel', 'Roman', 'miguel', 'roman', 'miguel.roman@b2be.com', 1, 1),
 (11, 'Al Wesley', 'Salac', 'alwesley', 'salac', 'alwesley.salac@b2be.com', 1, 1),
-(12, 'Jay', 'Macareñas', 'jay', 'macareñas', 'jay.macareñas@b2be.com', 1, 1);
+(12, 'Jay', 'Macareñas', 'jay', 'jay', 'jay.macareñas@b2be.com', 1, 1),
+(14, 'Cheston ', 'Gorayeb', 'Cheston ', 'Gorayeb', 'cheston.gorayeb@b2be.com', 2, 2),
+(15, 'Jahnavi ', 'Adiga', 'jahnavi ', 'adiga', 'jahnavi.adiga@b2be.com', 2, 2);
 
 --
 -- Indexes for dumped tables
@@ -259,7 +274,7 @@ ALTER TABLE `types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
