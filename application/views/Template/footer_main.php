@@ -63,8 +63,15 @@
                         document.getElementById("revisionNumber["+i+"]").innerHTML = data.requests[i]['revisionNumber'];
                         document.getElementById("requestDate["+i+"]").innerHTML = data.requests[i]['requestDate'];
                         document.getElementById("deployDate["+i+"]").innerHTML = data.requests[i]['deployDate']; 
-                        document.getElementById("environment["+i+"]").innerHTML = data.requests[i]['environment'];
-                        document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];                   
+                        if(data.requests[i]['status'] == "Exported"){
+                            document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'] + " to " + data.requests[i]['environment'];
+                        }
+                        else {
+                            document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];
+                        }
+                        
+                        // document.getElementById("environment["+i+"]").innerHTML = data.requests[i]['environment'];
+                        // document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];                   
                         
                         for(var j = 0; j < translationNum; j++){
                             //Cloning (Per translation)

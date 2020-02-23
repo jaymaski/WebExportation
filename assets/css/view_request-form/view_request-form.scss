@@ -172,10 +172,11 @@
         }
         span:last-child {
             text-align: center!important;
-            width: 20%;
-            //border-left: 1px solid $gray;
+            width: 15%;
+            border-left: 1px solid $gray;
             height: 100%;
             float: right;
+            padding: auto;
         }
-    }    
+    }
 }
