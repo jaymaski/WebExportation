@@ -19,12 +19,8 @@ class Change_model extends CI_Model{
 		$query = $this->db->query($insert_change_type, $param);
 		$result = $query->result();
 		
-		if($result > -1){
-			return $result;
-		}
-		else{
-			return -1;
-		}
+		return $result;
+		
 	}
 	
 	

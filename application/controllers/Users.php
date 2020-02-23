@@ -31,6 +31,7 @@ class Users extends CI_Controller {
 		$this->load->view('users/users_dashboard', $data);
 		$this->load->view('template/footer_main');
 	}
+	
 	public function login() {
 		$data['title'] = 'Dashboard';
 
