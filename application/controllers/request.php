@@ -31,6 +31,7 @@ class Request extends CI_Controller {
 		mysqli_next_result($CI->db->conn_id);
 		$data['recommendations'] = $this->request->get_recommendations($requestID);
 		
+		echo json_encode($data);
 	}
 	//Add Recommendation
 	function add_recommendation($requestID, $recommendation, $userID){
@@ -100,8 +101,7 @@ class Request extends CI_Controller {
 				// foreach($formImpacted as $impacted)
 					// $this->translation->insert_impacted($insertedTranslationID, $sender, $receiver, $docType, $internalIDs);
 		
-		// return true;
-		echo json_encode($data);
+		// return true;		
 	// }
 	
 }
