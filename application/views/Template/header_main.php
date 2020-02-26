@@ -131,9 +131,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<button class="btn share">
 										Share
 									</button>
-									<button class="btn edit">
+									<button class="btn edit" id="edit">
 										Edit
-									</button>											
+									</button>		
+									<button class="btn edit" id="save">
+										Save
+									</button>																			
 								</div>
 							</td>
 						</tr>

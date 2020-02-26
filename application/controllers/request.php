@@ -33,9 +33,24 @@ class Request extends CI_Controller {
 		
 		echo json_encode($data);
 	}
+
+	function update(){
+		$data['projectID'] = $this->input->post('projectID');
+		$data['taskID'] = $this->input->post('taskID');
+		$data['projectOwner'] = $this->input->post('projectOwner');
+		$data['sender'] = $this->input->post('sender');
+		$data['receiver'] = $this->input->post('receiver');
+		$data['docType'] = $this->input->post('docType');
+
+		//insert logic here
+
+		//check if insert was successful
+
+		echo json_encode($data);
+	}
+	
 	//Add Recommendation
-	function add_recommendation($requestID, $recommendation, $userID){
-		
+	function add_recommendation($requestID, $recommendation, $userID) {
 		$recommendationID = $this->recommendation->insert_recommendation($requestID, $recommendation, $userID);
 		
 		if($recommendationID > 0){

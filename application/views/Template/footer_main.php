@@ -21,10 +21,10 @@
                 dataType: 'json',
                 data: json,
                 success:function(data) {
-                    console.log(data.requests);
-                    console.log(data.curr_request);
-                    console.log(data.translation_changes);
-                    console.log(data.translations);
+                    // console.log(data.requests);
+                    // console.log(data.curr_request);
+                    // console.log(data.translation_changes);
+                    // console.log(data.translations);
 
                     //Project Details
                     document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
@@ -138,5 +138,118 @@
             });
         });
     </script>	
+
+    <script>
+        function expandActions(){
+            if(window.getComputedStyle(document.getElementById('row-1'),null).getPropertyValue("width") == '0px'){
+                document.getElementById('row-1').style.width = '10%';
+            }    
+            else{
+                document.getElementById('row-1').style.width = '0%';
+            }
+        }
+
+
+        //init elements
+        var projectID = document.getElementById('projectID');
+        var taskID = document.getElementById('taskID');
+        var projectOwner = document.getElementById('projectOwner');
+        var sender = document.getElementById('sender');
+        var receiver = document.getElementById('receiver');
+        var documentType = document.getElementById('docType');
+
+        //init content holders
+        var projectIDContent =  projectID.innerText;
+        var taskIDContent = taskID.innerText;
+        var projectOwnerContent = projectOwner.innerText;
+        var senderContent = sender.innerText;
+        var receiverContent = receiver.innerText;
+        var documentTypeContent = documentType.innerText;
+
+        //init button listeners
+        var editButton = document.getElementById('edit')
+        var saveButton = document.getElementById('save')
+
+        //function triggers
+        saveButton.onclick = saveChanges;
+        editButton.onclick = toggleEdit;
+
+        //main edit
+        function toggleEdit(){
+            var isEdit = false;
+            if(isEdit){
+                toDisplay();
+                saveButton.style.display = 'none';
+                isEdit = false;
+            }
+
+            else{
+                projectIDContent =  projectID.innerText;
+                taskIDContent = taskID.innerText;
+                projectOwnerContent = projectOwner.innerText;
+                senderContent = sender.innerText;
+                receiverContent = receiver.innerText;
+                documentTypeContent = documentType.innerText; 
+
+                toEdit();
+                saveButton.style.display = 'inline';
+                isEdit = true;
+            }
+        }
+
+        //save to server and update holders
+        function saveChanges(){
+            projectIDContent = document.getElementById('projectIDInput').value
+            taskIDContent = document.getElementById('taskIDInput').value
+            projectOwnerContent =  document.getElementById('projectOwnerInput').value
+            senderContent =  document.getElementById('senderInput').value
+            receiverContent = document.getElementById('receiverInput').value
+            documentTypeContent =  document.getElementById('documentTypeInput').value
+            
+            toDisplay();
+            saveButton.style.display = 'none';
+            isEdit = false;
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('request/update') ?>",
+                dataType: "JSON",
+                data: {
+                    projectID: projectIDContent,
+                    taskID: taskIDContent,
+                    projectOwner:projectOwnerContent,
+                    sender:senderContent,
+                    receiver:receiverContent,
+                    docType:documentTypeContent,
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(){
+                    alert('failed');
+                }
+            });
+        }
+
+        //toggle textbox
+        function toEdit(){
+            projectID.innerHTML = '<input name=\'projectIDInput\' id=\'projectIDInput\' value='+projectIDContent+ '></input>';
+            taskID.innerHTML = '<input name=\'taskIDInput\' id=\'taskIDInput\' value='+taskIDContent+ '></input>';
+            projectOwner.innerHTML = '<input name=\'projectOwnerInput\' id=\'projectOwnerInput\' value='+projectOwnerContent+ '></input>';
+            sender.innerHTML = '<input name=\'senderInput\' id=\'senderInput\' value='+senderContent+ '></input>';
+            receiver.innerHTML = '<input name=\'receiverInput\' id=\'receiverInput\' value='+receiverContent+ '></input>';
+            documentType.innerHTML = '<input name=\'documentTypeInput\' id=\'documentTypeInput\' value='+documentTypeContent+ '></input>';
+        }
+
+        //toggle display
+        function toDisplay(){
+            projectID.innerHTML = projectIDContent;
+            taskID.innerHTML = taskIDContent;
+            projectOwner.innerHTML = projectOwnerContent;
+            sender.innerHTML =senderContent;
+            receiver.innerHTML = receiverContent;
+            documentType.innerHTML =documentTypeContent;
+        }    
+    </script>
 </body>
 </html>
