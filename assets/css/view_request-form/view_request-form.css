@@ -48,23 +48,56 @@
 
 .view_request_modal .action-section .share {
   width: 47%;
-  border: 1px solid #8d8d8d;
+  border: 1px solid #f7ed63;
+  background-color: #f7ed63;
+  color: #000;
 }
 
 .view_request_modal .action-section .share:hover {
   border: 1px solid #5e5e5e;
   background-color: #5e5e5e;
+  color: #FFFFFF;
 }
 
 .view_request_modal .action-section .edit {
   float: right;
   width: 47%;
-  border: 1px solid #8d8d8d;
+  border: 1px solid #5b72d8;
+  background-color: #5b72d8;
+  color: #FFFFFF;
 }
 
 .view_request_modal .action-section .edit:hover {
   border: 1px solid #5e5e5e;
   background-color: #5e5e5e;
+  color: #FFFFFF;
+}
+
+.view_request_modal .action-section .save {
+  float: right;
+  width: 47%;
+  border: 1px solid #5fd85b;
+  background-color: #5fd85b;
+  color: #000;
+}
+
+.view_request_modal .action-section .save:hover {
+  border: 1px solid #5e5e5e;
+  background-color: #5e5e5e;
+  color: #FFFFFF;
+}
+
+.view_request_modal .action-section .cancel {
+  width: 47%;
+  border: 1px solid #a75151;
+  background-color: #a75151;
+  color: #FFFFFF;
+}
+
+.view_request_modal .action-section .cancel:hover {
+  border: 1px solid #5e5e5e;
+  background-color: #5e5e5e;
+  color: #FFFFFF;
 }
 
 .view_request_modal .close {

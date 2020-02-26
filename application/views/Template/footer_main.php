@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <script type="text/javascript">
-        function view_project(projectID, taskID, requestID) {
+        function view_project(projectID, taskID, requestID) {        
             var projectID = projectID;
             var taskID = taskID;
             var requestID = requestID;
@@ -149,7 +149,6 @@
             }
         }
 
-
         //init elements
         var projectID = document.getElementById('projectID');
         var taskID = document.getElementById('taskID');
@@ -169,31 +168,41 @@
         //init button listeners
         var editButton = document.getElementById('edit')
         var saveButton = document.getElementById('save')
+        var shareButton = document.getElementById('share')
+        var cancelButton = document.getElementById('cancel')        
 
         //function triggers
+        saveButton.style.display = 'none';
+        cancelButton.style.display = 'none';
         saveButton.onclick = saveChanges;
         editButton.onclick = toggleEdit;
 
         //main edit
         function toggleEdit(){
-            var isEdit = false;
-            if(isEdit){
-                toDisplay();
-                saveButton.style.display = 'none';
-                isEdit = false;
-            }
+            var response = confirm('Editing the document will remove you from the queue! Continue?');
+            if (response == true) {
+                var isEdit = false;
+                if(isEdit){
+                    toDisplay();
+                    saveButton.style.display = 'none';
+                    isEdit = false;
+                }
 
-            else{
-                projectIDContent =  projectID.innerText;
-                taskIDContent = taskID.innerText;
-                projectOwnerContent = projectOwner.innerText;
-                senderContent = sender.innerText;
-                receiverContent = receiver.innerText;
-                documentTypeContent = documentType.innerText; 
+                else{
+                    projectIDContent =  projectID.innerText;
+                    taskIDContent = taskID.innerText;
+                    projectOwnerContent = projectOwner.innerText;
+                    senderContent = sender.innerText;
+                    receiverContent = receiver.innerText;
+                    documentTypeContent = documentType.innerText; 
 
-                toEdit();
-                saveButton.style.display = 'inline';
-                isEdit = true;
+                    toEdit();
+                    editButton.style.display = 'none';
+                    shareButton.style.display = 'none';
+                    saveButton.style.display = 'inline';
+                    cancelButton.style.display = 'inline';
+                    isEdit = true;
+                }
             }
         }
 
@@ -208,6 +217,7 @@
             
             toDisplay();
             saveButton.style.display = 'none';
+            editButton.style.display = 'inline';
             isEdit = false;
 
             $.ajax({

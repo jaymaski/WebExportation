@@ -128,15 +128,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</td>
 							<td class="action-section">
 								<div class="modal-body action-section-div">
-									<button class="btn share">
+									<button class="btn share" id="share">
 										Share
 									</button>
 									<button class="btn edit" id="edit">
 										Edit
-									</button>		
-									<button class="btn edit" id="save">
+									</button>	
+									<button class="btn cancel" id="cancel">
+										Cancel
+									</button>										
+									<button class="btn save" id="save">
 										Save
-									</button>																			
+									</button>
 								</div>
 							</td>
 						</tr>
