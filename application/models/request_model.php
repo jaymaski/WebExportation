@@ -113,4 +113,42 @@ class Request_model extends CI_Model{
 		
 		return $result;
 	}
+
+	//UPDATE
+	//-----------------------------------------------------------------------------
+	function update_project($ID, $newProjectID, $newProjectOwnerID){
+		$update_project = "CALL update_project(?, ?, ?)";
+		$param = array('inputID' => $ID,'newProjectID' => $newProjectID,'newProjectOwnerID' => $newProjectOwnerID);
+		$query = $this->db->query($update_project, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+
+	function update_task($ID, $newTaskID, $newOwnerID, $newSender, $newReceiver, $newDocType){
+		$update_task = "CALL update_task(?, ?, ?, ?, ?, ?)";
+		$param = array('inputID' => $ID,'newTaskID' => $newTaskID,'newOwnerID' => $newOwnerID,'newSender' => $newSender,'newReceiver' => $newReceiver,'newDocType' => $newDocType);
+		$query = $this->db->query($update_task, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+
+	function update_request($ID, $newEnvironment, $newRevisionNumber, $newUrgency, $newDeployDate){
+		$update_request = "CALL update_request(?, ?, ?, ?, ?)";
+		$param = array('inputID' => $ID,'newEnvironment' => $newEnvironment,'newRevisionNumber' => $newRevisionNumber,'newUrgency' => $newUrgency,'newDeployDate' => $newDeployDate);
+		$query = $this->db->query($update_request, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+
+	function assign_request_to_me($ID, $assigneeID){
+		$assign_request_to_me = "CALL assign_request_to_me(?, ?)";
+		$param = array('inputID' => $ID, 'assigneeID' => $assigneeID);
+		$query = $this->db->query($assign_request_to_me, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
 }
