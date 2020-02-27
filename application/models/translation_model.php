@@ -12,7 +12,8 @@ class Translation_model extends CI_Model{
 		parent::__construct();
         $this->load->database('default', TRUE);
     }
-	
+	//GET
+	//-----------------------------------------------------
 	function get_translation($projectID, $taskID){
 		$get_translation = "CALL get_translation(?, ?)";
 		$param = array('projectID' => $projectID, 'taskID' => $taskID );
@@ -38,7 +39,8 @@ class Translation_model extends CI_Model{
 		
 		return $query->result();
 	}
-	
+	//INSERT
+	//--------------------------------------------------------
 	function insert_translation($changeTypeID, $name, $internalID ){
 		
 		$insert_translation = "CALL insert_translation(?, ?, ?)";
@@ -68,5 +70,33 @@ class Translation_model extends CI_Model{
 		
 		return $result;
 	}
+	//UPDATE
+	//------------------------------------------------------------------
+	function update_translation($ID, $newName, $newInternalID){
+		$update_translation = "CALL update_translation(?, ?, ?)";
+		$param = array('inputID' => $ID,'newName' => $newName,'newInternalID' => $newInternalID);
+		$query = $this->db->query($update_translation, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
 	
+	function update_translation_changes($ID, $newChanges){
+		$update_translation_changes = "CALL update_translation_changes(?, ?)";
+		$param = array('inputID' => $ID,'newChanges' => $newChanges);
+		$query = $this->db->query($update_translation_changes, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+
+	function update_impacted($ID, $newSender,$newReceiver, $newDocType, $newInternalIDs){
+		$update_impacted = "CALL update_impacted(?, ?)";
+		$param = array('inputID' => $ID,'newSender' => $newSender,'newReceiver' => $newReceiver,'newDocType' => $newDocType,'newInternalIDs' => $newInternalIDs);
+		$query = $this->db->query($update_impacted, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+
 }

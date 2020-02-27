@@ -14,47 +14,34 @@ class Request_model extends CI_Model{
     }
 	//GET
 	//---------------------------------------------------------------------------
-	//return recommendations for the selected request
-	function get_recommendations($requestID){
-		$get_recommendations = "CALL get_recommendations(?)";
-		$param = array('requestID' => $requestID);
-		$query = $this->db->query($get_recommendations, $param);
-		return $query->result();
-	}
-	//return all requests for specific project task
+	
 	function get_request($projectID, $taskID){
 		$get_request = "CALL get_request(?, ?)";
 		$param = array('projectID' => $projectID, 'taskID' => $taskID);
 		$query = $this->db->query($get_request, $param);
 		return $query->result();
 	}
-	//return all requests for current user
+	
 	function get_user_requests($userID){
 		$get_user_requests = "CALL get_user_requests(?)";
 		$param = array('userID' => $userID);
 		$query = $this->db->query($get_user_requests, $param);
 		return $query->result();
 	}
-	//return selected request
+	
 	function get_current_request($requestID){
 		$get_current_request = "CALL get_current_request(?)";
 		$param = array('requestID' => $requestID);
 		$query = $this->db->query($get_current_request, $param);
 		return $query->result();
 	}
-	//return shared requests for current user
+	
 	function get_shared_requests($userID){
 		$get_shared_requests = "CALL get_shared_requests(?)";
 		$param = array('userID' => $userID);
 		$query = $this->db->query($get_shared_requests, $param);
 		return $query->result();
 	}	
-	//return all requests	
-	function get_all_request(){
-		$get_all_request = "CALL get_all_request()";
-		$query = $this->db->query($get_all_request);
-		return $query->result();
-	}
 	
 	//INSERT
 	//-----------------------------------------------------------------------------
@@ -143,6 +130,15 @@ class Request_model extends CI_Model{
 		return $result;
 	}
 
+	function update_status($ID, $newStatus){
+		$update_status = "CALL update_status(?, ?)";
+		$param = array('inputID' => $ID, 'newStatus' => $newStatus);
+		$query = $this->db->query($update_status, $param);
+		$result = $query->result();
+		
+		return $result;
+	}
+	
 	function assign_request_to_me($ID, $assigneeID){
 		$assign_request_to_me = "CALL assign_request_to_me(?, ?)";
 		$param = array('inputID' => $ID, 'assigneeID' => $assigneeID);
