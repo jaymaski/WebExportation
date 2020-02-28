@@ -24,7 +24,8 @@
                     // console.log(data.requests);
                     // console.log(data.curr_request);
                     // console.log(data.translation_changes);
-                    // console.log(data.translations);
+                    console.log(data.translations);
+                    console.log(data.impacted);
 
                     //Project Details
                     document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
@@ -36,11 +37,15 @@
                     
                     var requestsNum = Object.keys(data.requests).length;
                     var translationNum = Object.keys(data.translations).length;
+                    var impactedNum = Object.keys(data.impacted).length;
                     
                     $( ".revisions:not(:first)").each(function(){
                         $(this).remove();
                     });
                     $( ".translations:not(:first)").each(function(){
+                        $(this).remove();
+                    });
+                    $( ".impacted:not(:first)").each(function(){
                         $(this).remove();
                     });
 
@@ -63,19 +68,19 @@
                         document.getElementById("revisionNumber["+i+"]").innerHTML = data.requests[i]['revisionNumber'];
                         document.getElementById("requestDate["+i+"]").innerHTML = data.requests[i]['requestDate'];
                         document.getElementById("deployDate["+i+"]").innerHTML = data.requests[i]['deployDate']; 
+                        document.getElementById("requestID["+i+"]").innerHTML = data.requests[i]['requestID'];
                         if(data.requests[i]['status'] == "Exported"){
                             document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'] + " to " + data.requests[i]['environment'];
                         }
                         else {
                             document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];
-                        }
+                        }              
                         
-                        // document.getElementById("environment["+i+"]").innerHTML = data.requests[i]['environment'];
-                        // document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];                   
-                        
+                        data
+
                         for(var j = 0; j < translationNum; j++){
                             //Cloning (Per translation)
-                            if(data.requests[i]['requestID'] + data.translations[j]['requestID']){
+                            if(data.requests[i]['requestID'] = data.translations[j]['requestID']){
                                 if(j != 0){
                                     var cloneTranslation = $('#translations').clone(true)
                                     .insertAfter(".translations:last")
@@ -93,12 +98,48 @@
                                 document.getElementById("name["+j+"]").innerHTML = data.translations[j]['name'];
                                 document.getElementById("internalID["+j+"]").innerHTML = data.translations[j]['internalID'];
                             }
+
+                            for(var k = 0; k < impactedNum; k++){
+                                //Cloning (Per translation)
+                                if(data.translations[k]['translationID'] = data.impacted[k]['translationID']){
+                                    if(k != 0){
+                                        var cloneTranslation = $('#impacted').clone(true)
+                                        .insertAfter(".impacted:last")
+                                        .attr("id", "impacted" + k);
+
+                                        cloneTranslation.find('[id]').each(function() {
+                                            var NewID_1 = $(this).attr('id').replace(/[0-9]/g, k);
+                                            $(this).attr('id', NewID_1);
+                                            $(this).attr('name', NewID_1);
+                                        });
+                                    }           
+
+                                    //Mapping              
+                                    document.getElementById("changes["+k+"]").innerHTML = data.impacted[k]['changes'];
+                                }
+                            }
                         }
                     }
                 }
             });
         };
-        
+
+        function comments(requestID) {     
+            console.log(requestID);
+            var requestID = requestID;
+            $.ajax({
+                type:'POST',
+                url:"<?php echo site_url('request/view_request_comments'); ?>",
+                dataType: 'json',
+                data: {
+                    requestID: requestID
+                },
+                success:function(data) {
+                    console.log(data.recommendations);
+                }
+            });            
+        }
+
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
@@ -176,6 +217,7 @@
         cancelButton.style.display = 'none';
         saveButton.onclick = saveChanges;
         editButton.onclick = toggleEdit;
+        cancelButton.onclick = toDisplay;
 
         //main edit
         function toggleEdit(){
@@ -216,8 +258,6 @@
             documentTypeContent =  document.getElementById('documentTypeInput').value
             
             toDisplay();
-            saveButton.style.display = 'none';
-            editButton.style.display = 'inline';
             isEdit = false;
 
             $.ajax({
@@ -253,6 +293,10 @@
 
         //toggle display
         function toDisplay(){
+            saveButton.style.display = 'none';
+            editButton.style.display = 'inline';
+            shareButton.style.display = 'inline';
+            cancelButton.style.display = 'none';
             projectID.innerHTML = projectIDContent;
             taskID.innerHTML = taskIDContent;
             projectOwner.innerHTML = projectOwnerContent;

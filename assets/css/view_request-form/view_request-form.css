@@ -157,6 +157,10 @@
   user-select: none;
 }
 
+.view-request .table tr.header .hidden {
+  display: none !important;
+}
+
 .view-request .table tbody:not(.header) {
   display: none;
 }

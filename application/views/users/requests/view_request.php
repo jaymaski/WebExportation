@@ -34,8 +34,8 @@
 	<table class="revisions table table-bordered" id="revisions">
 		<thead class="header">
 			<tr class="header text-dark">
-				<th colspan="4" class="text-center">
-					REVISION <span id="revisionNumber[0]"></span>
+				<th colspan="4" class="text-center" onclick="comments(this.firstElementChild.textContent)">
+					REVISION <span class="hidden" id="requestID[0]"></span><span id="revisionNumber[0]"></span>
 					<span id="status[0]"></span>
 				</th>
 			<tr>
@@ -58,9 +58,25 @@
 				<th>Translation Name:</th>
 				<td id="name[0]"></td>	
 				<th>Translation Changes</th>
-				<td id="changes[0]" colspan="3"></td>
+				<td id="changes[0]" colspan=""></td>
 			</tr>
-			<tr class="spacer"><td colspan="4"></td></tr>	
+
+			<span>
+				<tr>
+					<th>Sender</th>
+					<td id="sender[0]"></td>	
+					<td rowspan="3" colspan="2"></td>			
+				</tr>
+				<tr>	
+					<th>Receiver</th>
+					<td id="receiver[0]" colspan=""></td>				
+				</tr>	
+				<tr>
+					<th>DocumentType</th>
+					<td id="docType[0]" colspan=""></td>					
+				</tr>							
+			</span>
+			<tr class="spacer"><td colspan="4"></td></tr>
 		</tbody>
 	</table>
 </div>

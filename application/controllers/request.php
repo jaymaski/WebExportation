@@ -12,7 +12,7 @@ class Request extends CI_Controller {
 		$this->load->model('recommendation_model', 'recommendation');
     }
 	//Request data that use in view_request page
-	function view_request($projectID, $taskID, $requestID){
+	function view_request($projectID, $taskID, $requestID) {
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}		
@@ -28,9 +28,19 @@ class Request extends CI_Controller {
 		$data['translation_changes'] = $this->translation->get_translation_change($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['impacted'] = $this->translation->get_impacted($projectID, $taskID);
-		mysqli_next_result($CI->db->conn_id);
-		$data['recommendations'] = $this->request->get_recommendations($requestID);
 		
+		echo json_encode($data);
+	}
+
+	function view_request_comments() {
+		if(!$this->session->userdata('logged_in')){
+			redirect('users/login');
+		}	
+		$requestID = $this->input->post('requestID');
+		$CI = &get_instance();
+		$data['recommendations'] = $this->request->get_recommendations($requestID);
+
+
 		echo json_encode($data);
 	}
 
