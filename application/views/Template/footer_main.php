@@ -9,6 +9,26 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+    <script>
+        ClassicEditor
+        .create(document.querySelector('#richTextEditor'), {
+            toolbar: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', 'codeBlock' ],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                ]
+            },
+            codeBlock: {
+                
+            }  
+        })
+        .catch( error => {
+            //console.error( error );
+        });
+    </script>
+
     <script type="text/javascript">
         function view_project(projectID, taskID, requestID) {        
             var projectID = projectID;
@@ -125,7 +145,7 @@
         };
 
         function comments(requestID) {     
-            console.log(requestID);
+            //console.log(data.recommendations);
             var requestID = requestID;
             $.ajax({
                 type:'POST',
@@ -135,7 +155,26 @@
                     requestID: requestID
                 },
                 success:function(data) {
+                    var commentsNum = Object.keys(data.recommendations).length;
                     console.log(data.recommendations);
+
+                    for(var l = 0; l < commentsNum; l++){
+                        //Cloning (Per translation)
+                        if(l != 0){
+                            var cloneTranslation = $('#commentSection').clone(true)
+                            .insertAfter(".commentSection:last")
+                            .attr("id", "commentSection" + l);
+
+                            cloneTranslation.find('[id]').each(function() {
+                                var NewID_2 = $(this).attr('id').replace(/[0-9]/g, l);
+                                $(this).attr('id', NewID_2);
+                                $(this).attr('name', NewID_2);
+                            });
+                        }   
+
+                        //Mapping              
+                        document.getElementById("comments["+l+"]").innerHTML = data.recommendations[0]['recommendation'];
+                    }
                 }
             });            
         }

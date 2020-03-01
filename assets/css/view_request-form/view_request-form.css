@@ -30,12 +30,22 @@
 
 .view_request_modal .comment-section {
   width: 30%;
-  padding: 0 15px 15px 15px;
+  padding: 0 15px 0 15px;
 }
 
 .view_request_modal .comment-section-div {
   padding: 20px 0px 0px 0px;
   border-top: 1px solid #e6e6e6;
+}
+
+.view_request_modal .comment-input-section {
+  height: 400px !important;
+  width: 30%;
+}
+
+.view_request_modal .comment-input-section .ck-rounded-corners {
+  height: 300px !important;
+  padding: 0 15px 0 15px;
 }
 
 .view_request_modal .action-section {

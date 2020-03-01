@@ -26,10 +26,21 @@
     }
     .comment-section {
         width: 30%;
-        padding: 0 15px 15px 15px;
+        padding: 0 15px 0 15px;
         &-div {
             padding: 20px 0px 0px 0px;
             border-top: 1px solid $gray;
+        }
+    }
+    .comment-input-section {
+        height: 400px!important;
+        width: 30%;
+        .ck-rounded-corners {
+            height: 300px!important; 
+            padding: 0 15px 0 15px;
+        }
+        .btn {
+            //position: absolute;
         }
     }
     .action-section {

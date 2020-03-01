@@ -16,6 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/script/ckeditor5/build/ckeditor.js"></script>
 	<!-- Font Awesome JS -->
 	<link href="<?php echo base_url(); ?>assets/fonts/fontawesome/css/all.css" rel="stylesheet">
 	<!-- Bootstrap CSS/JS-->
@@ -122,7 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="modal-content">
 					<table class="modal-table">
 						<tr>
-							<td rowspan="2" class="left">
+							<td rowspan="3" class="left">
 								<div class="modal-body project-section">
 									<?php $this->load->view('users/requests/view_request'); ?>
 								</div>
@@ -148,8 +149,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<td class="comment-section">
 								<div class="modal-body comment-section-div">
 									<h4>Comments/Replies for Revision #<span id="revNum"></span></h5>
-									<span id="comments"></span>
+									<div id="commentSection">
+										<span id="comments[0]"></span>
+									</div>
 								</div>								
+							</td>
+						</tr>
+						<tr>
+							<td class="comment-input-section">
+								<textarea id="richTextEditor" class="richTextEditor" name="comments" placeholder="Add Comment" required></textarea>
+								<button class="btn btn-success"> Submit </button>
 							</td>
 						</tr>
 					</table>						
