@@ -68,6 +68,9 @@
                     $( ".impacted:not(:first)").each(function(){
                         $(this).remove();
                     });
+                    $(".commentSection:not(:first)").each(function(){
+                        $(this).remove();
+                    });                      
 
                     //Translation Changes
                     for(var i = 0; i < requestsNum; i++){
@@ -144,7 +147,7 @@
             });
         };
 
-        function comments(requestID) {     
+        function comments(requestID) {    
             //console.log(data.recommendations);
             var requestID = requestID;
             $.ajax({
@@ -155,7 +158,13 @@
                     requestID: requestID
                 },
                 success:function(data) {
-                    var commentsNum = Object.keys(data.recommendations).length;
+                    var commentsNum = Object.keys(data.recommendations).length;   
+                    $(".commentSection:not(:first)").each(function(){
+                        $(this).remove();
+                    });                       
+                    $(".commentSection.comments").each(function(){
+                        $(this).innerHTML = '';
+                    });                      
                     console.log(data.recommendations);
 
                     for(var l = 0; l < commentsNum; l++){
@@ -173,7 +182,7 @@
                         }   
 
                         //Mapping              
-                        document.getElementById("comments["+l+"]").innerHTML = data.recommendations[0]['recommendation'];
+                        document.getElementById("comments["+l+"]").innerHTML = data.recommendations[l]['recommendation'];
                     }
                 }
             });            
