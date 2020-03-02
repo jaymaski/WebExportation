@@ -1,0 +1,25 @@
+.addRequest .modal-dialog {
+	width: 80% !important;
+	height: 100% !important;
+	margin: auto !important;
+	padding: 0 !important;
+	max-width: none !important;
+}
+
+.addRequest .modal-content {
+	width: 100% !important;
+	height: auto !important;
+	min-height: 100% !important;
+	border-radius: 0 !important;
+	margin: auto !important;
+	padding: 0 !important;
+	background-color: #ececec !important;
+}
+
+.addRequest .modal-header {
+	border-bottom: 1px solid #9ea2a2 !important;
+}
+
+.addRequest .modal-footer {
+	border-top: 1px solid #9ea2a2 !important;
+}
