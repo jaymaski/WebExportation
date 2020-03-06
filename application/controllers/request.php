@@ -9,6 +9,7 @@ class Request extends CI_Controller {
         $this->load->model('request_model', 'request');
 		$this->load->model('change_model', 'change_type');
 		$this->load->model('translation_model', 'translation');
+		$this->load->model('recommendation_model', 'recommendation');
     }
 	//GET
 	//----------------------------------------------------
@@ -38,7 +39,7 @@ class Request extends CI_Controller {
 		}	
 		$requestID = $this->input->post('requestID');
 		$CI = &get_instance();
-		$data['recommendations'] = $this->request->get_recommendations($requestID);
+		$data['recommendations'] = $this->recommendation->get_recommendations($requestID);
 
 
 		echo json_encode($data);
