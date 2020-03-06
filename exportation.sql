@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2020 at 12:05 AM
+-- Generation Time: Mar 06, 2020 at 04:52 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -26,6 +26,18 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `assign_request_to_me` (IN `inputID` INT, IN `assigneeID` INT)  NO SQL
+BEGIN
+	UPDATE 
+		requests
+    SET
+        status = "Assigned",
+        assigneeID = assigneeID,
+        assignedAt = NOW()
+    WHERE
+        ID = inputID;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_request` ()  NO SQL
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
@@ -106,15 +118,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_current_request` (IN `requestID
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
-    	r.requestID,
-    	t.indexID,
-    	p.projectID,
+    	p.ID,
+        p.projectID,
         p.projectOwner,
+        t.indexID,
         t.taskID,
         t.owner,
         t.sender,
         t.receiver,
         t.docType,
+    	r.requestID,
         r.environment,
 		r.revisionNumber,
         r.status,
@@ -125,6 +138,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -152,7 +166,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 		(
         	SELECT 
@@ -173,7 +187,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.assigneeID = b.ID
         )r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         WHERE	
         	r.requestID = requestID
        ;
@@ -193,6 +207,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -220,11 +235,11 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 			requests r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         LEFT JOIN
         	change_type ct
         ON
@@ -245,57 +260,25 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_project` (IN `projectID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT	
-    	p.projectID,
-        p.projectOwnerID,
-        CONCAT(u.fName," ",u.lName) as projectOwner
-    FROM
-    	projects p 
-    LEFT JOIN
-    	accounts.users u
-    ON
-    	p.projectOwnerID = u.ID
-    WHERE
-    	p.projectID = projectID;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_project_task_list` (IN `projectID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT	
-    	t.ID AS indexID,
-    	t.taskID,
-        t.ownerID,
-        CONCAT(u.fName," ",lName) AS owner,
-        t.sender,
-        t.receiver,
-        t.docType
-    FROM
-    	tasks t
-    LEFT JOIN
-    	accounts.users u 
-    ON
-    	t.ownerID = u.ID
-    WHERE
-		t.projectID = projectID;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_recommendations` (IN `requestID` INT)  NO SQL
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
 		r.ID as recommendationID,
         r.requestID,
-        r.recommendation
+        r.recommendation,
+        CONCAT(u.fName, " ", u.lName) as recommendedBy,
+        r.recommendedAt
     FROM
     	recommendations r 
+    LEFT JOIN
+    	accounts.users u
+    ON
+    	r.recommendedBy = u.ID
     WHERE
     	r.requestID = requestID
+    ORDER BY	
+    	r.ID
        ;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
@@ -304,18 +287,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_request` (IN `projectID` INT, I
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
-    	r.requestID,
-    	t.indexID,
-    	p.projectID,
+    	p.ID,
+        p.projectID,
         p.projectOwner,
+        t.indexID,
         t.taskID,
         t.owner,
         t.sender,
         t.receiver,
         t.docType,
+    	r.requestID,
         r.environment,
 		r.revisionNumber,
-        r.urgency,
         r.status,
         r.requestDate,
         r.deployDate,
@@ -324,6 +307,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -351,7 +335,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 		(
         	SELECT 
@@ -373,7 +357,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.assigneeID = b.ID
         )r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         WHERE	
         	t.taskID = taskID
        	AND
@@ -388,15 +372,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_shared_requests` (IN `userID` I
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
-    	r.requestID,
-    	t.indexID,
-    	p.projectID,
+    	p.ID,
+        p.projectID,
         p.projectOwner,
+        t.indexID,
         t.taskID,
         t.owner,
         t.sender,
         t.receiver,
         t.docType,
+    	r.requestID,
         r.environment,
 		r.revisionNumber,
         r.status,
@@ -407,6 +392,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -435,7 +421,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
         (
         	SELECT 
@@ -456,7 +442,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.assigneeID = b.ID
         )r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         LEFT JOIN
         	shared_requests sr
         ON
@@ -466,28 +452,6 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
         WHERE
         	sr.userID = userID
        ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_task` (IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	t.ID AS indexID,
-    	t.taskID,
-        t.ownerID,
-        CONCAT(u.fName," ",lName) AS owner,
-        t.sender,
-        t.receiver,
-        t.docType
-    FROM
-    	tasks t
-    LEFT JOIN
-    	accounts.users u 
-    ON
-    	t.ownerID = u.ID
-    WHERE
-		t.taskID = taskID;
 SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
@@ -504,6 +468,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -531,11 +496,11 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 			requests r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         LEFT JOIN
         	change_type ct
         ON
@@ -556,11 +521,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_translation_change` (IN `projec
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
+    	tc.ID,
 		tc.translationID,
         tc.changes
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -588,11 +555,11 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 			requests r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         LEFT JOIN
         	change_type ct
         ON
@@ -640,11 +607,11 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
    	LEFT JOIN
     	tasks t
     ON
-    	t.projectID = p.projectID
+    	t.projectID = p.ID
     LEFT JOIN
     	requests r
     ON
-    	t.taskID = r.taskID
+    	t.ID = r.taskID
     LEFT JOIN
     	change_type ct
     ON
@@ -684,11 +651,11 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
    	LEFT JOIN
     	tasks t
     ON
-    	t.projectID = p.projectID
+    	t.projectID = p.ID
     LEFT JOIN
     	requests r
     ON
-    	t.taskID = r.taskID
+    	t.ID = r.taskID
     LEFT JOIN
     	change_type ct
     ON
@@ -713,15 +680,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_user_requests` (IN `userID` INT
 BEGIN
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 	SELECT
-    	r.requestID,
-    	t.indexID,
-    	p.projectID,
+    	p.ID,
+        p.projectID,
         p.projectOwner,
+        t.indexID,
         t.taskID,
         t.owner,
         t.sender,
         t.receiver,
         t.docType,
+    	r.requestID,
         r.environment,
 		r.revisionNumber,
         r.status,
@@ -732,6 +700,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
     FROM
 		(
 			SELECT
+            	a.ID,
 				a.projectID,
 				CONCAT(b.fName," ",b.lName) AS projectOwner
 			FROM
@@ -760,7 +729,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.ownerID = b.ID
 		)t
 		ON
-			t.projectID = p.projectID
+			t.projectID = p.ID
 		LEFT JOIN
 		(
         	SELECT 
@@ -781,7 +750,7 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 				a.assigneeID = b.ID
         )r
 		ON
-			r.taskID = t.taskID
+			r.taskID = t.indexID
         WHERE
         	t.ownerID = userID
        ;
@@ -939,6 +908,145 @@ BEGIN
     (translationID, changes);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_project_id` (IN `projectID` INT)  NO SQL
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	ID
+    FROM
+    	projects p
+    WHERE
+    	p.projectID = projectID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_request` (IN `taskID` INT, IN `environment` VARCHAR(50), IN `revisionNumber` INT)  NO SQL
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	r.ID
+    FROM
+    	tasks t 
+    LEFT JOIN
+    	requests r 
+    ON 
+    	t.ID = r.taskID
+    WHERE
+    	t.taskID = taskID
+    AND
+    	r.environment = environment
+    AND
+    	r.revisionNumber = revisionNumber
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_task_id` (IN `taskID` INT)  NO SQL
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	ID
+    FROM
+    	tasks t 
+    WHERE
+    	t.taskID = taskID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_impacted` (IN `inputID` INT, IN `newSender` VARCHAR(50), IN `newReceiver` VARCHAR(50), IN `newDocType` VARCHAR(50), IN `newInternalIDs` VARCHAR(300))  NO SQL
+BEGIN
+    UPDATE
+        impacted
+    SET
+        sender = newSender,
+        receiver = newReceiver,
+        docType = newDocType,
+        internalIDs = newInternalIDs
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_project` (IN `inputID` INT, IN `newProjectID` INT, IN `newProjectOwnerID` INT)  NO SQL
+BEGIN
+  UPDATE 
+	projects
+  SET
+     projectID 	= newProjectID,
+     projectOwnerID = newProjectOwnerID
+  WHERE
+     ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_recommendation` (IN `inputID` INT, IN `newRecommendation` LONGTEXT)  NO SQL
+BEGIN
+	UPDATE
+        recommendations
+    SET
+        recommendation = newRecommendation
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_request` (IN `inputID` INT, IN `newEnvironment` VARCHAR(10), IN `newRevisionNumber` INT, IN `newUrgency` VARCHAR(10), IN `newDeployDate` DATETIME)  NO SQL
+BEGIN
+    UPDATE 
+        requests
+    SET
+        environment 	= newEnvironment,
+        revisionNumber 	= newRevisionNumber,
+        urgency 		= newUrgency,
+        deployDate 		= newDeployDate
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_status` (IN `inputID` INT, IN `newStatus` VARCHAR(20))  NO SQL
+BEGIN
+	UPDATE 
+		requests
+    SET
+        status = newStatus
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_task` (IN `inputID` INT, IN `newTaskID` INT, IN `newOwnerID` INT, IN `newSender` VARCHAR(50), IN `newReceiver` VARCHAR(50), IN `newDocType` VARCHAR(50))  NO SQL
+BEGIN
+    UPDATE 
+        tasks
+    SET
+        taskID 	= newTaskID,
+        ownerID = newOwnerID,
+        sender 	= newSender,
+        receiver = newReceiver,
+        docType = newDocType
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_translation` (IN `inputID` INT, IN `newName` VARCHAR(50), IN `newInternalID` VARCHAR(300))  NO SQL
+BEGIN
+	UPDATE
+        translation
+    SET
+        name = newName,
+        internalID = newInternalID
+    WHERE
+        ID = inputID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_translation_changes` (IN `inputID` INT, IN `newChanges` LONGTEXT)  NO SQL
+BEGIN
+	UPDATE
+        translation_changes
+    SET
+        changes = newChanges
+    WHERE
+        ID = inputID;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -1000,7 +1108,8 @@ CREATE TABLE `projects` (
 
 INSERT INTO `projects` (`ID`, `projectID`, `projectOwnerID`) VALUES
 (1, 10620, 14),
-(2, 12424, 15);
+(2, 12424, 3),
+(5, 12, 5);
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1131,7 @@ CREATE TABLE `recommendations` (
 
 INSERT INTO `recommendations` (`ID`, `requestID`, `recommendation`, `recommendedBy`, `recommendedAt`) VALUES
 (2, 7, '\r\nsisweb-uk	sisemail-uk	CreditNote\r\n\r\nsisweb-ukcreditnotetob2bexml\r\nRemove flatFile \r\n\r\nbool Translation::mapFile(Invoice *docs, YB_FlatFile * flatFile, string &deliveryMethod, string &documentID, string &internalID)\r\n\r\nsisweb-uktosisemail-ukcreditnotecustom\r\ninitialize idx as -1 \r\n\r\nsisweb-ukcreditnotefromb2bexml\r\nWrong translation name for current relationship\r\n\r\n\r\n-------\r\nsis-uk	sisweb-uk	CreditNote\r\n\r\nsis-ukcreditnotetob2bexml\r\nRemove flatFile \r\n\r\nbool Translation::mapFile(Invoice *docs, YB_FlatFile * flatFile)\r\n\r\nRemove raiseInternalError \r\n\r\n    if(!mapFile(docs, flatFile))\r\n    {\r\n        raiseInternalError(\"02\", \"Error in mapping, ERROR MESSAGE: \" + errorMessage);\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    }\r\n\r\n\r\nsis-uktosisweb-ukcreditnotecustom\r\nExported\r\nsisweb-ukdocumentroutingcreditnotefromb2bexml\r\nWrong translation name for current relationship\r\n\r\n\r\n\r\nN \r\n06/02/20\r\nsisweb-ukdocumentroutingcreditnotefromb2bexml\r\nThe translation name is kept as it is used for Document Routing to WebPortal\r\n(This was done similar to Norbain projects translations)\r\n\r\n\r\n\r\nsisweb-ukcreditnotefromb2bexml\r\nWe have kept this translation name as it is used for 2 different receiver accounts\r\nFrom sisweb-uk to sisemail-uk\r\nFrom sisweb-uk to sisdisplay-uk\r\n\r\n\r\n\r\n================================\r\nKindly Note:\r\n\r\nAs this is a new translations, we need to follow our standard in naming translation. \r\n\r\nWrong: sisweb-ukdocumentroutingcreditnotefromb2bexml\r\nCorrect: sisweb-ukcreditnotefromb2bexml (exist in your other relationship which should be use in here)\r\n\r\nWrong: sisweb-ukcreditnotefromb2bexml\r\nCorrect: sisemail-ukcreditnotefromb2bexml (not exisiting yet)\r\n\r\nAlso we are only implementing One XR per Receiver or One Receiver per XR, for all new translations\r\n\r\n\r\n\r\n\r\n', 3, '2020-02-19 05:58:46'),
-(4, 9, 'sis-uktosisweb-ukcreditnotecustom\r\nAdd a isFileExist before using deleteFile\r\n\r\nRemove the raiseError in the deleteFile. if the  lookupBankDetails and lookupLogoPath fails as this will cause PQ error \r\n\r\nCode:\r\nif(!lookupLogoPaths(branchCode, vnEmail, headerLogoPath, footerLogoPath, headerCompanyURLByBranch, trailerCompanyURLByBranch, headerLogoWidth, trailerNotes))\r\n{\r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"08\", \"Failed to delete temp html translation file : \" + error);\r\n        delete lookupDB;\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    }\r\n    \r\n    delete docs;\r\n    delete lookupDB;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nif(headerLogoWidth.length() == 0)\r\n    headerLogoWidth = \"250\";\r\n\r\n// Lookup Company Bank Details\r\nif(!lookupBankDetails(vnEmail,sortCode,accNumber))\r\n{\r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"09\", \"Failed to delete temp html translation file : \" + error);\r\n        delete lookupDB;\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    }\r\n    \r\n    delete docs;\r\n    delete lookupDB;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nSample:\r\nif(!lookupLogoPaths(branchCode, vnEmail, headerLogoPath, footerLogoPath, headerCompanyURLByBranch, trailerCompanyURLByBranch, headerLogoWidth, trailerNotes))\r\n{\r\n    if(YB_V2Util::isFileExist(getOutputFileName() + \".htm\"))\r\n        YB_V2Util::deleteFile(getOutputFileName() + \".htm\")\r\n    \r\n    delete docs;\r\n    delete lookupDB;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nif(headerLogoWidth.length() == 0)\r\n    headerLogoWidth = \"250\";\r\n\r\n// Lookup Company Bank Details\r\nif(!lookupBankDetails(vnEmail,sortCode,accNumber))\r\n{\r\n    if(YB_V2Util::isFileExist(getOutputFileName() + \".htm\"))\r\n        YB_V2Util::deleteFile(getOutputFileName() + \".htm\")\r\n    \r\n    delete docs;\r\n    delete lookupDB;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nFix the arrangement of the raiseError to avoid overlapping \r\n\r\nCode:\r\nstring *tempDBSettings = YB_V2Util::getDBLookupSettings();\r\nif(tempDBSettings[0].length() <= 0 || tempDBSettings[1].length() <= 0 || tempDBSettings[2].length() <= 0)\r\n{\r\n    raiseInternalError(\"03\", \"Lookup Error - DBLookupSettings, acquired from YB_V2Util::getDBLookupSettings(), incomplete\");\r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"04\", \"Failed to delete temp html translation file : \" + error);\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    } \r\n    delete docs;\r\n    return EXIT_FAILURE; \r\n}\r\n\r\nlookupDB = new YB_MySQL(tempDBSettings[0], tempDBSettings[1], tempDBSettings[2], tempDBSettings[3]);\r\nif(lookupDB->isError())\r\n{\r\n    raiseInternalError(\"05\", \"Lookup Error For Database B2BE_CUSTOM_LOOKUP - \" + lookupDB->getErrorMessage());\r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"06\", \"Failed to delete temp html translation file : \" + error);\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    } \r\n    delete docs;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nSample:\r\nstring *tempDBSettings = YB_V2Util::getDBLookupSettings();\r\nif(tempDBSettings[0].length() <= 0 || tempDBSettings[1].length() <= 0 || tempDBSettings[2].length() <= 0)\r\n{\r\n    \r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"04\", \"Failed to delete temp html translation file : \" + error);\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    } \r\n\r\n    raiseInternalError(\"03\", \"Lookup Error - DBLookupSettings, acquired from YB_V2Util::getDBLookupSettings(), incomplete\");\r\n    delete docs;\r\n    return EXIT_FAILURE; \r\n}\r\n\r\nlookupDB = new YB_MySQL(tempDBSettings[0], tempDBSettings[1], tempDBSettings[2], tempDBSettings[3]);\r\nif(lookupDB->isError())\r\n{\r\n    \r\n    if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))\r\n    {\r\n        raiseInternalError(\"06\", \"Failed to delete temp html translation file : \" + error);\r\n        delete docs;\r\n        return EXIT_FAILURE;\r\n    } \r\n\r\n    raiseInternalError(\"05\", \"Lookup Error For Database B2BE_CUSTOM_LOOKUP - \" + lookupDB->getErrorMessage());\r\n    delete docs;\r\n    return EXIT_FAILURE;\r\n}\r\n\r\nAs this is still new translation, move the following declared string/int/bool values from h file to cpp file\r\n    string font_arial;\r\n    string font_times;\r\n    string font_courier;\r\n    string btCode;\r\n    string faxNumber;\r\n    string emailAddress;\r\n    bool isOriginal;\r\n', 3, '2020-02-19 05:58:46');
+(4, 9, 'sis-uktosisweb-ukcreditnotecustom Add a isFileExist before using deleteFile  Remove the raiseError in the deleteFile. if the  lookupBankDetails and lookupLogoPath fails as this will cause PQ error   Code: if(!lookupLogoPaths(branchCode, vnEmail, headerLogoPath, footerLogoPath, headerCompanyURLByBranch, trailerCompanyURLByBranch, headerLogoWidth, trailerNotes)) {     if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"08\", \"Failed to delete temp html translation file : \" + error);         delete lookupDB;         delete docs;         return EXIT_FAILURE;     }          delete docs;     delete lookupDB;     return EXIT_FAILURE; }  if(headerLogoWidth.length() == 0)     headerLogoWidth = \"250\";  // Lookup Company Bank Details if(!lookupBankDetails(vnEmail,sortCode,accNumber)) {     if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"09\", \"Failed to delete temp html translation file : \" + error);         delete lookupDB;         delete docs;         return EXIT_FAILURE;     }          delete docs;     delete lookupDB;     return EXIT_FAILURE; }  Sample: if(!lookupLogoPaths(branchCode, vnEmail, headerLogoPath, footerLogoPath, headerCompanyURLByBranch, trailerCompanyURLByBranch, headerLogoWidth, trailerNotes)) {     if(YB_V2Util::isFileExist(getOutputFileName() + \".htm\"))         YB_V2Util::deleteFile(getOutputFileName() + \".htm\")          delete docs;     delete lookupDB;     return EXIT_FAILURE; }  if(headerLogoWidth.length() == 0)     headerLogoWidth = \"250\";  // Lookup Company Bank Details if(!lookupBankDetails(vnEmail,sortCode,accNumber)) {     if(YB_V2Util::isFileExist(getOutputFileName() + \".htm\"))         YB_V2Util::deleteFile(getOutputFileName() + \".htm\")          delete docs;     delete lookupDB;     return EXIT_FAILURE; }  Fix the arrangement of the raiseError to avoid overlapping   Code: string *tempDBSettings = YB_V2Util::getDBLookupSettings(); if(tempDBSettings[0].length() <= 0 || tempDBSettings[1].length() <= 0 || tempDBSettings[2].length() <= 0) {     raiseInternalError(\"03\", \"Lookup Error - DBLookupSettings, acquired from YB_V2Util::getDBLookupSettings(), incomplete\");     if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"04\", \"Failed to delete temp html translation file : \" + error);         delete docs;         return EXIT_FAILURE;     }      delete docs;     return EXIT_FAILURE;  }  lookupDB = new YB_MySQL(tempDBSettings[0], tempDBSettings[1], tempDBSettings[2], tempDBSettings[3]); if(lookupDB->isError()) {     raiseInternalError(\"05\", \"Lookup Error For Database B2BE_CUSTOM_LOOKUP - \" + lookupDB->getErrorMessage());     if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"06\", \"Failed to delete temp html translation file : \" + error);         delete docs;         return EXIT_FAILURE;     }      delete docs;     return EXIT_FAILURE; }  Sample: string *tempDBSettings = YB_V2Util::getDBLookupSettings(); if(tempDBSettings[0].length() <= 0 || tempDBSettings[1].length() <= 0 || tempDBSettings[2].length() <= 0) {          if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"04\", \"Failed to delete temp html translation file : \" + error);         delete docs;         return EXIT_FAILURE;     }       raiseInternalError(\"03\", \"Lookup Error - DBLookupSettings, acquired from YB_V2Util::getDBLookupSettings(), incomplete\");     delete docs;     return EXIT_FAILURE;  }  lookupDB = new YB_MySQL(tempDBSettings[0], tempDBSettings[1], tempDBSettings[2], tempDBSettings[3]); if(lookupDB->isError()) {          if(!YB_V2Util::deleteFile(getOutputFileName() + \".htm\"))     {         raiseInternalError(\"06\", \"Failed to delete temp html translation file : \" + error);         delete docs;         return EXIT_FAILURE;     }       raiseInternalError(\"05\", \"Lookup Error For Database B2BE_CUSTOM_LOOKUP - \" + lookupDB->getErrorMessage());     delete docs;     return EXIT_FAILURE; }  As this is still new translation, move the following declared string/int/bool values from h file to cpp file     string font_arial;     string font_times;     string font_courier;     string btCode;     string faxNumber;     string emailAddress;     bool isOriginal;', 3, '2020-02-19 05:58:46');
 
 -- --------------------------------------------------------
 
@@ -1048,14 +1157,14 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`ID`, `taskID`, `environment`, `revisionNumber`, `urgency`, `status`, `requestDate`, `deployDate`, `assigneeID`, `assignedAt`) VALUES
-(3, 23858, 'UAT', 1, 'Low', 'Exported', '2020-02-19 03:33:39', '2020-02-17 11:32:43', 11, '2020-02-17 03:32:43'),
-(4, 23858, 'UAT', 2, 'Low', 'Exported', '2020-02-19 03:33:39', '2020-02-19 11:32:43', 11, '2020-02-19 03:32:43'),
-(5, 23858, 'PROD', 1, 'High', 'Exported', '2020-02-19 03:44:10', '2020-02-19 11:39:45', 11, '2020-02-19 03:39:45'),
-(6, 23858, 'PROD', 2, 'High', 'Exported', '2020-02-19 03:44:10', '2020-02-19 11:39:45', 11, '2020-02-19 03:39:45'),
-(7, 23733, 'UAT', 1, 'Medium', 'Exported', '2020-02-19 03:52:38', '2020-02-19 11:50:46', 3, '2020-02-19 03:50:46'),
-(8, 23733, 'UAT', 2, 'Medium', 'Exported', '2020-02-19 03:52:38', '2020-02-19 11:50:46', 6, '2020-02-19 03:50:46'),
-(9, 23733, 'UAT', 3, 'Medium', 'Exported', '2020-02-19 04:04:49', '2020-02-19 12:04:21', 12, '2020-02-19 04:04:21'),
-(10, 23733, 'UAT', 4, 'Medium', 'Exported', '2020-02-19 04:08:25', '2020-02-19 12:08:01', 12, '2020-02-19 04:08:01');
+(3, 1, 'UAT', 1, 'Low', 'Exported', '2020-02-19 03:33:39', '2020-02-17 11:32:43', 11, '2020-02-17 03:32:43'),
+(4, 1, 'UAT', 2, 'Low', 'Exported', '2020-02-19 03:33:39', '2020-02-19 11:32:43', 11, '2020-02-19 03:32:43'),
+(5, 1, 'PROD', 1, 'High', 'Exported', '2020-02-19 03:44:10', '2020-02-19 11:39:45', 11, '2020-02-19 03:39:45'),
+(6, 1, 'PROD', 2, 'High', 'Exported', '2020-02-19 03:44:10', '2020-02-19 11:39:45', 11, '2020-02-19 03:39:45'),
+(7, 2, 'UAT', 1, 'Medium', 'Exported', '2020-02-19 03:52:38', '2020-02-19 11:50:46', 3, '2020-02-19 03:50:46'),
+(8, 2, 'UAT', 2, 'Medium', 'Exported', '2020-02-19 03:52:38', '2020-02-19 11:50:46', 6, '2020-02-19 03:50:46'),
+(9, 2, 'UAT', 3, 'Medium', 'Exported', '2020-02-19 04:04:49', '2020-02-19 12:04:21', 12, '2020-02-19 04:04:21'),
+(10, 2, 'UAT', 4, 'Low', 'Assigned', '2020-02-19 04:08:25', '2020-02-26 14:14:29', 3, '2020-02-26 07:20:25');
 
 -- --------------------------------------------------------
 
@@ -1098,8 +1207,9 @@ CREATE TABLE `tasks` (
 --
 
 INSERT INTO `tasks` (`ID`, `taskID`, `projectID`, `ownerID`, `sender`, `receiver`, `docType`) VALUES
-(1, 23858, 10620, 11, 'telstradealers-au', 'vita-au', 'Invoice'),
-(2, 23733, 12424, 3, 'Multiple', 'Multiple', 'PurchaseOrder');
+(1, 23858, 1, 11, 'telstradealers-au', 'vita-au', 'Invoice'),
+(2, 23733, 2, 3, 'Multiple', 'Multiple', 'PurchaseOrder'),
+(4, 1234, 5, 2, 'qwe', 'qwert', 'Invoice');
 
 -- --------------------------------------------------------
 
@@ -1131,7 +1241,7 @@ INSERT INTO `translation` (`ID`, `changeTypeID`, `name`, `internalID`) VALUES
 (10, 5, 'sisweb-ukcreditnotefromb2bexml', ''),
 (11, 6, 'sis-uktosisweb-ukcreditnotecustom', '457218688067966'),
 (13, 7, 'sisweb-ukcreditnotefromb2bexml ', '457218688068029'),
-(14, 8, 'sisweb-ukcreditnotefromb2bexml', '457218688068029');
+(14, 8, 'sisweb-ukcreditnotefromb2bexml\r\n', '457218688068029');
 
 -- --------------------------------------------------------
 
@@ -1153,7 +1263,7 @@ INSERT INTO `translation_changes` (`ID`, `translationID`, `changes`) VALUES
 (1, 1, 'updated the mapping from quantity hardcoded 1 to getting the quantity value of the input'),
 (2, 2, 'Serialized items should have an individual line displayed with Qty. as 1\r\n'),
 (3, 3, 'updated the mapping from quantity hardcoded 1 to getting the quantity value of the input'),
-(4, 4, 'Serialized items should have an individual line displayed with Qty. as 1'),
+(4, 4, 'noChanges'),
 (5, 5, '1.	- Initial version\r\n- Cloned from niuks-ukcreditnotetob2bexml\r\n2.	- Removed flatfile as function argument'),
 (6, 6, '1.	- Initial version\r\n- Cloned from norbainsd-uktonorbainsdweb-ukcreditnotecustom\r\n2.	- Initial version\r\n- Cloned from norbainsd-uktonorbainsdweb-ukcreditnotecustom\r\n'),
 (7, 7, '1.	- Initial version\r\n- Cloned from norbainsdweb-ukdocumentroutinginvoicefromb2bexml\r\n'),
@@ -1162,7 +1272,7 @@ INSERT INTO `translation_changes` (`ID`, `translationID`, `changes`) VALUES
 (10, 10, '1.	- Initial version\r\n- Cloned from niukspdf-ukcreditnotefromb2bexml\r\n2.	- Updated header and trailer details\r\n3.	Revert Changes\r\n- Updated header and trailer details\r\n4.	- Updated mapping notes in trailer\r\n5.	- Updated notes size\r\n6.	-Updated Credit Note String Length\r\n7.	- Removed unused code\r\n8.	- Updated logic to split notes to two lines'),
 (11, 11, '- Updated inserting Account number to ActivityIdentifier table'),
 (12, 13, '- Updated code for receiver email address\r\n- Updated code for delete statements of html file\r\n- Arranged raise internal Errors\r\n- Removed variables in header file\r\n'),
-(13, 14, '- Updated sender email address\r\n- Added logic for noroute emails\r\n');
+(13, 14, 'noChange');
 
 --
 -- Indexes for dumped tables
@@ -1258,7 +1368,7 @@ ALTER TABLE `impacted`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `recommendations`
@@ -1282,7 +1392,7 @@ ALTER TABLE `shared_requests`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `translation`
@@ -1329,7 +1439,8 @@ ALTER TABLE `recommendations`
 -- Constraints for table `requests`
 --
 ALTER TABLE `requests`
-  ADD CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`assigneeID`) REFERENCES `accounts`.`users` (`ID`);
+  ADD CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`assigneeID`) REFERENCES `accounts`.`users` (`ID`),
+  ADD CONSTRAINT `requests_ibfk_3` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`ID`);
 
 --
 -- Constraints for table `shared_requests`
@@ -1343,8 +1454,8 @@ ALTER TABLE `shared_requests`
 -- Constraints for table `tasks`
 --
 ALTER TABLE `tasks`
-  ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`projectID`) REFERENCES `projects` (`projectID`),
-  ADD CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`ownerID`) REFERENCES `accounts`.`users` (`ID`);
+  ADD CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`ownerID`) REFERENCES `accounts`.`users` (`ID`),
+  ADD CONSTRAINT `tasks_ibfk_3` FOREIGN KEY (`projectID`) REFERENCES `projects` (`ID`);
 
 --
 -- Constraints for table `translation`

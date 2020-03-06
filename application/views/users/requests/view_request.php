@@ -35,12 +35,14 @@
 		<thead class="header">
 			<tr class="header text-dark">
 				<th colspan="4" class="text-center" onclick="comments(this.firstElementChild.textContent)">
-					REVISION <span class="hidden" id="requestID[0]"></span><span id="revisionNumber[0]"></span>
+					REVISION 
+					<span class="invisible" id="requestID[0]"></span>
+					<span id="revisionNumber[0]"></span>
 					<span id="status[0]"></span>
 				</th>
 			<tr>
 		</thead>
-
+		
 		<tbody class="translations" id="translations">
 			<tr>
 				<th>Request Date</th>
