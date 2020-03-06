@@ -30,6 +30,16 @@
         &-div {
             padding: 20px 0px 0px 0px;
             border-top: 1px solid $gray;
+            div.comments{
+                float: left;
+                background-color: $gray;
+                padding: 7px;
+                display: block;
+                &.gtass{
+                    float: right!important;
+                    background-color: $blue!important;
+                }   
+            }         
         }
     }
     .comment-input-section {

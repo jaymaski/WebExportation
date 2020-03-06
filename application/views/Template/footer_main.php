@@ -162,7 +162,7 @@
                     $(".commentSection:not(:first)").each(function(){
                         $(this).remove();
                     });                       
-                    $(".commentSection.comments").each(function(){
+                    $(".comments").each(function(){
                         $(this).innerHTML = '';
                     });                      
                     console.log(data.recommendations);
