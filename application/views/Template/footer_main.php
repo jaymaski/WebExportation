@@ -87,7 +87,7 @@
                             });
                         }
 
-                        //Mapping
+                        //Mapping 
                         document.getElementById("revisionNumber["+i+"]").innerHTML = data.requests[i]['revisionNumber'];
                         document.getElementById("requestDate["+i+"]").innerHTML = data.requests[i]['requestDate'];
                         document.getElementById("deployDate["+i+"]").innerHTML = data.requests[i]['deployDate']; 
