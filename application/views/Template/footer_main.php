@@ -30,14 +30,13 @@
     </script>
 
     <script type="text/javascript">
-        function view_project(projectID, taskID, requestID) {        
+        function view_project(projectID, taskID) {        
             var projectID = projectID;
             var taskID = taskID;
-            var requestID = requestID;
             var json = {'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'};
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID + "/" + requestID,
+                url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID,
                 dataType: 'json',
                 data: json,
                 success:function(data) {
@@ -48,12 +47,12 @@
                     console.log(data.impacted);
 
                     //Project Details
-                    document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
-                    document.getElementById("taskID").innerHTML = data.curr_request[0]['taskID'];
-                    document.getElementById("projectOwner").innerHTML = data.curr_request[0]['projectOwner'];
-                    document.getElementById("docType").innerHTML = data.curr_request[0]['docType'];
-                    document.getElementById("sender").innerHTML = data.curr_request[0]['sender'];
-                    document.getElementById("receiver").innerHTML = data.curr_request[0]['receiver'];
+                    document.getElementById("projectID").innerHTML = data.requests[0]['projectID'];
+                    document.getElementById("taskID").innerHTML = data.requests[0]['taskID'];
+                    document.getElementById("projectOwner").innerHTML = data.requests[0]['projectOwner'];
+                    document.getElementById("docType").innerHTML = data.requests[0]['docType'];
+                    document.getElementById("sender").innerHTML = data.requests[0]['sender'];
+                    document.getElementById("receiver").innerHTML = data.requests[0]['receiver'];
                     
                     var requestsNum = Object.keys(data.requests).length;
                     var translationNum = Object.keys(data.translations).length;
@@ -164,7 +163,10 @@
                     });                       
                     $(".comments").each(function(){
                         $(this).innerHTML = '';
-                    });                      
+                    });     
+                    $(".names").each(function(){
+                        $(this).innerHTML = '';
+                    });                                      
                     console.log(data.recommendations);
 
                     for(var l = 0; l < commentsNum; l++){
@@ -183,6 +185,7 @@
 
                         //Mapping              
                         document.getElementById("comments["+l+"]").innerHTML = data.recommendations[l]['recommendation'];
+                        document.getElementById("names["+l+"]").innerHTML = data.recommendations[l]['recommendedBy'];
                     }
                 }
             });            
@@ -353,5 +356,63 @@
             documentType.innerHTML =documentTypeContent;
         }    
     </script>
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            // Detect pagination click
+            $('#pagination').on('click','a',function(e){
+                e.preventDefault(); 
+                var pageno = $(this).attr('data-ci-pagination-page');
+                loadPagination(pageno);
+            });
+
+            loadPagination(0);
+
+            // Load pagination
+            function loadPagination(pagno){
+                $.ajax({
+                url:"<?php echo site_url('request/loadRecord'); ?>/" + pagno,
+                type: 'get',
+                dataType: 'json',
+                success: function(response){
+                    $('#pagination').html(response.pagination);
+                        createTable(response.my_requests,response.row);
+                    }
+                });
+            }
+
+            // Create table list
+            function createTable(my_requests,sno){
+                sno = Number(sno);
+                $('#requests tbody').empty();
+                for(index in my_requests){
+                    if(my_requests[index].environment == 'UAT') {
+                        if(my_requests[index].status == 'Exported') {
+                            var projectID = my_requests[index].projectID;
+                            var taskID = my_requests[index].taskID;
+                            var environment = my_requests[index].environment;
+                            var status = my_requests[index].status;
+                            var owner = my_requests[index].owner;
+                            var requestDate = my_requests[index].requestDate;
+                            //content = content.substr(0, 60) + " ...";
+                            //var link = my_requests[index].link;
+                            sno+=1;
+
+                            var tr = "<tr onclick='this.onclick = view_project(`"+ projectID +"`, `"+ taskID +"`)' data-toggle='modal' data-target='#view_request'>";
+                            //var tr = "<tr" + onclick = "this.onclick = view_project('" + my_requests[index].projectID + ", '" + my_requests[index].taskID + "') data-toggle='modal' data-target='#view_request'" + ">";
+                            tr += "<td>"+ projectID +"</td>";
+                            tr += "<td>"+ "PROD_CR-csremail-au-wiscust-au-PO(B2BE#3893292)" +"</td>";
+                            tr += "<td>"+ owner +"</td>";
+                            tr += "<td>"+ "NORMAL" +"</td>";
+                            tr += "<td>"+ requestDate +"</td>";                            
+                            tr += "<td>"+ environment +"</td>";     
+                            tr += "<td>"+ status +"</td>"; 
+                            tr += "</tr>";
+                            $('#requests tbody').append(tr);
+                        }
+                    }
+                }
+            }
+        });
+    </script>    
 </body>
 </html>

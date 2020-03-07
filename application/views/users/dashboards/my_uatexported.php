@@ -34,11 +34,28 @@
 				?>
 			</tbody>
 		</table>
-		<?php if($counter == 0){ ?>
+
+		<table class="table-hover table dashboard" id='requests'>
+			<thead>
+				<tr>
+					<th id="request-id">ID</th>
+					<th id="request-name">NAME</th>
+					<th id="requestor-name">OWNER</th>
+					<th id="urgency">URGENCY</th>
+					<th id="request-date">EXPORTATION DATE</th>
+					<th id="environment">ENVIRONMENT</th>
+					<th id="status">STATUS</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		
+		<div style='margin-top: 10px;' id='pagination'></div>			
+		<!-- <?php if($counter == 0){ ?>
 			<?php $this->view('errors/no-data-found'); ?>
-		<?php	}	?>
+		<?php }	?> -->
 	</div>
-	<?php 	} else{?>
+	<!-- <?php } else { ?>
 		<?php $this->view('errors/no-data-found'); ?>
-	<?php }?>
+	<?php } ?> -->
 </div>

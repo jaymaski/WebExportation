@@ -13,7 +13,7 @@ class Request extends CI_Controller {
     }
 	//GET
 	//----------------------------------------------------
-	function view_request($projectID, $taskID, $requestID){
+	function view_request($projectID, $taskID){
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}		
@@ -21,8 +21,8 @@ class Request extends CI_Controller {
 		$data['title'] = '';
 		$CI = &get_instance();
 		$data['requests'] = $this->request->get_request($projectID, $taskID);
-		mysqli_next_result($CI->db->conn_id);
-		$data['curr_request'] =  $this->request->get_current_request($requestID);
+		// mysqli_next_result($CI->db->conn_id);
+		// $data['curr_request'] =  $this->request->get_current_request($requestID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['translations'] = $this->translation->get_translation($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
@@ -155,6 +155,63 @@ class Request extends CI_Controller {
 		$this->request->assign_request_to_me($rID, $this->session->userdata('user_id'));
 	}
 	
+	function loadRecord($rowno = 0){
+
+		// Row per page
+		$rowperpage = 2;
 	
+		// Row position
+		if($rowno != 0){
+			$rowno = ($rowno-1) * $rowperpage;
+		}
+	 
+		// All records count
+		$allcount = 5;
 	
+		// Get records
+		$CI = &get_instance();
+		$my_requests = $this->request->get_user_requests($this->session->userdata('user_id'));
+		
+		// Pagination Configuration
+		$config['use_page_numbers'] = TRUE;
+		$config['total_rows'] = $allcount;
+		$config['per_page'] = $rowperpage;
+
+		// $config["total_rows"] = $totalRecords;
+		// $config["per_page"] = $limit;
+		// $config['use_page_numbers'] = TRUE;
+		// $config['page_query_string'] = TRUE;
+		// $config['enable_query_strings'] = TRUE;
+		// $config['num_links'] = 1;
+
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = '<<';
+		$config['last_link'] = '>>';
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['prev_link'] = '<';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['next_link'] = '>';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+		$config['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';		
+	
+		// Initialize
+		$this->pagination->initialize($config);
+	
+		// Initialize $data Array
+		$data['pagination'] = $this->pagination->create_links();
+		$data['my_requests'] = $my_requests;
+		$data['row'] = $rowno;
+	
+		echo json_encode($data);
+	}
 }

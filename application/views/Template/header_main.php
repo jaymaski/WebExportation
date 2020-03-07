@@ -151,6 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="modal-body comment-section-div">
 									<h4>Comments/Replies for Revision #<span id="revNum"></span></h5>
 									<div class="commentSection" id="commentSection">
+										<div class="names" id="names[0]"></div>
 										<div class="comments" id="comments[0]"></div>
 									</div>
 								</div>								
