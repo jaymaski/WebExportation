@@ -1,5 +1,4 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Request extends CI_Controller
@@ -86,31 +85,37 @@ class Request extends CI_Controller
 
 	function save()
 	{
-		$data = json_decode($this->input->post("data"), true); //json_decode($this->input->post("data"));
+		$data = json_decode('{"project":{"projectId":"45678","taskId":"456789","projectOwner":"Dememor Mendoza","documentType":"PurchaseOrder","projectOwnerId":"1","senderID":"mdpl-au","receiverID":"mdp-nz","server":"MapEU","highlightNote":"","devLog":"","requestDate":"03/10/2020","deployDate":"03/10/2020"},"translationDetails":{"translation":{"0":{"testId":"987654654","translationName":"mdpl-automdp-nzcustom","releaseAsDocType":"PurchaseOrder","translationChange":"asdgasdgadgadsgadsfasdfdsf","impacted":{"0":{"sender":"","recever":"","documentType":"","testvslive":""}}}}}}',true);
+		//$data = json_decode($this->input->post("data"),true); //$data = json_decode($jsonData, true); //
+		$response = array();
+		$project = $data['project'];
+		$translation = $data['translationDetails']['translation'];
+		$insertedProjectID = $this->request->insert_project($project['projectId'], (int)$project['projectOwnerId']);
 
-		echo json_encode($data['projectId']);
+		$insertedTaskID = $this->request->insert_task((int)$project['taskId'], (int)$insertedProjectID[0]->insertedProjectID, (int)$project['projectOwnerId'], $project['senderID'], $project['receiverID'], $project['documentType']);
+		 for($i =0; $i < count($translation); $i++)
+		 {
+			$testId = $translation[$i]['testId'];
+			$translationName = $translation[$i]['translationName'];
+			$translationChange = $translation[$i]['translationChange'];
+
+			$insertedTranslationID = $this->request->insert_translation(1, $translationName, (int)$testId);
+			$insertTranslationChangeID = $this->request->insert_translation_change((int)$insertedTranslationID[0]->translationID, $translationChange);
+			$impacted = $translation[$i]['impacted'];
+			for($j =0; $j < count($impacted); $j++)
+			{
+				$docType = $impacted[$j]['documentType'];
+				$sender = $impacted[$j]['sender'];
+				$receiver = $impacted[$j]['recever'];
+				$internalIDs = $impacted[$j]['testvslive'];
+				if(strlen($docType) ==0 && strlen($sender) ==0 &&strlen($receiver) ==0 &&strlen($internalIDs) ==0){
+					$impactedID = $this->request->insert_impacted((int)$insertedTranslationID[0]->translationID, $sender, $receiver, $docType, $internalIDs);
+
+				}
+			}
+		 }
+		 $response =array("id" => $insertedProjectID[0]->insertedProjectID,"taskID" => $insertedTaskID[0]->insertedIndexID,"translationID" => $insertedTranslationID[0]->translationID,"translationChangeID" => $insertTranslationChangeID[0]->translationID,"impactedID" => $impactedID[0]->translationID);
+		  
+		 echo json_encode($response);
 	}
-
-
-	// ADD REQUEST
-	// function add_request(){
-
-	// $insertedProjectID = $this->request->insert_project($projectID, $projectOwnerID);
-	// $insertedTaskID = $this->request->insert_task($taskID, $projectID, $ownerID, $sender, $receiver, $docType);
-	// $insertedRequestID = $this->request->insert_request($taskID, $environment, $urgency, $status, $revisionNumber, $requestDate);
-
-	// foreach($formTranslations as $translation)
-
-	// $insertedChangeTypeID = $this->change_type->insert_change_type($insertedRequestID, "Translation");
-	// $insertedTranslationID = $this->translation->insert_translation($insertedChangeTypeID, $name, $internalID);
-
-	// foreach($formTranslationChanges as changes)
-	// $this->translation->insert_translation_change($insertedTranslationID, $changes);
-
-	// foreach($formImpacted as $impacted)
-	// $this->translation->insert_impacted($insertedTranslationID, $sender, $receiver, $docType, $internalIDs);
-
-	// return true;		
-	// }
-
 }

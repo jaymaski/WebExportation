@@ -17,8 +17,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 	<!-- Font Awesome JS -->
 	<link href="<?php echo base_url(); ?>assets/fonts/fontawesome/css/all.css" rel="stylesheet">
+	<script src="<?php echo base_url(); ?>assets/script/custom.js"></script>
 	<!-- Bootstrap CSS/JS-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<!-- Google Fonts CDN -->
@@ -95,121 +97,113 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 		<!-- newRequestModal -->
 		<div class="addRequest">
-			<form>
-				<div class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="newRequestModal" aria-hidden="true">
+			<form id="add-request">
+				<div data-backdrop="static" class="modal fade" id="newRequestModal" tabindex="-1" role="dialog" aria-labelledby="newRequestModal" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">New Request</h5>
+								<h5 class="modal-title">New Request</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
 							<!-- Modal Body -->
 							<div class="modal-body">
-								<section id="projectDetails">
-									<div class="container request-form">
+									<div class="container">
 										<!--  will change to modal-->
 										<label class="validation-error hide" id="formValidationError">All fields with ** are required.</label>
-										<table class="project-details  table-bordered">
+										<table>
 											<tr>
-												<th colspan="4" class="text-center">
+												<th colspan="4" >
 													PROJECT DETAILS
 												</th>
 											</tr>
 
 											<tr>
-												<th>Project ID</th>
-												<td><input class="input-class" type="text" id="projectId" name="projectId" /></td>
-												<th>Task ID</th>
-												<td><input class="input-class" type="text" id="taskId" name="taskId" /></td>
+												<td class="label-class">Project ID</td>
+												<td class="input-class" type="text" id="projectId" name="project.projectId" contenteditable="true"></td>
+												<td class="label-class">Task ID</td>
+												<td class="input-class" type="text" id="taskId" name="project.taskId" contenteditable="true"></td>
 											</tr>
 
 											<tr>
-												<th>Project Owner</th>
-												<td><input class="input-class" type="text" id="projectOwner" name="projectOwner" /></td>
-												<th>Document Type</th>
-												<td><input class="input-class" type="text" id="documentType" name="documentType" /></td>
+												<td class="label-class">Project Owner</td>
+												<td input class="input-class" type="text" id="projectOwner" name="project.projectOwner" contenteditable="true"></td>
+												<ul id="show_search_results" name="show_search_results"></ul>
+												<td class="label-class">Document Type</td>
+												<td class="input-class" type="text" id="documentType" name="project.documentType" contenteditable="true"></td>
+												<input type="hidden" class="input-class" id="project.projectOwnerId" name="project.projectOwnerId" value='0' />
 											</tr>
 
 											<tr>
-												<th>Sender</th>
-												<td><input class="input-class" type="text" id="senderID" name="senderID" /></td>
-												<th>Receiver</th>
-												<td><input class="input-class" type="text" id="receiverID" name="receiverID" /></td>
+												<td class="label-class">Sender</td>
+												<td class="input-class" type="text" id="senderID" name="project.senderID" contenteditable="true"></td>
+												<td class="label-class">Receiver</td>
+												<td class="input-class" type="text" id="receiverID" name="project.receiverID" contenteditable="true"></td>
 											</tr>
 
 											<tr>
-												<th>Client PROD Release Approval By:</th>
-												<td><input class="input-class" type="text" id="clientApproval" name="clientApproval" /></td>
-												<th>Client PROD Release Approval Date:</th>
-												<td><input class="input-class" type="text" id="clientApproveDate" name="clientApproveDate" /></td>
-											</tr>
-
-											<tr>
-												<th>Server (Mel02/MapAU/MapEU)</th>
-												<td><input class="input-class" type="text" id="server" name="server" /></td>
-												<th>Highlight Note (Optional):</th>
-												<td><input class="input-class" type="text" id="highlightNote" name="highlightNote" /></td>
+												<td class="label-class">Server (Mel02/MapAU/MapEU)</td>
+												<td class="input-class" type="text" id="server" name="project.server" contenteditable="true"></td>
+												<td class="label-class">Highlight Note (Optional):</td>
+												<td class="input-class" type="text" id="highlightNote" name="project.highlightNote" contenteditable="true"></td>
 											</tr>
 											<tr>
-												<th>Development log:</th>
-												<td colspan="4"><input class="input-dev-log" type="text" id="devLog" name="devLog" /></td>
+												<td class="label-class">Development log:</td>
+												<td colspan="4" class="input-class" type="text" id="devLog" name="project.devLog" contenteditable="true"></td>
 											</tr>
-										</table>
-									</div>
-								</section>
-								<div class="container">
-									<section id="translationDetails">
-										<table class="revisions table table-bordered">
 											<tr class="header text-dark">
-												<th colspan="4" class="text-center">
+												<th colspan="4">
 													REVISION
 												</th>
 											<tr>
-
 											<tr>
-												<th>Request Date</th>
-												<td><input class="input-class" type="text" id="requestDate" name="requestDate" /></td>
-												<th>Deployment Date</th>
-												<td><input class="input-class" type="text" id="deployDate" name="deployDate" /></td>
+												<td class="label-class">Request Date</td>
+												<td class="input-class" type="text" id="requestDate" name="project.requestDate" contenteditable="true"></td>
+												<td class="label-class">Deployment Date</td>
+												<td class="input-class" type="text" id="deployDate" name="project.deployDate" contenteditable="true"></td>
 											</tr>
 										</table>
-										<div id="translationInput" class="translationInput">
-											<div class="actions">
-												<button class="add-translation" type="button">Add translation</button>
-												<button class="remove" type="button">Remove</button>
+										<div id="translation">
+											<div>
+												<table name="revision-translations0">
+													<tr><td colspan="4" class="action" onclick="add()"><span class="span-add">Add translation</span><td></tr>
+													<tr>
+														<td class="label-class">Test Internal ID: </td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.testId" contenteditable="true"></td>
+													</tr>
+													<tr>
+														<td class="label-class">Translation Name:</td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.translationName" contenteditable="true"></td>
+														<td class="label-class">Release as Document Type:</td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.releaseAsDocType" contenteditable="true"></td>
+													</tr>
+													<tr>
+														<td class="label-class">Translation Changes</td>
+														<td colspan="4" ><textarea class="input-class" name="translationDetails.translation.0.translationChange" ></textarea></td>
+													</tr>
+												</table>
+												<table id="translationDetails.translation.0.impacted.0">
+													<tr>
+														<th colspan="4">List of impacted relationship</th>
+													</tr>
+													<tr><td colspan="4" class="action" onclick="addImpacted(this)"><span class="span-add">Add Impacted</span><td></tr>
+													<tr>
+														<td class="label-class">Sender: </td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.impacted.0.sender" contenteditable="true"></td>
+														<td class="label-class">Receiver:</td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.impacted.0.recever" contenteditable="true"></td>
+													</tr>
+													<tr>
+														<td class="label-class">Documentype: </td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.impacted.0.documentType" contenteditable="true"></td>
+														<td class="label-class">Three Internal ID (Test vs LIVE): </td>
+														<td class="input-class" type="text" name="translationDetails.translation.0.impacted.0.testvslive" contenteditable="true"></td>
+													</tr>
+												</table>
 											</div>
-											<table class="revisions table table-bordered" name="revision-translations0">
-												<tr>
-													<td><strong>Test Internal ID:</strong> </td>
-													<td colspan=""><input class="input-class" type="text" id="testInternalId0" name="testInternalId0" /></td>
-													<th colspan="">Release as Document Type:</th>
-													<td colspan=""><input class="input-class" type="text" id="releaseAsDocumentype0" name="releaseAsDocumentype0" /></td>
-												</tr>
-												<tr>
-													<th>Translation Name:</th>
-													<td><input class="input-class" type="text" id="translationName0" name="translationName0" /></td>
-													<th>Translation Changes</th>
-													<td colspan="3"><input class="input-class" type="text" id="translationChange0" name="translationChange0" /></td>
-												</tr>
-												<tr>
-													<th colspan="4">List of impacted relationship</th>
-												</tr>
-												<tr>
-													<td><strong>Relationship (Sender, Receiver & Documentype</strong> </td>
-													<td colspan=""><input class="input-class" type="text" id="impactedRelationship0" name="impactedRelationship0" /></td>
-													<th colspan="">List of 3 LIVE internal ID vs 3 TEST internal ID</th>
-													<td colspan=""><input class="input-class" type="text" id="testVsLive0" name="tesVsLive0" /></td>
-												</tr>
-												<tr class="spacer">
-													<td colspan="4"></td>
-												</tr>
-											</table>
 										</div>
-
-									</section>
-								</div>
+									</div>
 							</div>
 
 							<div class="modal-footer">

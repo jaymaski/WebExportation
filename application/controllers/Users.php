@@ -74,5 +74,16 @@ class Users extends CI_Controller {
 
 		$this->session->set_flashdata('user_loggedout', 'You are now logged output_add_rewrite_var(name, value)');
 		redirect('users/login');
-	}	
+	}
+
+	public function userList(){
+		// POST data
+		$postData = $this->input->post();
+	
+		// get data
+		$data = $this->user->getUsers($postData);
+	
+		echo json_encode($data);
+	  }
+	
 }

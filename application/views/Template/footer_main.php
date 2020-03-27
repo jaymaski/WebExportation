@@ -9,6 +9,8 @@
 <!-- jQuery Custom Scroller CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+
+
 <script type="text/javascript">
     function view_project(projectID, taskID, requestID) {
         var projectID = projectID;
@@ -145,110 +147,188 @@
 
 <script type="text/javascript">
     var regex = /^(.+?)(\d+)$/i;
-    var cloneIndex = $(".translationInput").length;
+    var addTranslationIndex = 1;
 
-    function clone() {
+    function add() {
 
-        /* $(this).parents(".translationInput").clone()
-		.insertAfter(".translationInput:last")
-        .attr("id", "translationInput" +  cloneIndex)
-        .find("*") 
-        .each(function() {
-            var id = this.id || "";
-            var match = id.match(regex) || [];
-            if (match.length == 3) {
-                this.id = match[1] + (cloneIndex);
-            }
-        })
-        .on('click', 'button.add-translation', clone)
-    .on('click', 'button.remove', remove);*/
+        let template = `             <div id="translation">
+											<div>
+												<table name="revision-translations0">
+                                                    <tr><td colspan="4" class="action-remove" onclick="remove(this)"><span class="span-remove">Remove translation</span><td></tr>
+													<tr>
+														<td class="label-class">Test Internal ID: </td>
+														<td class="input-class" type="text" name="translationDetails.translation.${addTranslationIndex}.testId" contenteditable="true"></td>
+													</tr>
+													<tr>
+														<td class="label-class">Translation Name:</td>
+														<td class="input-class" type="text" name="translationDetails.translation.${addTranslationIndex}.translationName" contenteditable="true"></td>
+														<td class="label-class">Release as Document Type:</td>
+														<td class="input-class" type="text" name="translationDetails.translation.${addTranslationIndex}.releaseAsDocType" contenteditable="true"></td>
+													</tr>
+													<tr>
+														<td class="label-class">Translation Changes</td>
+														<td colspan="4" ><textarea class="input-class" name="translationDetails.translation.${addTranslationIndex}.translationChange" ></textarea></td>
+													</tr>
+												</table>
+												<table id="translationDetails.translation.${addTranslationIndex}.impacted.0">
+													<tr>
+														<th colspan="4">List of impacted relationship</th>
+													</tr>
+													<tr><td colspan="4" class="action" onclick="addImpacted(this)"><span class="span-add">Add Impacted</span><td></tr>
+													<tr>
+														<td class="label-class">Relationship (Sender, Receiver & Documentype </td>
+														<td class="input-class" type="text" name="translationDetails.translation.${addTranslationIndex}.impacted.0.impactedRelationship" contenteditable="true"></td>
+														<td class="label-class">List of 3 LIVE internal ID vs 3 TEST internal ID</td>
+														<td class="input-class" type="text" name="translationDetails.translation.${addTranslationIndex}.impacted.0.testIdVSliveID" contenteditable="true"></td>
+													</tr>
+												</table>
+											</div>
+										</div>`;
+    let container = document.getElementById('translation');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+    addTranslationIndex++;
 
+    };
 
-        var clone = $(this).parents(".translationInput").clone()
-            .insertAfter(".translationInput:last")
-            .attr("id", "translationInput" + cloneIndex);
-        clone.find('[id]').each(function() {
-            console.log(this.id);
-            var strNewId = $(this).attr('id').replace(/[0-9]/g, cloneIndex);
-            console.log("strNewId: " + strNewId);
-            $(this).attr('id', strNewId);
-            $(this).attr('name', strNewId);
-            $(this).val('');
-        });
-        //    $('.translationInput[0]').append(clone);
+    function addImpacted(e) {
 
-        cloneIndex++;
+        var tableID ="";
+        var impIndex="";
+        var newName = "";
+        while(e.tagName.toUpperCase() !== "TABLE") {
+            e = e.parentNode;
+        }
+        tableID =e.id;
+        impIndex = tableID.substring(tableID.length-1,tableID.length);
+        newName = tableID.substring(0,tableID.length-1) + (parseInt(impIndex)+1);
+        console.log(e.id);
+        let container = document.getElementById(e.id);
+        let div = document.createElement('tr');
+        let template = `<td colspan="4" class="action" onclick="removeI(this)"><span class="span-remove">Remove Impacted</span><td>`;
+        div.innerHTML = template;
+        container.appendChild(div);
+        div = document.createElement('tr');
+            template = `<td class="label-class">Sender: </td>
+                        <td class="input-class" type="text" name="${newName}.sender" contenteditable="true"></td>
+                        <td class="label-class">Receiver:</td>
+                        <td class="input-class" type="text" name="${newName}.recever" contenteditable="true"></td>`;
+        div.innerHTML = template;
+        container.appendChild(div);
+        div = document.createElement('tr');
+            template = `<td class="label-class">Documentype: </td>
+                        <td class="input-class" type="text" name="${newName}.documentType" contenteditable="true"></td>
+                        <td class="label-class">Three Internal ID (Test vs LIVE): </td>
+                        <td class="input-class" type="text" name="${newName}.testvslive" contenteditable="true"></td>`;
+        div.innerHTML = template;
+        container.appendChild(div);
+
+        e.setAttribute("id",newName)};
+
+    function remove(e) {
+        console.log(e.parentElement.parentElement.parentElement.parentElement);
+        e.parentElement.parentElement.parentElement.parentElement.remove();
+        addTranslationIndex--;
     }
 
-    function remove() {
-        $(this).parents(".translationInput").remove();
+    function removeI(e) {
+        console.log(e.className.indexOf("action"));
+
+        while(e.tagName.toUpperCase() !== "TABLE") {
+            e = e.parentNode;
+        }
+        tableID =e.id;
+        console.log(tableID);
     }
-    $("button.add-translation").on("click", clone);
-    $("button.remove").on("click", remove);
 
     var selectedRow = null;
 
     $('#btn_save').on('click', function() {
+
+
+    let elements = document.querySelectorAll('#add-request .input-class');
+    let data = {};
+    for (let i = 0; i < elements.length; i++) {
+        let el = elements[i];
+        let val = "";
+
+      if( el.innerHTML.length !=0) val = el.innerHTML;
+      else val = el.value;
+
+      if (!val) val = "";
+
+      let fullName = el.getAttribute("name");
+      if (!fullName) continue;
+      let fullNameParts = fullName.split('.');
+      let prefix = '';
+      let stack = data;
+      for (let k = 0; k < fullNameParts.length - 1; k++) {
+        prefix = fullNameParts[k];
+        if (!stack[prefix]) {
+          stack[prefix] = {};
+        }
+        stack = stack[prefix];
+      }
+      prefix = fullNameParts[fullNameParts.length - 1];
+      if (stack[prefix]) {
+
+        let newVal = stack[prefix] + ',' + val;
+        stack[prefix] += newVal;
+      } else {
+        stack[prefix] = val;
+      }
+    }
+    let jsonData = JSON.stringify(data);
+    console.log(jsonData);
+
+    $.ajax({
+        type: "POST",
+        url: "<?php echo site_url('request/save') ?>",
+        dataType: "JSON",
+        data: {
+            data: jsonData
+        },
+        success: function(data) {
+            console.log(data);
+            console.log("pasok na :D ");
+        }
+    });
+  
+
+
         //if (validate()) {
-        var formData = {};
-        $("form").each(function() {
+        // var formData = {};
+        // $("section").each(function() {
+        //     var section = {};
 
-            $(this)
-                .find(".input-class")
-                .each(function() {
-                    formData[$(this).attr("id")] = $(this).val();
-                });
-        });
-        formData["index"] = cloneIndex;
-        var jsonData = JSON.stringify(formData);
-        console.log(jsonData);
+        //     $(this)
+        //         .find(".input-class")
+        //         .each(function() {
+        //             section[$(this).attr("name")] = $(this).val();
+        //         });
 
-        // var inputs = document.getElementsByTagName("input");
-        // var formValue = "";
-
-        // for (var i = 0; i < inputs.length; i++) {
-        //     var message = "";
-        //     if (inputs[i].getAttribute('class') == 'input-class') {
-        //         message = inputs[i].getAttribute('name') + ":" + message + inputs[i].value + ",";
-        //     }
-        //     formValue = formValue + message;
-        // }
-        // console.log(formValue);
-
-        // var str = formValue.substring(0, formValue.length - 1);
-        // console.log(str);
-        //console.log(JSON.stringify(formData));
-        //  console.log(data);
-        //  console.log(data.projectDetails.projectId);
-
-        // $.ajax({
-        // 	url: "save",
-        // 	type: "post", // To protect sensitive data
-        // 	dataType: "JSON",
-        // 	data: formData,
-        // 	success: function(data) {
-        // 		alert("PUmasok na");
-        // 	}
+        //     formData[$(this).attr("name")] = section;
         // });
-        // var projecID = document.getElementById('projectId').value
-        //   console.log('projecID in footer: ' + data[0][projecId]);
-        //var taskID = $('#taskID').val();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url('request/save') ?>",
-            dataType: "JSON",
-            data: {
-                data: jsonData
-            },
-            success: function(data) {
-                console.log(data);
-                console.log("pasok na :D ");
-            }
-        });
+        // formData["index"] = cloneIndex;
+        // var jsonData = JSON.stringify(formData);
+        // console.log(jsonData);
+        // console.log(document.querySelectorAll('translation0 #impactedtable').length);
+        // $.ajax({
+        //     type: "POST",
+
+        //     dataType: "JSON",
+        //     data: {
+        //         data: jsonData
+        //     },
+        //     success: function(data) {
+        //         console.log(data);
+        //         console.log("pasok na :D ");
+        //     }
+        // });
 
 
     });
-    //          $("button.submit-request").on("click", onFormSubmit);
 </script>
 
 
