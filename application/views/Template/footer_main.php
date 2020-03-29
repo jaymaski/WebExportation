@@ -7,8 +7,8 @@
     <!-- Local JS -->
 	<script src="<?php echo base_url(); ?>/assets/script/scripts.js"></script>
     <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>	
+	
     <script>
         ClassicEditor
         .create(document.querySelector('#richTextEditor'), {
@@ -48,14 +48,14 @@
                     console.log(data.impacted);
 
                     //Project Details
-                    document.getElementById("projectID").innerHTML = data.curr_request[0]['projectID'];
-                    document.getElementById("taskID").innerHTML = data.curr_request[0]['taskID'];
-                    document.getElementById("projectOwner").innerHTML = data.curr_request[0]['projectOwner'];
-                    document.getElementById("docType").innerHTML = data.curr_request[0]['docType'];
-                    document.getElementById("sender").innerHTML = data.curr_request[0]['sender'];
-                    document.getElementById("receiver").innerHTML = data.curr_request[0]['receiver'];
+                    document.getElementById("projectID").innerHTML = data.uat_requests[0]['projectID'];
+                    document.getElementById("taskID").innerHTML = data.uat_requests[0]['taskID'];
+                    document.getElementById("projectOwner").innerHTML = data.uat_requests[0]['projectOwner'];
+                    document.getElementById("docType").innerHTML = data.uat_requests[0]['docType'];
+                    document.getElementById("sender").innerHTML = data.uat_requests[0]['sender'];
+                    document.getElementById("receiver").innerHTML = data.uat_requests[0]['receiver'];
                     
-                    var requestsNum = Object.keys(data.requests).length;
+                    var requestsNum = Object.keys(data.uat_requests).length;
                     var translationNum = Object.keys(data.translations).length;
                     var impactedNum = Object.keys(data.impacted).length;
                     
@@ -88,22 +88,34 @@
                         }
 
                         //Mapping 
-                        document.getElementById("revisionNumber["+i+"]").innerHTML = data.requests[i]['revisionNumber'];
-                        document.getElementById("requestDate["+i+"]").innerHTML = data.requests[i]['requestDate'];
-                        document.getElementById("deployDate["+i+"]").innerHTML = data.requests[i]['deployDate']; 
-                        document.getElementById("requestID["+i+"]").innerHTML = data.requests[i]['requestID'];
-                        if(data.requests[i]['status'] == "Exported"){
-                            document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'] + " to " + data.requests[i]['environment'];
+                        document.getElementById("revisionNumber["+i+"]").innerHTML = data.uat_requests[i]['revisionNumber'];
+						
+                        document.getElementById("uatRequestDate["+i+"]").innerHTML = data.uat_requests[i]['requestDate'];
+                        document.getElementById("uatDeployDate["+i+"]").innerHTML = data.uat_requests[i]['deployDate']; 
+						document.getElementById("uatRequestID["+i+"]").innerHTML = data.uat_requests[i]['requestID'];
+						
+						document.getElementById("prodRequestDate["+i+"]").innerHTML = data.prod_requests[i]['requestDate'];
+						document.getElementById("prodDeployDate["+i+"]").innerHTML = data.prod_requests[i]['deployDate']; 
+						document.getElementById("prodRequestID["+i+"]").innerHTML = data.prod_requests[i]['requestID'];
+						
+                        if(data.uat_requests[i]['status'] == "Exported"){
+                            document.getElementById("status["+i+"]").innerHTML = data.uat_requests[i]['status'] + " to " + data.uat_requests[i]['environment'];
                         }
-                        else {
-                            document.getElementById("status["+i+"]").innerHTML = data.requests[i]['status'];
-                        }              
-                        
-                        data
+                        else{
+                            document.getElementById("status["+i+"]").innerHTML = data.uat_requests[i]['status'];
+                        }  
+						
+						if(data.prod_requests[i]['status'] == "Exported"){
+                            document.getElementById("status["+i+"]").innerHTML = data.prod_requests[i]['status'] + " to " + data.prod_requests[i]['environment'];
+                        }
+                        else{
+                            document.getElementById("status["+i+"]").innerHTML = data.prod_requests[i]['status'];
+                        }  
 
                         for(var j = 0; j < translationNum; j++){
                             //Cloning (Per translation)
-                            if(data.requests[i]['requestID'] = data.translations[j]['requestID']){
+                            if(	data.uat_requests[i]['requestID'] == data.translations[j]['uatRequestID'] || 
+								data.prod_requests[i]['requestID'] == data.translations[j]['prodRequestID']){
                                 if(j != 0){
                                     var cloneTranslation = $('#translations').clone(true)
                                     .insertAfter(".translations:last")

@@ -36,7 +36,8 @@
 			<tr class="header text-dark">
 				<th colspan="4" class="text-center" onclick="comments(this.firstElementChild.textContent)">
 					REVISION 
-					<span class="invisible" id="requestID[0]"></span>
+					<span class="invisible" id="uatRequestID[0]"></span>
+					<span class="invisible" id="prodRequestID[0]"></span>
 					<span id="revisionNumber[0]"></span>
 					<span id="status[0]"></span>
 				</th>
@@ -45,10 +46,16 @@
 		
 		<tbody class="translations" id="translations">
 			<tr>
-				<th>Request Date</th>
-				<td id="requestDate[0]"></td>
-				<th>Deployment Date</th>
-				<td id="deployDate[0]"></td>
+				<th>UAT Request Date</th>
+				<td id="uatRequestDate[0]"></td>
+				<th>UAT Deployment Date</th>
+				<td id="uatDeployDate[0]"></td>
+			</tr>
+			<tr>
+				<th>PROD Request Date</th>
+				<td id="prodRequestDate[0]"></td>
+				<th>PROD Deployment Date</th>
+				<td id="prodDeployDate[0]"></td>
 			</tr>
 			<tr>
 				<td><strong>Test Internal ID:</strong> </td>

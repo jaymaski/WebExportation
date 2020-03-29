@@ -19,10 +19,35 @@ class Users extends CI_Controller {
 		
 		$CI = &get_instance();
 
-		$data['my_requests'] = $this->request->get_user_requests($this->session->userdata('user_id'));
+		$data['my_requests'] = $this->request->get_latest_user_requests($this->session->userdata('user_id'), "Translation");
+		$data['uatNotExp'] = 0;
+		$data['uatExp'] = 0;
+		$data['prodNotExp'] = 0;
+		$data['prodExp'] = 0;
+		$data['allReq'] = 0;
+		if(!empty($data['my_requests'])){
+			
+			foreach($data['my_requests'] as $request){
+				if($request->environment == "UAT" && $request->status != "Exported"){
+					$data['uatNotExp']++;
+				}
+				else if($request->environment == "UAT" && $request->status == "Exported"){
+					$data['uatExp']++;
+				}
+				else if($request->environment == "PROD" && $request->status != "Exported"){
+					$data['prodNotExp']++;
+				}
+				else if($request->environment == "PROD" && $request->status == "Exported"){
+					$data['prodExp']++;
+				}
+				$data['allReq']++;
+			}
+		}
 		mysqli_next_result($CI->db->conn_id);
 		$data['shared_requests'] = $this->request->get_shared_requests($this->session->userdata('user_id'));
-
+		
+		
+		
 
 		$this->load->view('template/header_main');
 		$this->load->view('users/users_dashboard', $data);

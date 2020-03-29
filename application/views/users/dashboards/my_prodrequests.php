@@ -2,6 +2,13 @@
 <?php if($my_requests){?>
 	<div class="table-responsive">
 		<table class="table-hover table dashboard">
+		<?php if($prodNotExp != 0){ ?>
+			<thead>
+				<tr>
+					<th><?php echo $prodNotExp?></th>
+				</tr>
+			</thead>
+		<?php } ?>
 			<thead>
 				<tr>
 					<th id="request-id">ID</th>
