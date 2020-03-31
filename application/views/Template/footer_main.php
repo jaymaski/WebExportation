@@ -40,11 +40,11 @@
                 dataType: 'json',
                 data: json,
                 success:function(data) {
-                    // console.log(data.requests);
-                    // console.log(data.curr_request);
-                    // console.log(data.translation_changes);
-                    //console.log(data.translations);
-                    //console.log(data.impacted);
+                    console.log(data.uat_requests);
+                    console.log(data.prod_requests);
+                    console.log(data.translation_changes);
+                    console.log(data.translations);
+                    console.log(data.impacted);
 
                     //Project Details
                     document.getElementById("projectID").innerHTML = data.uat_requests[0]['projectID'];
@@ -389,31 +389,31 @@
                 dataType: 'json',
                 success: function(response){
                     $('#pagination').html(response.pagination);
-                        createTable(response.my_requests,response.row);
+                        createTable(response.uat_requests,response.row);
                         console.log(response);
                     }
                 });
             }
 
             // Create table list
-            function createTable(my_requests,sno){
+            function createTable(uat_requests,sno){
                 sno = Number(sno);
                 $('#requests tbody').empty();
-                for(index in my_requests){
-                    if(my_requests[index].environment == 'UAT') {
-                        if(my_requests[index].status == 'Exported') {
-                            var projectID = my_requests[index].projectID;
-                            var taskID = my_requests[index].taskID;
-                            var environment = my_requests[index].environment;
-                            var status = my_requests[index].status;
-                            var owner = my_requests[index].owner;
-                            var requestDate = my_requests[index].requestDate;
+                for(index in uat_requests){
+                    if(uat_requests[index].environment == 'UAT') {
+                        if(uat_requests[index].status == 'Exported') {
+                            var projectID = uat_requests[index].projectID;
+                            var taskID = uat_requests[index].taskID;
+                            var environment = uat_requests[index].environment;
+                            var status = uat_requests[index].status;
+                            var owner = uat_requests[index].owner;
+                            var requestDate = uat_requests[index].requestDate;
                             //content = content.substr(0, 60) + " ...";
-                            //var link = my_requests[index].link;
+                            //var link = uat_requests[index].link;
                             sno+=1;
 
                             var tr = "<tr onclick='this.onclick = view_project(`"+ projectID +"`, `"+ taskID +"`)' data-toggle='modal' data-target='#view_request'>";
-                            //var tr = "<tr" + onclick = "this.onclick = view_project('" + my_requests[index].projectID + ", '" + my_requests[index].taskID + "') data-toggle='modal' data-target='#view_request'" + ">";
+                            //var tr = "<tr" + onclick = "this.onclick = view_project('" + uat_requests[index].projectID + ", '" + uat_requests[index].taskID + "') data-toggle='modal' data-target='#view_request'" + ">";
                             tr += "<td>"+ projectID +"</td>";
                             tr += "<td>"+ "PROD_CR-csremail-au-wiscust-au-PO(B2BE#3893292)" +"</td>";
                             tr += "<td>"+ owner +"</td>";
