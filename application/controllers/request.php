@@ -14,16 +14,16 @@ class Request extends CI_Controller
     }
 	//GET
 	//----------------------------------------------------
-	function view_request($projectID, $taskID, $requestID){
+	function view_request($projectID, $taskID){
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
-		}
+		}		
 
 		$data['title'] = '';
 		$CI = &get_instance();
 		$data['requests'] = $this->request->get_request($projectID, $taskID);
-		mysqli_next_result($CI->db->conn_id);
-		$data['curr_request'] =  $this->request->get_current_request($requestID);
+		// mysqli_next_result($CI->db->conn_id);
+		// $data['curr_request'] =  $this->request->get_current_request($requestID);
 		mysqli_next_result($CI->db->conn_id);
 		$data['translations'] = $this->translation->get_translation($projectID, $taskID);
 		mysqli_next_result($CI->db->conn_id);
@@ -31,9 +31,6 @@ class Request extends CI_Controller
 		mysqli_next_result($CI->db->conn_id);
 		$data['impacted'] = $this->translation->get_impacted($projectID, $taskID);
 		
-		// mysqli_next_result($CI->db->conn_id);
-		// $data['recommendations'] = $this->request->get_recommendations($requestID);
-
 		echo json_encode($data);
 	}
 
