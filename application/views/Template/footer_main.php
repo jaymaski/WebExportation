@@ -369,7 +369,7 @@
         }    
     </script>
 
-    <script type='text/javascript'>
+    <!-- <script type='text/javascript'>
         $(document).ready(function(){
             // Detect pagination click
             $('#pagination').on('click','a',function(e){
@@ -428,7 +428,8 @@
                 }
             }
         });
-    </script>    
+    </script>   -->
+
     <script type="text/javascript">
         var regex = /^(.+?)(\d+)$/i;
         var addTranslationIndex = 1;
