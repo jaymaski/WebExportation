@@ -41,10 +41,10 @@ class Translation_model extends CI_Model{
 	}
 	//INSERT
 	//--------------------------------------------------------
-	function insert_translation($changeTypeID, $name, $internalID ){
+	function insert_translation($changeTypeID, $name, $testInternalID ){
 		
 		$insert_translation = "CALL insert_translation(?, ?, ?)";
-		$param = array('changeTypeID' => $changeTypeID,'name' => $name,'internalID' => $internalID);
+		$param = array('changeTypeID' => $changeTypeID,'name' => $name,'testInternalID' => $testInternalID);
 		$query = $this->db->query($insert_translation, $param);
 		$result = $query->result();
 		
@@ -72,9 +72,9 @@ class Translation_model extends CI_Model{
 	}
 	//UPDATE
 	//------------------------------------------------------------------
-	function update_translation($ID, $newName, $newInternalID){
+	function update_translation($ID, $newName, $newTestInternalID){
 		$update_translation = "CALL update_translation(?, ?, ?)";
-		$param = array('inputID' => $ID,'newName' => $newName,'newInternalID' => $newInternalID);
+		$param = array('inputID' => $ID,'newName' => $newName,'newTestInternalID' => $newTestInternalID);
 		$query = $this->db->query($update_translation, $param);
 		$result = $query->result();
 		
