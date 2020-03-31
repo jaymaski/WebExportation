@@ -1059,7 +1059,7 @@ CREATE TABLE `change_type` (
   `ID` int(11) NOT NULL,
   `requestID` int(11) NOT NULL,
   `type` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `change_type`
@@ -1088,7 +1088,7 @@ CREATE TABLE `impacted` (
   `receiver` varchar(50) NOT NULL,
   `docType` enum('PurchaseOrder','PurchaseOrderChange','PurchaseOrderAcknowledge','Invoice','Report') NOT NULL,
   `internalIDs` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1100,7 +1100,7 @@ CREATE TABLE `projects` (
   `ID` int(11) NOT NULL,
   `projectID` int(11) NOT NULL,
   `projectOwnerID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `projects`
@@ -1123,7 +1123,7 @@ CREATE TABLE `recommendations` (
   `recommendation` longtext NOT NULL,
   `recommendedBy` int(11) NOT NULL,
   `recommendedAt` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `recommendations`
@@ -1150,7 +1150,7 @@ CREATE TABLE `requests` (
   `deployDate` datetime NOT NULL,
   `assigneeID` int(11) DEFAULT NULL,
   `assignedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `requests`
@@ -1177,7 +1177,7 @@ CREATE TABLE `shared_requests` (
   `projectID` int(11) NOT NULL,
   `taskID` int(11) NOT NULL,
   `userID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `shared_requests`
@@ -1200,7 +1200,7 @@ CREATE TABLE `tasks` (
   `sender` varchar(50) NOT NULL,
   `receiver` varchar(50) NOT NULL,
   `docType` enum('PurchaseOrder','PurchaseOrderChange','PurchaseOrderAcknowledge','Invoice','Report') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tasks`
@@ -1222,7 +1222,7 @@ CREATE TABLE `translation` (
   `changeTypeID` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
   `internalID` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `translation`
@@ -1253,7 +1253,7 @@ CREATE TABLE `translation_changes` (
   `ID` int(11) NOT NULL,
   `translationID` int(11) NOT NULL,
   `changes` longtext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `translation_changes`

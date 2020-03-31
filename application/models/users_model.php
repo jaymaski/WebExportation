@@ -12,6 +12,29 @@ class Users_model extends CI_Model{
 		$query = $this->accounts->query($search_user, $param);
 		return $query;
 	}
+
+	function getUsers($postData){
+ 
+		$response = array();
+	  
+		$this->accounts->select('*');
+	
+		if($postData['keyword'] ){
+	 
+		  // Select record
+		  $this->accounts->where("fName like '%". $postData['keyword'] ."%' ");
+		  
+		  $records = $this->accounts->get('users')->result();
+	
+		  foreach($records as $row ){
+			$response[] = array("id"=>$row->ID,"name"=>$row->fName. " " .$row->lName);
+		  }
+	 
+		}
+		
+		return $response;
+	  }
+
 }
 	
 	

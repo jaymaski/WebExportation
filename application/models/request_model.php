@@ -59,7 +59,8 @@ class Request_model extends CI_Model{
 		$param = array('projectID' => $projectID, 'projectOwnerID' => $projectOwnerID);
 		$query = $this->db->query($insert_project, $param);
 		$result = $query->result();
-		
+		$query->next_result(); 
+		$query->free_result();
 		return $result;
 	}
 	
@@ -68,7 +69,40 @@ class Request_model extends CI_Model{
 		$param = array('taskID' => $taskID, 'projectID' => $projectID, 'ownerID' => $ownerID, 'sender' => $sender, 'receiver' => $receiver, 'docType' => $docType);
 		$query = $this->db->query($insert_task, $param);
 		$result = $query->result();
-		
+		$query->next_result(); 
+		$query->free_result(); 	
+		return $result;
+	}
+
+	function insert_translation($changeID, $name, $internalID){
+		$insert_translation = "CALL insert_translation(?, ?, ?)";
+		$param = array('changeTypeID' => $changeID, 'name' => $name, 'internalID' => $internalID);
+		$query = $this->db->query($insert_translation, $param);
+		$result = $query->result();
+		$query->next_result(); 
+		$query->free_result(); 
+		return $result;
+	}
+
+	function insert_translation_change($translationID, $changes){
+		$insert_translation_change = "CALL insert_translation_change(?, ?)";
+		$param = array('translationID' => $translationID, 'changes' => $changes);
+		$query = $this->db->query($insert_translation_change, $param);
+		if($query == false)
+			return "Error";
+		$result = $query->result();
+		$query->next_result(); 
+		$query->free_result(); 
+		return $result;
+	}
+	
+	function insert_impacted($translationID, $sender, $receiver, $docType, $internalIDs){
+		$insert_impacted = "CALL insert_impacted(?, ?, ?, ?, ?)";
+		$param = array('translationID' => $translationID, 'sender' => $sender,'receiver' => $receiver, 'docType' => $docType,'internalIDs' => $internalIDs);
+		$query = $this->db->query($insert_impacted, $param);
+		$result = $query->result();
+		$query->next_result(); 
+		$query->free_result(); 
 		return $result;
 	}
 	
