@@ -29,14 +29,15 @@
         });
     </script>
 
-    <script type="text/javascript">
-        function view_project(projectID, taskID) {        
+<script type="text/javascript">
+        function view_project(projectID, taskID, requestID) {        
             var projectID = projectID;
             var taskID = taskID;
+            var requestID = requestID;
             var json = {'projectID':'" + projectID + "','taskID':'" + taskID + "','requestID':'" + requestID + "'};
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID,
+                url:"<?php echo site_url('request/view_request'); ?>/" + projectID + "/" + taskID + "/" + requestID,
                 dataType: 'json',
                 data: json,
                 success:function(data) {
@@ -88,11 +89,13 @@
 
                         //Mapping 
                         document.getElementById("revisionNumber["+i+"]").innerHTML = data.uat_requests[i]['revisionNumber'];
-						
+
+                        //uat
                         document.getElementById("uatRequestDate["+i+"]").innerHTML = data.uat_requests[i]['requestDate'];
                         document.getElementById("uatDeployDate["+i+"]").innerHTML = data.uat_requests[i]['deployDate']; 
 						document.getElementById("uatRequestID["+i+"]").innerHTML = data.uat_requests[i]['requestID'];
 						
+                        //prod
 						document.getElementById("prodRequestDate["+i+"]").innerHTML = data.prod_requests[i]['requestDate'];
 						document.getElementById("prodDeployDate["+i+"]").innerHTML = data.prod_requests[i]['deployDate']; 
 						document.getElementById("prodRequestID["+i+"]").innerHTML = data.prod_requests[i]['requestID'];

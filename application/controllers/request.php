@@ -74,6 +74,8 @@ class Request extends CI_Controller
 		} else {
 			return false;
 		}
+	}
+
 	function get_id_of_request($taskID, $environment, $revisionNumber){
 		$result = $this->request-> get_id_of_request($taskID, $environment, $revisionNumber);
 		return $result;
@@ -87,6 +89,7 @@ class Request extends CI_Controller
 		} else {
 			return false;
 		}
+	}
 	//INSERT
 		//TRANSLATION-----------------------------------------------------------
 	
@@ -228,4 +231,5 @@ class Request extends CI_Controller
 	function update_client_approval($tID, $name, $date){
 		$this->request->update_client_approval($tID, $name, $date);
 	}
+}
 }
