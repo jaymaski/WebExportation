@@ -31,8 +31,8 @@ class Request extends CI_Controller
 		mysqli_next_result($CI->db->conn_id);
 		$data['impacted'] = $this->translation->get_impacted($projectID, $taskID);
 		
-		mysqli_next_result($CI->db->conn_id);
-		$data['recommendations'] = $this->request->get_recommendations($requestID);
+		// mysqli_next_result($CI->db->conn_id);
+		// $data['recommendations'] = $this->request->get_recommendations($requestID);
 
 		echo json_encode($data);
 	}
