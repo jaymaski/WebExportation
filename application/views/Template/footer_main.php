@@ -158,7 +158,7 @@
             });
         };
 
-        function comments(requestID) {    
+        function comments(requestID) {  
             //console.log(data.recommendations);
             var requestID = requestID;
             $.ajax({

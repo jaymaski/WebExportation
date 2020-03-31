@@ -14,7 +14,7 @@ class Request extends CI_Controller
     }
 	//GET
 	//----------------------------------------------------
-	function view_request($projectID, $taskID){
+	function view_request($projectID, $taskID, $requestID){
 		if(!$this->session->userdata('logged_in')){
 			redirect('users/login');
 		}		
@@ -41,10 +41,9 @@ class Request extends CI_Controller
 		$requestID = $this->input->post('requestID');
 		$CI = &get_instance();
 		$data['recommendations'] = $this->recommendation->get_recommendations($requestID);
-
-
+		
 		echo json_encode($data);
-	}
+	}	
 	
 	function get_id_of_project($projectID){
 		$result = $this->request->get_id_of_project($projectID);
