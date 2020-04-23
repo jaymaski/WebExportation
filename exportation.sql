@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2020 at 12:44 AM
+-- Generation Time: Apr 23, 2020 at 05:25 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -27,1361 +27,1326 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `assign_request_to_me` (IN `requestID` INT, IN `assigneeID` INT)  NO SQL
-BEGIN
-	UPDATE 
-		requests
-    SET
-        status = "Reviewing",
-        assigneeID = assigneeID,
-        assignedAt = NOW()
-    WHERE
-        ID = requestID;
+BEGIN
+	UPDATE 
+		requests
+    SET
+        status = "Reviewing",
+        assigneeID = assigneeID,
+        assignedAt = NOW()
+    WHERE
+        ID = requestID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_request` ()  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	r.requestID,
-    	t.indexID,
-    	p.projectID,
-        p.projectOwner,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.projectID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.taskID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	r.requestID,
+    	t.indexID,
+    	p.projectID,
+        p.projectOwner,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.projectID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.taskID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_current_request` (IN `requestID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID
-        WHERE	
-        	r.requestID = requestID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_id_of_project` (IN `projectID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	ID
-    FROM
-    	projects p
-    WHERE
-    	p.projectID = projectID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_id_of_request` (IN `taskID` INT, IN `environment` VARCHAR(50), IN `revisionNumber` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	r.ID
-    FROM
-    	tasks t 
-    LEFT JOIN
-    	requests r 
-    ON 
-    	t.ID = r.taskID
-    WHERE
-    	t.taskID = taskID
-    AND
-    	r.environment = environment
-    AND
-    	r.revisionNumber = revisionNumber
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_id_of_task` (IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	ID
-    FROM
-    	tasks t 
-    WHERE
-    	t.taskID = taskID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID
+        WHERE	
+        	r.requestID = requestID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_impacted` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	i.ID AS impactedID,
-        i.translationID,
-		i.sender,
-        i.receiver,
-        i.docType,
-        i.internalIDs
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-			requests r
-		ON
-			r.taskID = t.indexID
-        LEFT JOIN
-        	change_type ct
-        ON
-        	(r.ID = ct.uatRequestID
-        OR
-        	r.ID = ct.prodRequestID)
-        LEFT JOIN
-        	translation trans
-        ON
-        	trans.changeTypeID = ct.ID
-        JOIN
-        	impacted i 
-        ON
-        	i.translationID = trans.ID
-        WHERE
-        	p.projectID = projectID
-        AND
-			t.taskID = taskID 
-        GROUP BY
-        	i.ID,
-            i.translationID,
-            i.sender,
-            i.receiver,
-            i.docType,
-            i.internalIDs
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	i.ID AS impactedID,
+        i.translationID,
+		i.sender,
+        i.receiver,
+        i.docType,
+        i.internalIDs
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+			requests r
+		ON
+			r.taskID = t.indexID
+        LEFT JOIN
+        	change_type ct
+        ON
+        	(r.ID = ct.uatRequestID
+        OR
+        	r.ID = ct.prodRequestID)
+        LEFT JOIN
+        	translation trans
+        ON
+        	trans.changeTypeID = ct.ID
+        JOIN
+        	impacted i 
+        ON
+        	i.translationID = trans.ID
+        WHERE
+        	p.projectID = projectID
+        AND
+			t.taskID = taskID 
+        GROUP BY
+        	i.ID,
+            i.translationID,
+            i.sender,
+            i.receiver,
+            i.docType,
+            i.internalIDs
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_latest_user_requests` (IN `userID` INT, IN `type` VARCHAR(15))  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-
-SELECT
-	X.ID,
-	projectID,
-	projectOwner,
-	indexID,
-	taskID,
-	owner,
-	sender,
-	receiver,
-	docType,
-	requestID,
-    server,
-	environment,
-	revisionNumber,
-	status,
-	requestDate,
-	deployDate,
-    clientProdApproval,
-    clientApprovalDate,
-	assignee,
-	assignedAt,
-    ct.ID as changeTypeID,
-    ct.uatRequestID,
-    ct.prodRequestID,
-    ct.type
-FROM
-(
-	SELECT
-		DENSE_RANK() OVER(PARTITION BY taskID ORDER BY requestID DESC) AS Latest,
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-    	t.ownerID,
-        t.sender,
-        t.receiver,
-        t.docType,
-    	t.server,
-    	t.clientProdApproval,
-    	t.clientApprovalDate,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType,
-            	a.server,
-           		a.clientProdApproval,
-           		a.clientApprovalDate,
-            	a.ownerID
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID			
-)X
-LEFT JOIN
-	change_type ct
-ON
-	ct.uatRequestID = X.requestID
-OR
-	ct.prodRequestID = X.requestID
-WHERE
-	X.ownerID = userID
-AND
-	X.Latest = 1
-AND
-	ct.type = type
-ORDER BY 
-	ct.ID DESC
-LIMIT 1;
-
-
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+
+SELECT
+	X.ID,
+	projectID,
+	projectOwner,
+	indexID,
+	taskID,
+	owner,
+	sender,
+	receiver,
+	docType,
+	requestID,
+    server,
+	environment,
+	revisionNumber,
+	status,
+	requestDate,
+	deployDate,
+    clientProdApproval,
+    clientApprovalDate,
+	assignee,
+	assignedAt,
+    ct.ID as changeTypeID,
+    ct.uatRequestID,
+    ct.prodRequestID,
+    ct.type
+FROM
+(
+	SELECT
+		DENSE_RANK() OVER(PARTITION BY taskID ORDER BY requestID DESC) AS Latest,
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+    	t.ownerID,
+        t.sender,
+        t.receiver,
+        t.docType,
+    	t.server,
+    	t.clientProdApproval,
+    	t.clientApprovalDate,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.server,
+           		a.clientProdApproval,
+           		a.clientApprovalDate,
+            	a.ownerID
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID			
+)X
+LEFT JOIN
+	change_type ct
+ON
+	ct.uatRequestID = X.requestID
+OR
+	ct.prodRequestID = X.requestID
+WHERE
+	X.ownerID = userID
+AND
+	X.Latest = 1
+AND
+	ct.type = type
+ORDER BY 
+	ct.ID DESC
+LIMIT 1;
+
+
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_prod_request_details` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-SELECT
-	ID,
-	projectID,
-	projectOwner,
-	indexID,
-	taskID,
-	owner,
-	sender,
-	receiver,
-	docType,
-	requestID,
-    server,
-	environment,
-	revisionNumber,
-	status,
-	requestDate,
-	deployDate,
-    clientProdApproval,
-	clientApprovalDate,
-	assignee,
-	assignedAt
-FROM
-(
-	SELECT
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-   		t.server,
-        t.clientProdApproval,
-    	t.clientApprovalDate,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType,
-            	a.server,
-            	a.clientProdApproval,
-    			a.clientApprovalDate
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-            	a.urgency,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID
-)X
-        WHERE	
-        	X.taskID = taskID
-       	AND
-        	X.projectID = projectID
-        AND
-			X.environment = "PROD"
-              ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+SELECT
+	ID,
+	projectID,
+	projectOwner,
+	indexID,
+	taskID,
+	owner,
+	sender,
+	receiver,
+	docType,
+	requestID,
+    server,
+	environment,
+	revisionNumber,
+	status,
+	requestDate,
+	deployDate,
+    clientProdApproval,
+	clientApprovalDate,
+	assignee,
+	assignedAt
+FROM
+(
+	SELECT
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+   		t.server,
+        t.clientProdApproval,
+    	t.clientApprovalDate,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.server,
+            	a.clientProdApproval,
+    			a.clientApprovalDate
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+            	a.urgency,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID
+)X
+        WHERE	
+        	X.taskID = taskID
+       	AND
+        	X.projectID = projectID
+        AND
+			X.environment = "PROD"
+              ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_recommendations` (IN `requestID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-		r.ID as recommendationID,
-        r.requestID,
-        r.recommendation,
-        CONCAT(u.fName, " ", u.lName) as recommendedBy,
-        r.recommendedAt,
-        d.departmentCode
-    FROM
-    	recommendations r 
-    LEFT JOIN
-    	accounts.users u
-    ON
-    	r.recommendedBy = u.ID
-    LEFT JOIN
-    	accounts.departments d
-    ON
-    	d.ID = u.deptID
-    WHERE
-    	r.requestID = requestID
-    ORDER BY	
-    	r.ID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+		r.ID as recommendationID,
+        r.requestID,
+        r.recommendation,
+        CONCAT(u.fName, " ", u.lName) as recommendedBy,
+        r.recommendedAt,
+        d.departmentCode
+    FROM
+    	recommendations r 
+    LEFT JOIN
+    	accounts.users u
+    ON
+    	r.recommendedBy = u.ID
+    LEFT JOIN
+    	accounts.departments d
+    ON
+    	d.ID = u.deptID
+    WHERE
+    	r.requestID = requestID
+    ORDER BY	
+    	r.ID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_shared_requests` (IN `userID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType,
-            	a.ownerID
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-        (
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID
-        LEFT JOIN
-        	shared_requests sr
-        ON
-        	sr.projectID = p.projectID
-        AND
-        	sr.taskID = t.taskID
-        WHERE
-        	sr.userID = userID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.ownerID
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+        (
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID
+        LEFT JOIN
+        	shared_requests sr
+        ON
+        	sr.projectID = p.projectID
+        AND
+        	sr.taskID = t.taskID
+        WHERE
+        	sr.userID = userID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_translation` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	ct.ID as changeTypeID,
-        trans.ID as translationID,
-        trans.name,
-        trans.testInternalID
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-	ON
-		t.projectID = p.ID
-	LEFT JOIN
-		requests r
-	ON
-		r.taskID = t.indexID
-	LEFT JOIN
-		change_type ct
-	ON
-		(r.ID = ct.uatRequestID OR r.ID = ct.prodRequestID)
-	LEFT JOIN
-		translation trans
-	ON
-		trans.changeTypeID = ct.ID
-	WHERE
-		p.projectID = projectID
-	AND
-		t.taskID = taskID    
-	GROUP BY
-        trans.ID,
-        trans.name,
-        trans.testInternalID
-    ORDER BY
-    	ct.ID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	ct.ID as changeTypeID,
+        trans.ID as translationID,
+        trans.name,
+        trans.testInternalID
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+	ON
+		t.projectID = p.ID
+	LEFT JOIN
+		requests r
+	ON
+		r.taskID = t.indexID
+	LEFT JOIN
+		change_type ct
+	ON
+		(r.ID = ct.uatRequestID OR r.ID = ct.prodRequestID)
+	LEFT JOIN
+		translation trans
+	ON
+		trans.changeTypeID = ct.ID
+	WHERE
+		p.projectID = projectID
+	AND
+		t.taskID = taskID    
+	GROUP BY
+        trans.ID,
+        trans.name,
+        trans.testInternalID
+    ORDER BY
+    	ct.ID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_translation_change` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	tc.ID,
-		tc.translationID,
-        tc.changes
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-	ON
-		t.projectID = p.ID
-	LEFT JOIN
-		requests r
-	ON
-		r.taskID = t.indexID
-	LEFT JOIN
-		change_type ct
-	ON
-		(r.ID = ct.uatRequestID OR r.ID = ct.prodRequestID)
-	LEFT JOIN
-		translation trans
-	ON
-		trans.changeTypeID = ct.ID
-	LEFT JOIN
-		translation_changes tc
-	ON
-		tc.translationID = trans.ID
-	WHERE
-		p.projectID = projectID
-	AND
-		t.taskID = taskID 
-	GROUP BY
-		tc.ID,
-		tc.translationID,
-        tc.changes
-    ORDER BY 
-    	tc.ID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	tc.ID,
+		tc.translationID,
+        tc.changes
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+	ON
+		t.projectID = p.ID
+	LEFT JOIN
+		requests r
+	ON
+		r.taskID = t.indexID
+	LEFT JOIN
+		change_type ct
+	ON
+		(r.ID = ct.uatRequestID OR r.ID = ct.prodRequestID)
+	LEFT JOIN
+		translation trans
+	ON
+		trans.changeTypeID = ct.ID
+	LEFT JOIN
+		translation_changes tc
+	ON
+		tc.translationID = trans.ID
+	WHERE
+		p.projectID = projectID
+	AND
+		t.taskID = taskID 
+	GROUP BY
+		tc.ID,
+		tc.translationID,
+        tc.changes
+    ORDER BY 
+    	tc.ID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_UAT_latest_translation` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT	
-    	translationID,
-    	projectID,
-        taskID,
-        environment,
-        revisionNumber,
-        status,
-        name
-    FROM
-    (
-    SELECT
-    	DENSE_RANK() OVER(PARTITION BY trans.name ORDER BY r.revisionNumber DESC) AS Latest,
-    	trans.ID AS translationID,
-    	p.projectID,
-        t.taskID,
-        r.environment,
-        r.revisionNumber,
-        r.status,
-        trans.name
-    FROM
-    	projects p 
-   	LEFT JOIN
-    	tasks t
-    ON
-    	t.projectID = p.ID
-    LEFT JOIN
-    	requests r
-    ON
-    	t.ID = r.taskID
-    LEFT JOIN
-    	change_type ct
-    ON
-    	r.ID = ct.requestID
-    LEFT JOIN
-    	translation trans
-    ON
-    	trans.changeTypeID = ct.ID
-    WHERE
-		p.projectID = projectID
-    AND
-    	t.taskID = taskID
-    AND 
-    	r.environment = "UAT"
-    AND
-        r.status = "Exported"
-    )exported
-    WHERE
-		exported.Latest = 1
-    ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT	
+    	translationID,
+    	projectID,
+        taskID,
+        environment,
+        revisionNumber,
+        status,
+        name
+    FROM
+    (
+    SELECT
+    	DENSE_RANK() OVER(PARTITION BY trans.name ORDER BY r.revisionNumber DESC) AS Latest,
+    	trans.ID AS translationID,
+    	p.projectID,
+        t.taskID,
+        r.environment,
+        r.revisionNumber,
+        r.status,
+        trans.name
+    FROM
+    	projects p 
+   	LEFT JOIN
+    	tasks t
+    ON
+    	t.projectID = p.ID
+    LEFT JOIN
+    	requests r
+    ON
+    	t.ID = r.taskID
+    LEFT JOIN
+    	change_type ct
+    ON
+    	r.ID = ct.requestID
+    LEFT JOIN
+    	translation trans
+    ON
+    	trans.changeTypeID = ct.ID
+    WHERE
+		p.projectID = projectID
+    AND
+    	t.taskID = taskID
+    AND 
+    	r.environment = "UAT"
+    AND
+        r.status = "Exported"
+    )exported
+    WHERE
+		exported.Latest = 1
+    ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_uat_request_details` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-SELECT
-	X.ID,
-	projectID,
-	projectOwner,
-	indexID,
-	taskID,
-	owner,
-	sender,
-	receiver,
-	docType,
-	requestID,
-    server,
-	environment,
-	revisionNumber,
-	status,
-	requestDate,
-	deployDate,
-    clientProdApproval,
-	clientApprovalDate,
-	assignee,
-	assignedAt,
-    ct.ID as changeTypeID,
-    ct.uatRequestID,
-    ct.prodRequestID,
-    ct.type
-FROM
-(
-	SELECT
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-   		t.server,
-        t.clientProdApproval,
-    	t.clientApprovalDate,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType,
-            	a.server,
-            	a.clientProdApproval,
-    			a.clientApprovalDate
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-            	a.urgency,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID
-)X
-JOIN
-	change_type ct
-ON
-	ct.uatRequestID = X.requestID
-        WHERE	
-        	X.taskID = taskID
-       	AND
-        	X.projectID = projectID
-        AND
-			X.environment = "UAT"
-              ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+SELECT
+	X.ID,
+	projectID,
+	projectOwner,
+	indexID,
+	taskID,
+	owner,
+	sender,
+	receiver,
+	docType,
+	requestID,
+    server,
+	environment,
+	revisionNumber,
+	status,
+	requestDate,
+	deployDate,
+    clientProdApproval,
+	clientApprovalDate,
+	assignee,
+	assignedAt,
+    ct.ID as changeTypeID,
+    ct.uatRequestID,
+    ct.prodRequestID,
+    ct.type
+FROM
+(
+	SELECT
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+   		t.server,
+        t.clientProdApproval,
+    	t.clientApprovalDate,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.server,
+            	a.clientProdApproval,
+    			a.clientApprovalDate
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+            	a.urgency,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID
+)X
+JOIN
+	change_type ct
+ON
+	ct.uatRequestID = X.requestID
+        WHERE	
+        	X.taskID = taskID
+       	AND
+        	X.projectID = projectID
+        AND
+			X.environment = "UAT"
+              ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_UAT_translation_list` (IN `projectID` INT, IN `taskID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-    SELECT
-    	trans.ID AS translationID,
-    	p.projectID,
-        t.taskID,
-        r.environment,
-        r.revisionNumber,
-        r.status,
-        trans.name
-    FROM
-    	projects p 
-   	LEFT JOIN
-    	tasks t
-    ON
-    	t.projectID = p.ID
-    LEFT JOIN
-    	requests r
-    ON
-    	t.ID = r.taskID
-    LEFT JOIN
-    	change_type ct
-    ON
-    	r.ID = ct.requestID
-    LEFT JOIN
-    	translation trans
-    ON
-    	trans.changeTypeID = ct.ID
-    WHERE
-		p.projectID = projectID
-    AND
-    	t.taskID = taskID
-    AND 
-    	r.environment = "UAT"
-    AND
-        r.status = "Exported"
-    ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+    SELECT
+    	trans.ID AS translationID,
+    	p.projectID,
+        t.taskID,
+        r.environment,
+        r.revisionNumber,
+        r.status,
+        trans.name
+    FROM
+    	projects p 
+   	LEFT JOIN
+    	tasks t
+    ON
+    	t.projectID = p.ID
+    LEFT JOIN
+    	requests r
+    ON
+    	t.ID = r.taskID
+    LEFT JOIN
+    	change_type ct
+    ON
+    	r.ID = ct.requestID
+    LEFT JOIN
+    	translation trans
+    ON
+    	trans.changeTypeID = ct.ID
+    WHERE
+		p.projectID = projectID
+    AND
+    	t.taskID = taskID
+    AND 
+    	r.environment = "UAT"
+    AND
+        r.status = "Exported"
+    ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_user_requests` (IN `userID` INT)  NO SQL
-BEGIN
-SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-	SELECT
-    	p.ID,
-        p.projectID,
-        p.projectOwner,
-        t.indexID,
-        t.taskID,
-        t.owner,
-        t.sender,
-        t.receiver,
-        t.docType,
-    	r.requestID,
-        r.environment,
-		r.revisionNumber,
-        r.status,
-        r.requestDate,
-        r.deployDate,
-       	r.assignee,
-        r.assignedAt
-    FROM
-		(
-			SELECT
-            	a.ID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName) AS projectOwner
-			FROM
-				projects a
-			JOIN
-				Accounts.users b
-			ON
-				a.projectOwnerID = b.ID
-		)p
-		LEFT JOIN
-		(
-			SELECT	
-				a.ID AS indexID, 
-            	a.taskID,
-				a.projectID,
-				CONCAT(b.fName," ",b.lName)  AS owner,
-				a.sender,
-				a.receiver,
-				a.docType,
-            	a.ownerID
-			FROM
-				tasks a
-			JOIN
-				Accounts.users b
-			ON
-				a.ownerID = b.ID
-		)t
-		ON
-			t.projectID = p.ID
-		LEFT JOIN
-		(
-        	SELECT 
-            	a.ID as requestID,
-            	a.taskID,
-            	a.environment,
-                a.revisionNumber,
-                a.status,
-                a.requestDate,
-                a.deployDate,
-            	CONCAT(b.fName," ",b.lName)  AS assignee,
-            	a.assignedAt
-            FROM
-            	requests a
-            LEFT JOIN
-            	Accounts.users b
-			ON
-				a.assigneeID = b.ID
-        )r
-		ON
-			r.taskID = t.indexID
-        WHERE
-        	t.ownerID = userID
-       ;
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
+BEGIN
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
+	SELECT
+    	p.ID,
+        p.projectID,
+        p.projectOwner,
+        t.indexID,
+        t.taskID,
+        t.owner,
+        t.sender,
+        t.receiver,
+        t.docType,
+    	r.requestID,
+        r.environment,
+		r.revisionNumber,
+        r.status,
+        r.requestDate,
+        r.deployDate,
+       	r.assignee,
+        r.assignedAt
+    FROM
+		(
+			SELECT
+            	a.ID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName) AS projectOwner
+			FROM
+				projects a
+			JOIN
+				Accounts.users b
+			ON
+				a.projectOwnerID = b.ID
+		)p
+		LEFT JOIN
+		(
+			SELECT	
+				a.ID AS indexID, 
+            	a.taskID,
+				a.projectID,
+				CONCAT(b.fName," ",b.lName)  AS owner,
+				a.sender,
+				a.receiver,
+				a.docType,
+            	a.ownerID
+			FROM
+				tasks a
+			JOIN
+				Accounts.users b
+			ON
+				a.ownerID = b.ID
+		)t
+		ON
+			t.projectID = p.ID
+		LEFT JOIN
+		(
+        	SELECT 
+            	a.ID as requestID,
+            	a.taskID,
+            	a.environment,
+                a.revisionNumber,
+                a.status,
+                a.requestDate,
+                a.deployDate,
+            	CONCAT(b.fName," ",b.lName)  AS assignee,
+            	a.assignedAt
+            FROM
+            	requests a
+            LEFT JOIN
+            	Accounts.users b
+			ON
+				a.assigneeID = b.ID
+        )r
+		ON
+			r.taskID = t.indexID
+        WHERE
+        	t.ownerID = userID
+       ;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_change_type` (IN `uatRequestID` INT, IN `type` VARCHAR(20))  NO SQL
-BEGIN
-	DECLARE changeTypeID INT;
-    
-	INSERT INTO change_type
-    (uatRequestID, type)
-    VALUES
-    (uatRequestID, type);
-    
-    SET changeTypeID = LAST_INSERT_ID();
-    SELECT changeTypeID;
+BEGIN
+	DECLARE changeTypeID INT;
+    
+	INSERT INTO change_type
+    (uatRequestID, type)
+    VALUES
+    (uatRequestID, type);
+    
+    SET changeTypeID = LAST_INSERT_ID();
+    SELECT changeTypeID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_impacted` (IN `translationID` INT, IN `sender` VARCHAR(50), IN `receiver` VARCHAR(50), IN `docType` VARCHAR(50), IN `internalIDs` VARCHAR(200))  NO SQL
-BEGIN
-	INSERT INTO impacted
-    (translationID, sender, receiver, docType, internalIDs)
-    VALUES
-    (translationID, sender, receiver, docType, internalIDs);	
+BEGIN
+	INSERT INTO impacted
+    (translationID, sender, receiver, docType, internalIDs)
+    VALUES
+    (translationID, sender, receiver, docType, internalIDs);	
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_project` (IN `projectID` INT, IN `projectOwnerID` INT)  NO SQL
-BEGIN
-	DECLARE insertedProjectID INT;
-    
-    INSERT INTO projects 
-    	(projectID, projectOwnerID)
-    SELECT	
-    	projectID,
-        ProjectOwnerID
-	WHERE	
-    	NOT EXISTS 
-    (
-    	SELECT
-        	*
-        FROM 
-        	projects p
-        WHERE
-        	p.projectID = projectID
-    );
-    
-    SET insertedProjectID = LAST_INSERT_ID();
-    SELECT insertedProjectID;
+BEGIN
+	DECLARE insertedProjectID INT;
+    
+    IF EXISTS(SELECT * FROM projects p WHERE p.projectID = projectID)
+		THEN	SET insertedProjectID = (SELECT ID FROM projects p WHERE p.projectID = projectID);
+    ELSE		
+		INSERT INTO projects 
+			(projectID, projectOwnerID)
+		SELECT	
+			projectID,
+			ProjectOwnerID
+		WHERE	
+			NOT EXISTS 
+		(
+			SELECT
+				*
+			FROM 
+				projects p
+			WHERE
+				p.projectID = projectID
+		);
+	
+		SET insertedProjectID = LAST_INSERT_ID();
+		
+	END IF;
+    
+    SELECT insertedProjectID;
+	
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_recommendation` (IN `requestID` INT, IN `recommendation` LONGTEXT, IN `userID` INT)  NO SQL
-BEGIN
-	DECLARE recommendationID int;
-    
-	INSERT INTO recommendations
-    (requestID, recommendation, recommendedBy)
-    VALUES
-    (requestID, recommendation, userID);
-    
-    SET recommendationID = LAST_INSERT_ID();
-    SELECT recommendationID;
+BEGIN
+	DECLARE recommendationID int;
+    
+	INSERT INTO recommendations
+    (requestID, recommendation, recommendedBy)
+    VALUES
+    (requestID, recommendation, userID);
+    
+    SET recommendationID = LAST_INSERT_ID();
+    SELECT recommendationID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_request` (IN `taskID` INT, IN `environment` VARCHAR(10), IN `urgency` VARCHAR(50), IN `status` VARCHAR(20), IN `revNum` INT, IN `deployDate` DATE, IN `uatInternalID` TEXT)  NO SQL
-BEGIN
-	DECLARE insertedRequest INT;
-    
-    INSERT INTO requests
-    	(
-        	taskID,
-            environment,
-            urgency,
-            status,
-            revisionNumber,
-            deployDate,
-            uatInternalID
-        )
-    SELECT	
-    	taskID,
-        environment,
-        urgency,
-        status,
-        revNum,
-        deployDate,
-        uatInternalID
-	WHERE	
-    	NOT EXISTS 
-    (
-    	SELECT
-        	*
-        FROM 
-        	requests r
-        WHERE
-        	r.taskID = taskID
-        AND 
-        	r.environment = environment
-       	AND	
-        	r.revisionNumber = revNum
-    );
-    
-    SET insertedRequest = LAST_INSERT_ID();
-    SELECT insertedRequest;
+BEGIN
+	DECLARE insertedRequest INT;
+    
+    INSERT INTO requests
+    	(
+        	taskID,
+            environment,
+            urgency,
+            status,
+            revisionNumber,
+            deployDate,
+            uatInternalID
+        )
+    SELECT	
+    	taskID,
+        environment,
+        urgency,
+        status,
+        revNum,
+        deployDate,
+        uatInternalID
+	WHERE	
+    	NOT EXISTS 
+    (
+    	SELECT
+        	*
+        FROM 
+        	requests r
+        WHERE
+        	r.taskID = taskID
+        AND 
+        	r.environment = environment
+       	AND	
+        	r.revisionNumber = revNum
+    );
+    
+    SET insertedRequest = LAST_INSERT_ID();
+    SELECT insertedRequest;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_task` (IN `taskID` INT, IN `projectID` INT, IN `ownerID` INT, IN `sender` VARCHAR(50), IN `receiver` VARCHAR(50), IN `docType` VARCHAR(50), IN `server` VARCHAR(10))  NO SQL
-BEGIN
-	DECLARE insertedIndexID INT;
-    
-    INSERT INTO tasks
-    	(
-        	taskID,
-            projectID,
-            ownerID,
-            sender,
-            receiver,
-            docType,
-            server
-        )
-    SELECT	
-    	taskID,
-        projectID,
-        ownerID,
-        sender,
-        receiver,
-        docType,
-        server
-	WHERE	
-    	NOT EXISTS 
-    (
-    	SELECT
-        	*
-        FROM 
-        	tasks t
-        WHERE
-        	t.taskID = taskID
-    );
-    
-    SET insertedIndexID = LAST_INSERT_ID();
-    SELECT insertedIndexID;
+BEGIN
+	DECLARE insertedIndexID INT;
+	
+    IF EXISTS(SELECT * FROM tasks t WHERE t.taskID = taskID)
+		THEN	SET insertedIndexID = (SELECT ID FROM tasks t WHERE t.taskID = taskID);
+	ELSE
+		INSERT INTO tasks
+			(
+				taskID,
+				projectID,
+				ownerID,
+				sender,
+				receiver,
+				docType,
+				server
+			)
+		SELECT	
+			taskID,
+			projectID,
+			ownerID,
+			sender,
+			receiver,
+			docType,
+			server
+		WHERE	
+			NOT EXISTS 
+		(
+			SELECT
+				*
+			FROM 
+				tasks t
+			WHERE
+				t.taskID = taskID
+		);
+		SET insertedIndexID = LAST_INSERT_ID();
+	END IF;
+    
+    
+    SELECT insertedIndexID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_translation` (IN `changeTypeID` INT, IN `name` VARCHAR(150), IN `testInternalID` VARCHAR(200))  NO SQL
-BEGIN
-	DECLARE translationID INT;
-    
-	INSERT INTO translation
-    (changeTypeID, name, testInternalID)
-    VALUES
-    (changeTypeID, name, testInternalID);
-    
-    SET translationID = LAST_INSERT_ID();
-    SELECT translationID;
+BEGIN
+	DECLARE translationID INT;
+    
+	INSERT INTO translation
+    (changeTypeID, name, testInternalID)
+    VALUES
+    (changeTypeID, name, testInternalID);
+    
+    SET translationID = LAST_INSERT_ID();
+    SELECT translationID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_translation_change` (IN `translationID` INT, IN `changes` TEXT)  NO SQL
-BEGIN
-	INSERT INTO translation_changes
-    (translationID, changes)
-    VALUES
-    (translationID, changes);
+BEGIN
+	INSERT INTO translation_changes
+    (translationID, changes)
+    VALUES
+    (translationID, changes);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `link_prod_request` (IN `inputID` INT, IN `prodRequestID` INT)  NO SQL
-BEGIN
-	UPDATE 
-        change_type
-    SET
-        prodRequestID 	= prodRequestID
-    WHERE
-        ID = inputID;
+BEGIN
+	UPDATE 
+        change_type
+    SET
+        prodRequestID 	= prodRequestID
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_client_approval` (IN `inputID` INT, IN `approverName` VARCHAR(100), IN `approvalDate` DATE)  NO SQL
-BEGIN
-	UPDATE 
-        tasks
-    SET
-        clientProdApproval 	= approverName,
-		clientApprovalDate = approvalDate
-    WHERE
-        ID = inputID;
+BEGIN
+	UPDATE 
+        tasks
+    SET
+        clientProdApproval 	= approverName,
+		clientApprovalDate = approvalDate
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_impacted` (IN `inputID` INT, IN `newSender` VARCHAR(50), IN `newReceiver` VARCHAR(50), IN `newDocType` VARCHAR(50), IN `newInternalIDs` VARCHAR(300))  NO SQL
-BEGIN
-    UPDATE
-        impacted
-    SET
-        sender = newSender,
-        receiver = newReceiver,
-        docType = newDocType,
-        internalIDs = newInternalIDs
-    WHERE
-        ID = inputID;
+BEGIN
+    UPDATE
+        impacted
+    SET
+        sender = newSender,
+        receiver = newReceiver,
+        docType = newDocType,
+        internalIDs = newInternalIDs
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_project` (IN `inputID` INT, IN `newProjectID` INT, IN `newProjectOwnerID` INT)  NO SQL
-BEGIN
-  UPDATE 
-	projects
-  SET
-     projectID 	= newProjectID,
-     projectOwnerID = newProjectOwnerID
-  WHERE
-     ID = inputID;
+BEGIN
+  UPDATE 
+	projects
+  SET
+     projectID 	= newProjectID,
+     projectOwnerID = newProjectOwnerID
+  WHERE
+     ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_recommendation` (IN `inputID` INT, IN `newRecommendation` LONGTEXT)  NO SQL
-BEGIN
-	UPDATE
-        recommendations
-    SET
-        recommendation = newRecommendation
-    WHERE
-        ID = inputID;
+BEGIN
+	UPDATE
+        recommendations
+    SET
+        recommendation = newRecommendation
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_request` (IN `inputID` INT, IN `newEnvironment` VARCHAR(10), IN `newRevisionNumber` INT, IN `newUrgency` VARCHAR(10), IN `newDeployDate` DATETIME)  NO SQL
-BEGIN
-    UPDATE 
-        requests
-    SET
-        environment 	= newEnvironment,
-        revisionNumber 	= newRevisionNumber,
-        urgency 		= newUrgency,
-        deployDate 		= newDeployDate
-    WHERE
-        ID = inputID;
+BEGIN
+    UPDATE 
+        requests
+    SET
+        environment 	= newEnvironment,
+        revisionNumber 	= newRevisionNumber,
+        urgency 		= newUrgency,
+        deployDate 		= newDeployDate
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_status` (IN `requestID` INT, IN `newStatus` VARCHAR(20))  NO SQL
-BEGIN
-	UPDATE 
-		requests
-    SET
-        status = newStatus
-    WHERE
-        ID = requestID;
+BEGIN
+	UPDATE 
+		requests
+    SET
+        status = newStatus
+    WHERE
+        ID = requestID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_task` (IN `inputID` INT, IN `newTaskID` INT, IN `newOwnerID` INT, IN `newSender` VARCHAR(50), IN `newReceiver` VARCHAR(50), IN `newDocType` VARCHAR(50), IN `newServer` VARCHAR(10))  NO SQL
-BEGIN
-    UPDATE 
-        tasks
-    SET
-        taskID 	= newTaskID,
-        ownerID = newOwnerID,
-        sender 	= newSender,
-        receiver = newReceiver,
-        docType = newDocType,
-        server = newServer
-    WHERE
-        ID = inputID;
+BEGIN
+    UPDATE 
+        tasks
+    SET
+        taskID 	= newTaskID,
+        ownerID = newOwnerID,
+        sender 	= newSender,
+        receiver = newReceiver,
+        docType = newDocType,
+        server = newServer
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_translation` (IN `inputID` INT, IN `newName` VARCHAR(50), IN `newTestInternalID` VARCHAR(300))  NO SQL
-BEGIN
-	UPDATE
-        translation
-    SET
-        name = newName,
-        testInternalID = newTestInternalID
-    WHERE
-        ID = inputID;
+BEGIN
+	UPDATE
+        translation
+    SET
+        name = newName,
+        testInternalID = newTestInternalID
+    WHERE
+        ID = inputID;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_translation_changes` (IN `inputID` INT, IN `newChanges` LONGTEXT)  NO SQL
-BEGIN
-	UPDATE
-        translation_changes
-    SET
-        changes = newChanges
-    WHERE
-        ID = inputID;
+BEGIN
+	UPDATE
+        translation_changes
+    SET
+        changes = newChanges
+    WHERE
+        ID = inputID;
 END$$
 
 DELIMITER ;
@@ -1411,6 +1376,23 @@ INSERT INTO `change_type` (`ID`, `uatRequestID`, `prodRequestID`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `exportation_logs`
+--
+
+CREATE TABLE `exportation_logs` (
+  `ID` int(11) NOT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `tableName` varchar(30) DEFAULT NULL,
+  `action` varchar(10) DEFAULT NULL,
+  `tableID` int(11) NOT NULL,
+  `oldValue` text DEFAULT NULL,
+  `newValue` text DEFAULT NULL,
+  `insertedTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `impacted`
 --
 
@@ -1421,7 +1403,61 @@ CREATE TABLE `impacted` (
   `receiver` varchar(50) NOT NULL,
   `docType` enum('PurchaseOrder','PurchaseOrderChange','PurchaseOrderAcknowledge','Invoice','Report') NOT NULL,
   `internalIDs` varchar(300) NOT NULL
-) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Triggers `impacted`
+--
+DELIMITER $$
+CREATE TRIGGER `after_impacted_insert` AFTER INSERT ON `impacted` FOR EACH ROW BEGIN	
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		newValue
+	)
+	VALUES(
+		user(),
+		'impacted', 
+		'Insert', 
+		NEW.ID,
+		CONCAT(NEW.ID, " | ",NEW.translationID, " | ",NEW.sender,  " | ",NEW.receiver,  " | ",NEW.docType,  " | ",NEW.internalIDs)
+		);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_impacted_update` AFTER UPDATE ON `impacted` FOR EACH ROW BEGIN	
+	IF(
+		OLD.sender 		<> NEW.sender		OR
+		OLD.receiver	<> NEW.receiver		OR
+		OLD.docType		<> NEW.docType		OR
+		OLD.internalIDs	<> NEW.internalIDs
+	)
+	THEN
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		oldValue,
+		newValue
+	)
+	VALUES(
+		user(),
+		'impacted', 
+		'Update', 
+		OLD.ID,
+		CONCAT(OLD.ID, " | ",OLD.translationID, " | ",OLD.sender,  " | ",OLD.receiver,  " | ",OLD.docType,  " | ",OLD.internalIDs),
+		CONCAT(NEW.ID, " | ",NEW.translationID, " | ",NEW.sender,  " | ",NEW.receiver,  " | ",NEW.docType,  " | ",NEW.internalIDs)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1433,15 +1469,63 @@ CREATE TABLE `projects` (
   `ID` int(11) NOT NULL,
   `projectID` int(11) NOT NULL,
   `projectOwnerID` int(11) NOT NULL
-) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `projects`
 --
 
 INSERT INTO `projects` (`ID`, `projectID`, `projectOwnerID`) VALUES
-(6, 1, 1),
-(7, 2, 2);
+(6, 1, 1);
+
+--
+-- Triggers `projects`
+--
+DELIMITER $$
+CREATE TRIGGER `after_project_insert` AFTER INSERT ON `projects` FOR EACH ROW BEGIN
+	INSERT INTO
+    exportation_logs(
+        user,
+        tableName,
+        action,
+        tableID,
+        newValue
+    )
+	VALUES(
+        user(),
+        'projects', 
+        'Insert', 
+        NEW.ID,
+        CONCAT(NEW.ID , ' | ' ,NEW.projectID, ' | ', NEW.projectOwnerID)
+    );
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_project_update` AFTER UPDATE ON `projects` FOR EACH ROW BEGIN
+	IF(OLD.projectID <> NEW.projectID OR OLD.projectOwnerID <> NEW.projectOwnerID)
+    THEN
+	INSERT INTO 
+    exportation_logs(
+        user,
+        tableName,
+        action,
+        tableID,
+        oldValue,
+        newValue
+    )
+	VALUES(
+        user(),
+        'projects',
+        'Update',
+        OLD.ID,
+        CONCAT(OLD.ID , ' | ', OLD.projectID, ' | ', OLD.projectOwnerID),
+        CONCAT(NEW.ID , ' | ', NEW.projectID, ' | ', NEW.projectOwnerID)
+    );
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1455,7 +1539,7 @@ CREATE TABLE `recommendations` (
   `recommendation` longtext NOT NULL,
   `recommendedBy` int(11) NOT NULL,
   `recommendedAt` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1488,6 +1572,180 @@ INSERT INTO `requests` (`ID`, `taskID`, `environment`, `revisionNumber`, `urgenc
 (23, 7, 'UAT', '3', 'Low', 'Exported', '2020-03-29 22:31:33', '2020-03-31 06:31:02', 3, '2020-03-29 22:31:02', NULL),
 (24, 7, 'PROD', '2 - 3', 'High', 'Reviewing', '2020-03-29 22:32:42', '2020-03-31 06:32:04', 3, '2020-03-29 22:32:56', '12345, 45678');
 
+--
+-- Triggers `requests`
+--
+DELIMITER $$
+CREATE TRIGGER `after_request_insert` AFTER INSERT ON `requests` FOR EACH ROW BEGIN
+	IF(NEW.environment = "UAT")
+	THEN
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | "," | "," | ")
+			);
+	ELSE 
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | "," | "," | ",NEW.uatInternalID)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_request_update` AFTER UPDATE ON `requests` FOR EACH ROW BEGIN
+	IF(		
+			(
+			OLD.taskID			<>	NEW.taskID			OR
+			OLD.environment		<>	NEW.environment		OR
+			OLD.revisionNumber	<>	NEW.revisionNumber	OR
+			OLD.urgency			<>	NEW.urgency			OR
+			OLD.status			<>	NEW.status			OR
+			OLD.requestDate		<>	NEW.requestDate		OR
+			OLD.deployDate		<>	NEW.deployDate	
+			) 
+			AND
+			(
+			(OLD.assigneeID 		IS NULL 	AND		NEW.assigneeID 		IS NULL)		AND
+			(OLD.assignedAt			IS NULL 	AND		NEW.assignedAt		IS NULL) 		AND
+			(OLD.uatInternalID		IS NULL		AND		NEW.uatInternalID	IS NULL)
+			)
+		)
+    THEN
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.taskID, " | ",OLD.environment, " | ",OLD.revisionNumber, " | ",OLD.urgency, " | ",OLD.status, " | ",OLD.requestDate, " | ",OLD.deployDate, " | "," | "," | "),
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | "," | "," | ")
+
+		);
+	ELSEIF(		
+			(
+			OLD.taskID			<>	NEW.taskID			OR
+			OLD.environment		<>	NEW.environment		OR
+			OLD.revisionNumber	<>	NEW.revisionNumber	OR
+			OLD.urgency			<>	NEW.urgency			OR
+			OLD.status			<>	NEW.status			OR
+			OLD.requestDate		<>	NEW.requestDate		OR
+			OLD.deployDate		<>	NEW.deployDate		
+			) 
+			AND
+			(
+			OLD.assigneeID 		<> 	NEW.assigneeID		AND	
+			OLD.assignedAt		<>	NEW.assignedAt	 	AND	
+			NEW.uatInternalID	IS NULL
+			)
+		)
+	THEN
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.taskID, " | ",OLD.environment, " | ",OLD.revisionNumber, " | ",OLD.urgency, " | ",OLD.status, " | ",OLD.requestDate, " | ",OLD.deployDate, " | "," | "," | "),
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | ",NEW.assigneeID," | ",NEW.assignedAt," | ")
+
+		);
+	ELSEIF(		
+			(
+			OLD.taskID			<>	NEW.taskID			OR
+			OLD.environment		<>	NEW.environment		OR
+			OLD.revisionNumber	<>	NEW.revisionNumber	OR
+			OLD.urgency			<>	NEW.urgency			OR
+			OLD.status			<>	NEW.status			OR
+			OLD.requestDate		<>	NEW.requestDate		OR
+			OLD.deployDate		<>	NEW.deployDate		
+			) 
+			AND
+			(
+			(OLD.assigneeID 	IS NULL 	AND		NEW.assigneeID 		IS NULL)		AND
+			(OLD.assignedAt		IS NULL 	AND		NEW.assignedAt		IS NULL) 		AND
+			(OLD.uatInternalID	<>	NEW.uatInternalID)
+			)
+		)
+	THEN
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.taskID, " | ",OLD.environment, " | ",OLD.revisionNumber, " | ",OLD.urgency, " | ",OLD.status, " | ",OLD.requestDate, " | ",OLD.deployDate, " | "," | "," | ",OLD.uatInternalID),
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | "," | "," | ",NEW.uatInternalID)
+		);
+	ELSE 
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'requests',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.taskID, " | ",OLD.environment, " | ",OLD.revisionNumber, " | ",OLD.urgency, " | ",OLD.status, " | ",OLD.requestDate, " | ",OLD.deployDate, " | ",OLD.assigneeID," | ",OLD.assignedAt," | ",OLD.uatInternalID),
+			CONCAT(NEW.ID, " | ",NEW.taskID, " | ",NEW.environment, " | ",NEW.revisionNumber, " | ",NEW.urgency, " | ",NEW.status, " | ",NEW.requestDate, " | ",NEW.deployDate, " | ",NEW.assigneeID," | ",NEW.assignedAt," | ",NEW.uatInternalID)
+		);
+    END IF;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -1499,7 +1757,33 @@ CREATE TABLE `shared_requests` (
   `projectID` int(11) NOT NULL,
   `taskID` int(11) NOT NULL,
   `userID` int(11) NOT NULL
-) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Triggers `shared_requests`
+--
+DELIMITER $$
+CREATE TRIGGER `after_shared_request_insert` AFTER INSERT ON `shared_requests` FOR EACH ROW BEGIN	
+	
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		newValue
+	)
+	VALUES(
+		user(),
+		'shared_requests', 
+		'Insert', 
+		NEW.ID,
+		CONCAT(NEW.ID, " | ",NEW.projectID, " | ",NEW.taskID,  " | ",NEW.userID)
+		);
+	
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1509,10 +1793,66 @@ CREATE TABLE `shared_requests` (
 
 CREATE TABLE `tables` (
   `ID` int(11) NOT NULL,
+  `changeTypeID` int(11) NOT NULL,
   `serverName` varchar(20) NOT NULL,
   `tableName` varchar(100) NOT NULL,
   `change` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Triggers `tables`
+--
+DELIMITER $$
+CREATE TRIGGER `after_table_insert` AFTER INSERT ON `tables` FOR EACH ROW BEGIN	
+	
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		newValue
+	)
+	VALUES(
+		user(),
+		'tables', 
+		'Insert', 
+		NEW.ID,
+		CONCAT(NEW.ID, " | ",NEW.changeTypeID, " | ",NEW.serverName,  " | ",NEW.tableName,  " | ",NEW.change)
+		);
+	
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_table_update` AFTER UPDATE ON `tables` FOR EACH ROW BEGIN	
+	IF(
+		OLD.serverName	<>	NEW.serverName	OR
+		OLD.tableName	<>	NEW.tableName	OR
+		OLD.change		<>	OLD.change
+	)
+	THEN
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		oldValue,
+		newValue
+	)
+	VALUES(
+		user(),
+		'tables', 
+		'Update', 
+		OLD.ID,
+		CONCAT(OLD.ID, " | ",OLD.changeTypeID, " | ",OLD.serverName,  " | ",OLD.tableName,  " | ",OLD.change),
+		CONCAT(NEW.ID, " | ",NEW.changeTypeID, " | ",NEW.serverName,  " | ",NEW.tableName,  " | ",NEW.change)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1540,6 +1880,107 @@ CREATE TABLE `tasks` (
 INSERT INTO `tasks` (`ID`, `taskID`, `projectID`, `ownerID`, `sender`, `receiver`, `docType`, `server`, `clientProdApproval`, `clientApprovalDate`) VALUES
 (7, 1, 6, 3, 'S1', 'R1', 'Invoice', 'Mel02', 'Jom', '2020-03-28');
 
+--
+-- Triggers `tasks`
+--
+DELIMITER $$
+CREATE TRIGGER `after_task_insert` AFTER INSERT ON `tasks` FOR EACH ROW BEGIN
+	IF(NEW.clientProdApproval IS NULL AND NEW.clientApprovalDate IS NULL)
+	THEN
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'tasks', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID , ' | ' , NEW.taskID, ' | ',NEW.projectID, ' | ',NEW.ownerID, ' | ',NEW.sender, ' | ',NEW.receiver, ' | ',NEW.docType, ' | ',NEW.server, ' | ', ' | ')
+			);
+	ELSE
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'tasks', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID , ' | ' , NEW.taskID, ' | ',NEW.projectID, ' | ',NEW.ownerID, ' | ',NEW.sender, ' | ',NEW.receiver, ' | ',NEW.docType, ' | ',NEW.server, ' | ',NEW.clientProdApproval, ' | ',NEW.clientApprovalDate)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_task_update` AFTER UPDATE ON `tasks` FOR EACH ROW BEGIN
+	IF(
+			(
+			OLD.taskID 		<> NEW.taskID		OR 
+			OLD.projectID 	<> NEW.projectID 	OR
+			OLD.ownerID 	<> NEW.ownerID		OR 
+			OLD.sender 		<> NEW.sender		OR 
+			OLD.receiver 	<> NEW.receiver		OR 
+			OLD.docType 	<> NEW.docType 		OR 
+			OLD.server 		<> NEW.server
+			) 
+			AND
+			(
+			NEW.clientProdApproval IS NULL 		AND 
+			NEW.clientApprovalDate IS NULL
+			)
+		)
+    THEN
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'tasks',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID , ' | ' , OLD.taskID, ' | ',OLD.projectID, ' | ',OLD.ownerID, ' | ',OLD.sender, ' | ',OLD.receiver, ' | ',OLD.docType, ' | ',OLD.server, ' | ', ' | '),
+			CONCAT(NEW.ID , ' | ' , NEW.taskID, ' | ',NEW.projectID, ' | ',NEW.ownerID, ' | ',NEW.sender, ' | ',NEW.receiver, ' | ',NEW.docType, ' | ',NEW.server, ' | ', ' | ')
+		);
+	ELSE
+		INSERT INTO 
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'tasks',
+			'Update',
+			OLD.ID,
+			CONCAT(OLD.ID , ' | ' , OLD.taskID, ' | ',OLD.projectID, ' | ',OLD.ownerID, ' | ',OLD.sender, ' | ',OLD.receiver, ' | ',OLD.docType, ' | ',OLD.server, ' | ', ' | '),
+			CONCAT(NEW.ID , ' | ' , NEW.taskID, ' | ',NEW.projectID, ' | ',NEW.ownerID, ' | ',NEW.sender, ' | ',NEW.receiver, ' | ',NEW.docType, ' | ',NEW.server, ' | ', NEW.clientProdApproval,' | ', NEW.clientApprovalDate)
+		);
+    END IF;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -1558,7 +1999,99 @@ CREATE TABLE `translation` (
 --
 
 INSERT INTO `translation` (`ID`, `changeTypeID`, `name`, `testInternalID`) VALUES
-(17, 3, 'T1', '123');
+(17, 3, 'T1', '123'),
+(18, 4, 'T4', NULL),
+(19, 5, 'T5', '456');
+
+--
+-- Triggers `translation`
+--
+DELIMITER $$
+CREATE TRIGGER `after_translation_insert` AFTER INSERT ON `translation` FOR EACH ROW BEGIN
+	IF(NEW.testInternalID IS NULL)
+	THEN
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'translation', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID, " | ",NEW.changeTypeID,  " | ",NEW.Name, " | ")
+			);
+	ELSE
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			newValue
+		)
+		VALUES(
+			user(),
+			'translation', 
+			'Insert', 
+			NEW.ID,
+			CONCAT(NEW.ID, " | ",NEW.changeTypeID,  " | ",NEW.Name, " | ", NEW.testInternalID)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_translation_update` AFTER UPDATE ON `translation` FOR EACH ROW BEGIN
+	IF(
+		OLD.Name <> NEW.Name
+		AND
+		(OLD.testInternalID IS NULL AND NEW.testInternalID IS NULL)
+	)
+	THEN
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'translation', 
+			'Update', 
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.changeTypeID,  " | ",OLD.Name, " | "),
+			CONCAT(NEW.ID, " | ",NEW.changeTypeID,  " | ",NEW.Name, " | ")
+			);
+	ELSE
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'translation', 
+			'Update', 
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.changeTypeID,  " | ",OLD.Name, " | ", OLD.testInternalID),
+			CONCAT(NEW.ID, " | ",NEW.changeTypeID,  " | ",NEW.Name, " | ", NEW.testInternalID)
+		);
+	END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1570,7 +2103,7 @@ CREATE TABLE `translation_changes` (
   `ID` int(11) NOT NULL,
   `translationID` int(11) NOT NULL,
   `changes` longtext NOT NULL
-) ENGINE=MYISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `translation_changes`
@@ -1578,6 +2111,55 @@ CREATE TABLE `translation_changes` (
 
 INSERT INTO `translation_changes` (`ID`, `translationID`, `changes`) VALUES
 (16, 17, '-Updated 1');
+
+--
+-- Triggers `translation_changes`
+--
+DELIMITER $$
+CREATE TRIGGER `after_translation_changes_insert` AFTER INSERT ON `translation_changes` FOR EACH ROW BEGIN	
+	INSERT INTO
+	exportation_logs(
+		user,
+		tableName,
+		action,
+		tableID,
+		newValue
+	)
+	VALUES(
+		user(),
+		'translation_changes', 
+		'Insert', 
+		NEW.ID,
+		CONCAT(NEW.ID, " | ",NEW.translationID,  " | ",NEW.changes)
+		);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_translation_changes_update` AFTER UPDATE ON `translation_changes` FOR EACH ROW BEGIN	
+	IF(OLD.changes <> NEW.changes)
+	THEN
+		INSERT INTO
+		exportation_logs(
+			user,
+			tableName,
+			action,
+			tableID,
+			oldValue,
+			newValue
+		)
+		VALUES(
+			user(),
+			'translation_changes', 
+			'Update', 
+			OLD.ID,
+			CONCAT(OLD.ID, " | ",OLD.translationID,  " | ",OLD.changes),
+			CONCAT(NEW.ID, " | ",NEW.translationID,  " | ",NEW.changes)
+			);
+	END IF;
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -1590,6 +2172,12 @@ ALTER TABLE `change_type`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `uatRequestID` (`uatRequestID`),
   ADD KEY `prodRequestID` (`prodRequestID`);
+
+--
+-- Indexes for table `exportation_logs`
+--
+ALTER TABLE `exportation_logs`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `impacted`
@@ -1632,6 +2220,12 @@ ALTER TABLE `shared_requests`
   ADD KEY `taskID` (`taskID`);
 
 --
+-- Indexes for table `tables`
+--
+ALTER TABLE `tables`
+  ADD KEY `changeTypeID` (`changeTypeID`);
+
+--
 -- Indexes for table `tasks`
 --
 ALTER TABLE `tasks`
@@ -1665,6 +2259,12 @@ ALTER TABLE `change_type`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `exportation_logs`
+--
+ALTER TABLE `exportation_logs`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `impacted`
 --
 ALTER TABLE `impacted`
@@ -1674,7 +2274,7 @@ ALTER TABLE `impacted`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `recommendations`
@@ -1686,7 +2286,7 @@ ALTER TABLE `recommendations`
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `shared_requests`
@@ -1698,13 +2298,13 @@ ALTER TABLE `shared_requests`
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `translation`
 --
 ALTER TABLE `translation`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `translation_changes`
@@ -1756,6 +2356,12 @@ ALTER TABLE `shared_requests`
   ADD CONSTRAINT `shared_requests_ibfk_3` FOREIGN KEY (`userID`) REFERENCES `accounts`.`users` (`ID`),
   ADD CONSTRAINT `shared_requests_ibfk_5` FOREIGN KEY (`projectID`) REFERENCES `projects` (`projectID`),
   ADD CONSTRAINT `shared_requests_ibfk_6` FOREIGN KEY (`taskID`) REFERENCES `tasks` (`taskID`);
+
+--
+-- Constraints for table `tables`
+--
+ALTER TABLE `tables`
+  ADD CONSTRAINT `tables_ibfk_1` FOREIGN KEY (`changeTypeID`) REFERENCES `change_type` (`ID`);
 
 --
 -- Constraints for table `tasks`
